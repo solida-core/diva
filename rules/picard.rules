@@ -1,0 +1,70 @@
+# vim: syntax=python tabstop=4 expandtab
+# coding: utf-8
+
+
+rule picard_MarkDuplicates:
+   input:
+       "mapped_reads/merged_samples/{sample}.bam"
+   output:
+       bam=temp("mapped_reads/merged_samples/{sample}.dedup.bam"),
+       txt="mapped_reads/merged_samples/{sample}.dedup.txt"
+   conda:
+       "envs/picard.yaml"
+   params:
+        custom=java_params(tmp_dir=config.get("tmp_dir")),
+        odpd = lambda wildcards: config.get("odpd").get(wildcards.sample, 2500),
+   benchmark:
+       "benchmarks/picard/MarkDuplicates/{sample}.txt"
+   log:
+        "logs/picard/MarkDuplicates/{sample}.log"
+   shell:
+       "picard {params.custom} MarkDuplicates I={input} O={output.bam} "
+       "M={output.txt} REMOVE_DUPLICATES=false ASSUME_SORTED=true "
+       "OPTICAL_DUPLICATE_PIXEL_DISTANCE={params.odpd}"
+
+rule picard_BuildBamIndex:
+   input:
+       bam="mapped_reads/merged_samples/{sample}.dedup.bam"
+   output:
+       bai="mapped_reads/merged_samples/{sample}.dedup.bai"
+   conda:
+       "envs/picard.yaml"
+   params:
+        custom=java_params(tmp_dir=config.get("tmp_dir")),
+   benchmark:
+       "benchmarks/picard/BuildBamIndex/{sample}.txt"
+   shell:
+       "picard {params.custom} BuildBamIndex INPUT={input.bam} OUTPUT={output.bai}"
+
+
+
+rule picard_pre_HsMetrics:
+   input:
+       bam="mapped_reads/merged_samples/{sample}.dedup.realn.bam"
+   output:
+       probes=temp("references/{sample}_probes_header"),
+       hsTarget=temp("references/{sample}_hsTarget_header")
+   conda:
+       "envs/picard.yaml"
+   params:
+        probes = lambda wildcards: resolve_single_filepath(*references_abs_path(), config.get("intervals").get(config.get("samples_intervals").get(wildcards.sample, config["intervals_default"])).get("probes")),
+        hsTarget = lambda wildcards: resolve_single_filepath(*references_abs_path(), config.get("intervals").get(config.get("samples_intervals").get(wildcards.sample, config["intervals_default"])).get("hsTarget")),
+   shell:
+       "samtools view -H  {input.bam} | cat - {params.probes} > {output.probes}; samtools view -H  {input.bam} | cat - {params.hsTarget} > {output.hsTarget}"
+
+rule picard_HsMetrics:
+   input:
+       bam="mapped_reads/merged_samples/{sample}.dedup.realn.bam",
+       probes="references/{sample}_probes_header",
+       hsTarget="references/{sample}_hsTarget_header"
+   output:
+       "mapped_reads/merged_samples/{sample}.dedup.realn.hs.txt"
+   conda:
+       "envs/picard.yaml"
+   params:
+        custom=java_params(tmp_dir=config.get("tmp_dir")),
+   benchmark:
+       "benchmarks/picard/HsMetrics/{sample}.txt"
+   shell:
+       "picard {params.custom} CollectHsMetrics INPUT={input.bam} OUTPUT={output} "
+       "BAIT_INTERVALS={input.probes} TARGET_INTERVALS={input.hsTarget}"

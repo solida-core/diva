@@ -1,0 +1,132 @@
+# vim: syntax=python tabstop=4 expandtab
+# coding: utf-8
+
+
+"""
+GATK based postprocessing of BAM files. Indels can be realigned and base qualities
+can be recalibrated.
+
+"""
+
+rule gatk_RealignerTargetCreator:
+    input:
+        "mapped_reads/merged_samples/{sample}.dedup.bai",
+        bam="mapped_reads/merged_samples/{sample}.dedup.bam"
+    output:
+        "mapped_reads/merged_samples/{sample}.realign.intervals"
+    params:
+        custom=java_params(tmp_dir=config.get("tmp_dir"), fraction_for=2),
+        intervals = lambda wildcards: resolve_single_filepath(*references_abs_path(), config.get("intervals").get(config.get("samples_intervals").get(wildcards.sample, config["intervals_default"])).get("bedTarget")),
+        genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
+        mills=resolve_single_filepath(*references_abs_path(), config.get("known_variants").get("mills")),
+        ph1_indels=resolve_single_filepath(*references_abs_path(), config.get("known_variants").get("ph1_indels")),
+    log:
+        "logs/gatk/RealignerTargetCreator/{sample}.log"
+    threads: 8
+    shell:
+        "gatk -T RealignerTargetCreator -R {params.genome} {params.custom} "
+        "-nt {threads} "
+        "-I {input.bam} -known {params.mills} -known {params.ph1_indels} "
+        "-L {params.intervals} -ip 200 "
+        "-o {output} >& {log}"
+
+rule gatk_IndelRealigner:
+    input:
+        bam="mapped_reads/merged_samples/{sample}.dedup.bam",
+        intervals="mapped_reads/merged_samples/{sample}.realign.intervals"
+    output:
+        temp("mapped_reads/merged_samples/{sample}.dedup.realn.bam")
+    params:
+        custom=java_params(tmp_dir=config.get("tmp_dir"), fraction_for=4),
+        genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
+        mills=resolve_single_filepath(*references_abs_path(), config.get("known_variants").get("mills")),
+        ph1_indels=resolve_single_filepath(*references_abs_path(), config.get("known_variants").get("ph1_indels")),
+
+    log:
+        "logs/gatk/IndelRealigner/{sample}.log"
+    shell:
+        "gatk -T IndelRealigner -R {params.genome} {params.custom} "
+        "-I {input.bam} -targetIntervals {input.intervals} -known {params.mills} -known {params.ph1_indels} "
+        "-o {output} >& {log}"
+
+rule gatk_BaseRecalibrator_recal_table:
+    input:
+        bam="mapped_reads/merged_samples/{sample}.dedup.realn.bam"
+    output:
+        "mapped_reads/merged_samples/{sample}.recalibrate.grp"
+    params:
+        custom=java_params(tmp_dir=config.get("tmp_dir"), fraction_for=2),
+        intervals = lambda wildcards: resolve_single_filepath(*references_abs_path(), config.get("intervals").get(config.get("samples_intervals").get(wildcards.sample, config["intervals_default"])).get("bedTarget")),
+        genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
+        dbsnp=resolve_single_filepath(*references_abs_path(), config.get("known_variants").get("dbsnp")),
+        mills=resolve_single_filepath(*references_abs_path(), config.get("known_variants").get("mills")),
+        ph1_indels=resolve_single_filepath(*references_abs_path(), config.get("known_variants").get("ph1_indels")),
+
+    log:
+        "logs/gatk/BaseRecalibrator/{sample}.recalibrate_info.log"
+    threads: 8
+    shell:
+        "gatk -T BaseRecalibrator -R {params.genome} {params.custom} "
+        "-nct {threads} "
+        "-I {input.bam} -knownSites {params.dbsnp} -knownSites {params.mills} -knownSites {params.ph1_indels} "
+        "-L {params.intervals} -ip 200 "
+        "-o {output} >& {log}"
+
+rule gatk_BaseRecalibrator_post_recal_table:
+    input:
+        bam="mapped_reads/merged_samples/{sample}.dedup.realn.bam",
+        bqsr="mapped_reads/merged_samples/{sample}.recalibrate.grp"
+    output:
+        "mapped_reads/merged_samples/{sample}.post_recalibrate.grp"  
+    params:
+        custom=java_params(tmp_dir=config.get("tmp_dir"), fraction_for=2),
+        intervals = lambda wildcards: resolve_single_filepath(*references_abs_path(), config.get("intervals").get(config.get("samples_intervals").get(wildcards.sample, config["intervals_default"])).get("bedTarget")),
+        genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
+        dbsnp=resolve_single_filepath(*references_abs_path(), config.get("known_variants").get("dbsnp")),
+        mills=resolve_single_filepath(*references_abs_path(), config.get("known_variants").get("mills")),
+        ph1_indels=resolve_single_filepath(*references_abs_path(), config.get("known_variants").get("ph1_indels")),
+    log:    
+        "logs/gatk/BaseRecalibrator/{sample}.post_recalibrate_info.log"
+    threads: 8 
+    shell:
+        "gatk -T BaseRecalibrator -R {params.genome} {params.custom} "
+        "-nct {threads} "
+        "-I {input.bam} -knownSites {params.dbsnp} -knownSites {params.mills} -knownSites {params.ph1_indels} "
+        "-L {params.intervals} -ip 200 "
+        "-BQSR {input.bqsr} -o {output} >& {log}"
+
+rule gatk_AnalyzeCovariates:
+    input:
+        pre="mapped_reads/merged_samples/{sample}.recalibrate.grp",
+        post="mapped_reads/merged_samples/{sample}.post_recalibrate.grp"
+    output:
+        "mapped_reads/merged_samples/{sample}.recalibration_plots.pdf"
+    params:
+        custom=java_params(tmp_dir=config.get("tmp_dir")),
+        intervals = lambda wildcards: resolve_single_filepath(*references_abs_path(), config.get("intervals").get(config.get("samples_intervals").get(wildcards.sample, config["intervals_default"])).get("bedTarget")),
+        genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta"))
+    log:    
+        "logs/gatk/AnalyzeCovariates/{sample}.recal_plots.log"
+    shell:
+        "gatk -T AnalyzeCovariates -R {params.genome} {params.custom} "
+        "-L {params.intervals} -ip 200 "
+        "-before {input.pre} -after {input.post} -plots {output} >& {log} "    
+        
+rule gatk_PrintReads:
+    input:
+        bam="mapped_reads/merged_samples/{sample}.dedup.realn.bam",
+        grp="mapped_reads/merged_samples/{sample}.recalibrate.grp"
+    output:
+        "mapped_reads/merged_samples/{sample}.dedup.realn.recal.bam"
+    params:
+        custom=java_params(tmp_dir=config.get("tmp_dir")),
+        genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta"))
+    log:
+        "logs/gatk/PrintReads/{sample}.recalibrate.log"
+    threads: 8
+    shell:
+        "gatk -T PrintReads -R {params.genome} {params.custom} "
+        "-nct {threads} "
+        "-I {input.bam} -BQSR {input.grp} "
+        "-o {output} >& {log}"
+

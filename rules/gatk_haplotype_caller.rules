@@ -1,0 +1,99 @@
+# vim: syntax=python tabstop=4 expandtab
+# coding: utf-8
+
+
+"""
+GATK haplotype calling using the workflow suggested in 
+https://www.broadinstitute.org/gatk/guide/topic?name=methods#methods3893
+Needs at least GATK 3.0, available in your PATH as "gatk".
+
+For usage, include this in your workflow.
+
+Expects a global variable config
+(see https://bitbucket.org/johanneskoester/snakemake/wiki/Documentation#markdown-header-configuration)
+of at least the
+following structure, assuming that the desired reference sequence is some genome
+to be found under the given path, and two units A and B have been sequenced.
+The heterozygosity parameters show the default values for homo sapiens.
+
+
+{
+    "references": {
+        "genome": "path/to/genome.fasta"
+    },
+    "samples": {
+        "A": ["A"],
+        "B": ["B"]
+    },
+    "units": {
+        "A":
+            ["path/to/A_R1.fastq.gz", "path/to/A_R2.fastq.gz"],
+        "B":
+            ["path/to/B.fastq.gz"]
+    },
+    "known_variants": {
+        "dbsnp": "path/to/dbsnp.vcf"
+    },
+    "heterozygosity": 0.001,
+    "indel_heterozygosity": 1.25E-4
+}
+
+Note the separation between samples and units that allows to have more than
+one sequencing run for each sample, or multiple lanes per sample.
+"""
+
+
+__author__ = "Johannes Köster (http://johanneskoester.bitbucket.org)"
+__license__ = "MIT"
+
+def _gatk_multi_arg(flag, files):
+    flag += " "
+    return " ".join(flag + f for f in files)
+#
+#def _sample_to_units(pattern):
+#    def apply(wildcards):
+#       return expand(
+#            pattern, reference="/ELS/els9/ex_scratch/users/galaxy/galaxyNT/var/data-manager-data/hg19/bwa_mem_index/hg19/hg19.fa",
+#            unit=config["samples"][wildcards.sample])
+#    return apply
+
+
+rule gatk_HaplotypeCaller_ERC_GVCF:
+    input:    
+        bam="mapped_reads/merged_samples/{sample}.dedup.realn.recal.bam"
+    output:
+        gvcf="variant_calling/{sample}.g.vcf",
+        idx="variant_calling/{sample}.g.vcf.idx"
+    params:
+        custom=java_params(tmp_dir=config.get("tmp_dir"), fraction_for=4),
+        intervals = lambda wildcards: resolve_single_filepath(*references_abs_path(), config.get("intervals").get(config.get("samples_intervals").get(wildcards.sample, config["intervals_default"])).get("bedTarget")),
+        genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta"))
+    log:
+        "variant_calling/log/{sample}.genotype_info.log"
+    threads: 1
+    shell:
+        "gatk -T HaplotypeCaller -R {params.genome} {params.custom} "
+        "-I {input.bam} --emitRefConfidence GVCF "
+        "-L {params.intervals} -nct {threads} -ip 200 "
+        "-o {output.gvcf} >& {log}"
+
+rule gatk_GenotypeGVCFs:
+    input:
+        gvcfs=expand(
+            "variant_calling/{sample}.g.vcf",
+            sample=config["samples"])
+    output:
+        "variant_calling/all.vcf"
+    params:
+        custom=java_params(tmp_dir=config.get("tmp_dir")),
+        genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
+        dbsnp=resolve_single_filepath(*references_abs_path(), config.get("known_variants").get("dbsnp")),
+    log:
+        "variant_calling/log/all.genotype.log"
+    threads: 10
+    run:
+        gvcfs = _gatk_multi_arg("--variant", input.gvcfs)
+        shell(
+            "gatk -T GenotypeGVCFs {gvcfs} -nt {threads} {params.custom} "
+            "-R {params.genome} "
+            "--dbsnp {params.dbsnp} -o {output} >& {log}")
