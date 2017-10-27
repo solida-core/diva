@@ -2,37 +2,6 @@
 # coding: utf-8
 
 
-"""
-GATK variant recalibration as described in
-
-Needs at least GATK 3.0, available in your PATH as "gatk".
-
-For usage, include this in your workflow.
-
-Expects a global variable config
-(see https://bitbucket.org/johanneskoester/snakemake/wiki/Documentation#markdown-header-configuration)
-of at least the
-following structure, assuming that the desired reference sequence is some genome
-to be found under the given path.
-
-{
-    "references": {
-        "genome": "path/to/genome.fasta"
-    },
-    "known_variants": {
-        "dbsnp": "path/to/dbsnp.vcf",
-        "hapmap": "path/to/hapmap_3.3.vcf",
-        "g1k": "path/to/1000G_phase1.snps.high_confidence.vcf",
-        "omni": "path/to/1000G_omni2.5.vcf",
-        "mills": "path/to/Mills_and_1000G_gold_standard.indels.vcf"
-    }
-}
-"""
-
-
-__author__ = "Johannes Köster (http://johanneskoester.bitbucket.org)"
-__license__ = "MIT"
-
 # https://docs.python.org/dev/whatsnew/3.5.html#pep-448-additional-unpacking-generalizations
 def _get_recal_params(wildcards):
     known_variants = resolve_multi_filepath(*references_abs_path(), config["known_variants"])
@@ -67,7 +36,9 @@ rule gatk_VariantRecalibrator:
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta"))
     log:
         "variant_calling/log/{prefix}.{type}_recalibrate_info.log"
-    threads: 8
+    benchmark:
+        "benchmarks/gatk/VariantRecalibrator/{prefix}.{type}_recalibrate_info.txt"
+    threads: conservative_cpu_count()
     shell:
         "gatk -T VariantRecalibrator -R {params.genome} "
         "-input {input.vcf} "
@@ -91,7 +62,9 @@ rule gatk_ApplyRecalibration:
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta"))
     log:
         "variant_calling/log/{prefix}.{type}_recalibrate.log"
-    threads: 8
+    benchmark:
+        "benchmarks/gatk/VariantRecalibrator/{prefix}.{type}_recalibrate.txt"
+    threads: conservative_cpu_count()
     shell:
         "gatk -T ApplyRecalibration -R {params.genome} -nt {threads} "
         "-input {input.vcf} -mode {params.mode} {params.custom} "

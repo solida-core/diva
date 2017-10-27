@@ -22,7 +22,9 @@ rule gatk_RealignerTargetCreator:
         ph1_indels=resolve_single_filepath(*references_abs_path(), config.get("known_variants").get("ph1_indels")),
     log:
         "logs/gatk/RealignerTargetCreator/{sample}.log"
-    threads: 8
+    benchmark:
+        "benchmarks/gatk/RealignerTargetCreator/{sample}.txt"
+    threads: conservative_cpu_count()
     shell:
         "gatk -T RealignerTargetCreator -R {params.genome} {params.custom} "
         "-nt {threads} "
@@ -44,6 +46,8 @@ rule gatk_IndelRealigner:
 
     log:
         "logs/gatk/IndelRealigner/{sample}.log"
+    benchmark:
+        "benchmarks/gatk/IndelRealigner/{sample}.txt"
     shell:
         "gatk -T IndelRealigner -R {params.genome} {params.custom} "
         "-I {input.bam} -targetIntervals {input.intervals} -known {params.mills} -known {params.ph1_indels} "
@@ -64,7 +68,9 @@ rule gatk_BaseRecalibrator_recal_table:
 
     log:
         "logs/gatk/BaseRecalibrator/{sample}.recalibrate_info.log"
-    threads: 8
+    benchmark:
+        "benchmarks/gatk/BaseRecalibrator/{sample}.recalibrate_info.txt"
+    threads: conservative_cpu_count()
     shell:
         "gatk -T BaseRecalibrator -R {params.genome} {params.custom} "
         "-nct {threads} "
@@ -87,7 +93,9 @@ rule gatk_BaseRecalibrator_post_recal_table:
         ph1_indels=resolve_single_filepath(*references_abs_path(), config.get("known_variants").get("ph1_indels")),
     log:    
         "logs/gatk/BaseRecalibrator/{sample}.post_recalibrate_info.log"
-    threads: 8 
+    benchmark:
+        "benchmarks/gatk/BaseRecalibrator/{sample}.post_recalibrate_info.txt"
+    threads: conservative_cpu_count()
     shell:
         "gatk -T BaseRecalibrator -R {params.genome} {params.custom} "
         "-nct {threads} "
@@ -107,6 +115,8 @@ rule gatk_AnalyzeCovariates:
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta"))
     log:    
         "logs/gatk/AnalyzeCovariates/{sample}.recal_plots.log"
+    benchmark:
+        "benchmarks/gatk/AnalyzeCovariates/{sample}.txt"
     shell:
         "gatk -T AnalyzeCovariates -R {params.genome} {params.custom} "
         "-L {params.intervals} -ip 200 "
@@ -123,7 +133,9 @@ rule gatk_PrintReads:
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta"))
     log:
         "logs/gatk/PrintReads/{sample}.recalibrate.log"
-    threads: 8
+    benchmark:
+        "benchmarks/gatk/PrintReads/{sample}.txt"
+    threads: conservative_cpu_count()
     shell:
         "gatk -T PrintReads -R {params.genome} {params.custom} "
         "-nct {threads} "

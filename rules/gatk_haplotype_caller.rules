@@ -2,50 +2,6 @@
 # coding: utf-8
 
 
-"""
-GATK haplotype calling using the workflow suggested in 
-https://www.broadinstitute.org/gatk/guide/topic?name=methods#methods3893
-Needs at least GATK 3.0, available in your PATH as "gatk".
-
-For usage, include this in your workflow.
-
-Expects a global variable config
-(see https://bitbucket.org/johanneskoester/snakemake/wiki/Documentation#markdown-header-configuration)
-of at least the
-following structure, assuming that the desired reference sequence is some genome
-to be found under the given path, and two units A and B have been sequenced.
-The heterozygosity parameters show the default values for homo sapiens.
-
-
-{
-    "references": {
-        "genome": "path/to/genome.fasta"
-    },
-    "samples": {
-        "A": ["A"],
-        "B": ["B"]
-    },
-    "units": {
-        "A":
-            ["path/to/A_R1.fastq.gz", "path/to/A_R2.fastq.gz"],
-        "B":
-            ["path/to/B.fastq.gz"]
-    },
-    "known_variants": {
-        "dbsnp": "path/to/dbsnp.vcf"
-    },
-    "heterozygosity": 0.001,
-    "indel_heterozygosity": 1.25E-4
-}
-
-Note the separation between samples and units that allows to have more than
-one sequencing run for each sample, or multiple lanes per sample.
-"""
-
-
-__author__ = "Johannes Köster (http://johanneskoester.bitbucket.org)"
-__license__ = "MIT"
-
 def _gatk_multi_arg(flag, files):
     flag += " "
     return " ".join(flag + f for f in files)
@@ -70,6 +26,8 @@ rule gatk_HaplotypeCaller_ERC_GVCF:
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta"))
     log:
         "variant_calling/log/{sample}.genotype_info.log"
+    benchmark:
+        "benchmarks/gatk/HaplotypeCaller/{sample}.txt"
     threads: 1
     shell:
         "gatk -T HaplotypeCaller -R {params.genome} {params.custom} "
@@ -90,7 +48,9 @@ rule gatk_GenotypeGVCFs:
         dbsnp=resolve_single_filepath(*references_abs_path(), config.get("known_variants").get("dbsnp")),
     log:
         "variant_calling/log/all.genotype.log"
-    threads: 10
+    benchmark:
+        "benchmarks/gatk/HaplotypeCaller/all.txt"
+    threads: conservative_cpu_count()
     run:
         gvcfs = _gatk_multi_arg("--variant", input.gvcfs)
         shell(
