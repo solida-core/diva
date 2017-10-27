@@ -1,12 +1,11 @@
 {
     "__default__" :
     {
-        "hosts_group" : "-l entu=1 -l centos7=1 -pe openmpi.8t 8",
-        "output_dir": "path_to_ge_logs"
+        "hosts_group" : "-l entu=1 -l centos7=1 -pe openmpi.8t 8"
     },
     "gatk_RealignerTargetCreator" :
     {
-        "hosts_group" : "-l gpu=1 -pe openmpi.8t 8 "
+        "hosts_group" : "-l eolo=1 -pe eolo.10t 10 "
     },
     "gatk_IndelRealigner" :
     {
@@ -14,11 +13,11 @@
     },
     "gatk_BaseRecalibrator_recal_table" :
     {
-        "hosts_group" : "-l gpu=1 -pe openmpi.8t 8 "
+        "hosts_group" : "-l eolo=1 -pe eolo.10t 10 "
     },
     "gatk_BaseRecalibrator_post_recal_table" :
     {
-        "hosts_group" : "-l gpu=1 -pe openmpi.8t 8 "
+        "hosts_group" : "-l eolo=1 -pe eolo.10t 10 "
     },
     "gatk_HaplotypeCaller_ERC_GVCF" :
     {
