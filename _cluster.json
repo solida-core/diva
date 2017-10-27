@@ -9,7 +9,7 @@
     },
     "gatk_IndelRealigner" :
     {
-        "hosts_group" : "-l eolo=1 -pe eolo.5t 5 "
+        "hosts_group" : "-l eolo=1 -pe eolo.10t 10 "
     },
     "gatk_BaseRecalibrator_recal_table" :
     {
