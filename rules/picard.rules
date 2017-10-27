@@ -45,7 +45,7 @@ rule picard_pre_HsMetrics:
        probes=temp("references/{sample}_probes_header"),
        hsTarget=temp("references/{sample}_hsTarget_header")
    conda:
-       "envs/picard.yaml"
+       "envs/samtools.yaml"
    params:
         probes = lambda wildcards: resolve_single_filepath(*references_abs_path(), config.get("intervals").get(config.get("samples_intervals").get(wildcards.sample, config["intervals_default"])).get("probes")),
         hsTarget = lambda wildcards: resolve_single_filepath(*references_abs_path(), config.get("intervals").get(config.get("samples_intervals").get(wildcards.sample, config["intervals_default"])).get("hsTarget")),
