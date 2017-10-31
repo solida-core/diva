@@ -35,7 +35,7 @@ def conservative_cpu_count(reserve_cores=1, max_cores=10):
     return cores - reserve_cores
 
 
-def java_params(tmp_dir='', stock_mem=1024 ** 2, stock_cpu=2, fraction_for=1):
+def java_params(tmp_dir='', stock_mem=1024 ** 3, stock_cpu=1, fraction_for=1):
     """
     Set Java params
     :param tmp_dir: path to tmpdir
@@ -63,11 +63,11 @@ def java_params(tmp_dir='', stock_mem=1024 ** 2, stock_cpu=2, fraction_for=1):
 
     params_template = "-Xms2g -Xmx{} -XX:ParallelGCThreads={} -Djava.io.tmpdir={}"
 
-    reserve_mem = stock_mem//fraction_for
+    reserve_mem = stock_mem
     mem_size = total_physical_mem_size() if reserve_mem > total_physical_mem_size() \
         else total_physical_mem_size() - reserve_mem
 
-    reserve_cpu = stock_cpu//fraction_for
+    reserve_cpu = stock_cpu
     cpu_nums = cpu_count() if reserve_cpu > cpu_count() \
         else cpu_count() - reserve_cpu
 
