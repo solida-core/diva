@@ -1,0 +1,8 @@
+channels:
+  - bioconda
+dependencies:
+  - r-base=3.4.1
+  - r-gsalib=2.1
+  - r-ggplot2=2.2.0
+  - r-reshape=0.8.6
+  - r-gplots=3.0.1
