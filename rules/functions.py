@@ -30,12 +30,12 @@ def tmp_path(path=''):
     return path
 
 
-def conservative_cpu_count(reserve_cores=1, max_cores=10):
+def conservative_cpu_count(reserve_cores=1, max_cores=5):
     cores = max_cores if cpu_count() > max_cores else cpu_count()
     return cores - reserve_cores
 
 
-def java_params(tmp_dir='', stock_mem=1024 ** 3, stock_cpu=1, fraction_for=1):
+def java_params(tmp_dir='', stock_mem=1024 ** 3, stock_cpu=1, fraction_for=4):
     """
     Set Java params
     :param tmp_dir: path to tmpdir
