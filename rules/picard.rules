@@ -7,11 +7,12 @@ rule picard_MarkDuplicates:
        "mapped_reads/merged_samples/{sample}.bam"
    output:
        bam=temp("mapped_reads/merged_samples/{sample}.dedup.bam"),
+       bai="mapped_reads/merged_samples/{sample}.dedup.bai",
        txt="mapped_reads/merged_samples/{sample}.dedup.txt"
    conda:
        "envs/picard.yaml"
    params:
-        custom=java_params(tmp_dir=config.get("tmp_dir")),
+        custom=java_params(tmp_dir=config.get("tmp_dir"), fraction_for=4),
         odpd = lambda wildcards: config.get("odpd").get(wildcards.sample, 2500),
    benchmark:
        "benchmarks/picard/MarkDuplicates/{sample}.txt"
@@ -20,21 +21,22 @@ rule picard_MarkDuplicates:
    shell:
        "picard {params.custom} MarkDuplicates I={input} O={output.bam} "
        "M={output.txt} REMOVE_DUPLICATES=false ASSUME_SORTED=true "
-       "OPTICAL_DUPLICATE_PIXEL_DISTANCE={params.odpd}"
+       "OPTICAL_DUPLICATE_PIXEL_DISTANCE={params.odpd} "
+       "CREATE_INDEX=true"
 
-rule picard_BuildBamIndex:
-   input:
-       bam="mapped_reads/merged_samples/{sample}.dedup.bam"
-   output:
-       bai="mapped_reads/merged_samples/{sample}.dedup.bai"
-   conda:
-       "envs/picard.yaml"
-   params:
-        custom=java_params(tmp_dir=config.get("tmp_dir")),
-   benchmark:
-       "benchmarks/picard/BuildBamIndex/{sample}.txt"
-   shell:
-       "picard {params.custom} BuildBamIndex INPUT={input.bam} OUTPUT={output.bai}"
+# rule picard_BuildBamIndex:
+#   input:
+#       bam="mapped_reads/merged_samples/{sample}.dedup.bam"
+#   output:
+#       bai="mapped_reads/merged_samples/{sample}.dedup.bai"
+#   conda:
+#       "envs/picard.yaml"
+#   params:
+#        custom=java_params(tmp_dir=config.get("tmp_dir")),
+#   benchmark:
+#       "benchmarks/picard/BuildBamIndex/{sample}.txt"
+#   shell:
+#       "picard {params.custom} BuildBamIndex INPUT={input.bam} OUTPUT={output.bai}"
 
 
 
@@ -50,7 +52,8 @@ rule picard_pre_HsMetrics:
         probes = lambda wildcards: resolve_single_filepath(*references_abs_path(), config.get("intervals").get(config.get("samples_intervals").get(wildcards.sample, config["intervals_default"])).get("probes")),
         hsTarget = lambda wildcards: resolve_single_filepath(*references_abs_path(), config.get("intervals").get(config.get("samples_intervals").get(wildcards.sample, config["intervals_default"])).get("hsTarget")),
    shell:
-       "samtools view -H  {input.bam} | cat - {params.probes} > {output.probes}; samtools view -H  {input.bam} | cat - {params.hsTarget} > {output.hsTarget}"
+       "samtools view -H  {input.bam} | cat - {params.probes} > {output.probes}; "
+       "samtools view -H  {input.bam} | cat - {params.hsTarget} > {output.hsTarget}"
 
 rule picard_HsMetrics:
    input:
@@ -66,5 +69,6 @@ rule picard_HsMetrics:
    benchmark:
        "benchmarks/picard/HsMetrics/{sample}.txt"
    shell:
-       "picard {params.custom} CollectHsMetrics INPUT={input.bam} OUTPUT={output} "
+       "picard {params.custom} CollectHsMetrics "
+       "INPUT={input.bam} OUTPUT={output} "
        "BAIT_INTERVALS={input.probes} TARGET_INTERVALS={input.hsTarget}"

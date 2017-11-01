@@ -25,7 +25,7 @@ rule gatk_HaplotypeCaller_ERC_GVCF:
         intervals = lambda wildcards: resolve_single_filepath(*references_abs_path(), config.get("intervals").get(config.get("samples_intervals").get(wildcards.sample, config["intervals_default"])).get("bedTarget")),
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta"))
     log:
-        "variant_calling/log/{sample}.genotype_info.log"
+        "logs/gatk/HaplotypeCaller/{sample}.genotype_info.log"
     benchmark:
         "benchmarks/gatk/HaplotypeCaller/{sample}.txt"
     threads: 1
@@ -43,14 +43,14 @@ rule gatk_GenotypeGVCFs:
     output:
         "variant_calling/all.vcf"
     params:
-        custom=java_params(tmp_dir=config.get("tmp_dir")),
+        custom=java_params(tmp_dir=config.get("tmp_dir"), fraction_for=1),
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
         dbsnp=resolve_single_filepath(*references_abs_path(), config.get("known_variants").get("dbsnp")),
     log:
         "variant_calling/log/all.genotype.log"
     benchmark:
         "benchmarks/gatk/HaplotypeCaller/all.txt"
-    threads: conservative_cpu_count()
+    threads: conservative_cpu_count(max_cores=20)
     run:
         gvcfs = _gatk_multi_arg("--variant", input.gvcfs)
         shell(

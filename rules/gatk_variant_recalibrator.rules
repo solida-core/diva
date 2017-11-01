@@ -32,13 +32,13 @@ rule gatk_VariantRecalibrator:
         plotting=temp("variant_calling/{prefix}.{type,(snp|indel)}.plotting.R")
     params:
         recal=_get_recal_params,
-        gatk=java_params(tmp_dir=config.get("tmp_dir")),
+        gatk=java_params(tmp_dir=config.get("tmp_dir"), fraction_for=1),
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta"))
     log:
         "variant_calling/log/{prefix}.{type}_recalibrate_info.log"
     benchmark:
         "benchmarks/gatk/VariantRecalibrator/{prefix}.{type}_recalibrate_info.txt"
-    threads: conservative_cpu_count()
+    threads: conservative_cpu_count(max_cores=20)
     shell:
         "gatk -T VariantRecalibrator -R {params.genome} "
         "-input {input.vcf} "
@@ -58,13 +58,13 @@ rule gatk_ApplyRecalibration:
         "variant_calling/{prefix}.{type,(snp|indel)}_recalibrated.vcf"
     params:
         mode=lambda wildcards: wildcards.type.upper(),
-        custom=java_params(tmp_dir=config.get("tmp_dir")),
+        custom=java_params(tmp_dir=config.get("tmp_dir"), fraction_for=1),
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta"))
     log:
         "variant_calling/log/{prefix}.{type}_recalibrate.log"
     benchmark:
         "benchmarks/gatk/VariantRecalibrator/{prefix}.{type}_recalibrate.txt"
-    threads: conservative_cpu_count()
+    threads: conservative_cpu_count(max_cores=20)
     shell:
         "gatk -T ApplyRecalibration -R {params.genome} -nt {threads} "
         "-input {input.vcf} -mode {params.mode} {params.custom} "

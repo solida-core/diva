@@ -1,38 +1,50 @@
 {
     "__default__" :
     {
-        "hosts_group" : "-l entu=1 -l centos7=1 -pe openmpi.8t 8"
+        "hosts_group" : "-l eolo=1 -pe eolo.5t 5 "
+    },
+     "picard_pre_HsMetrics" :
+    {
+        "hosts_group" : "-l eolo=1 "
+    },
+    "picard_HsMetrics" :
+    {
+        "hosts_group" : "-l eolo=1 "
     },
     "gatk_RealignerTargetCreator" :
     {
-        "hosts_group" : "-l eolo=1 -pe eolo.10t 10 "
+        "hosts_group" : " -l eolo=1 -pe eolo.10t 10 "
     },
     "gatk_IndelRealigner" :
     {
-        "hosts_group" : "-l eolo=1 -pe eolo.10t 10 "
+        "hosts_group" : " -l eolo=1 -pe eolo.5t 5 "
     },
     "gatk_BaseRecalibrator_recal_table" :
     {
-        "hosts_group" : "-l eolo=1 -pe eolo.10t 10 "
+        "hosts_group" : " -l eolo=1 -pe eolo.5t 5 "
     },
     "gatk_BaseRecalibrator_post_recal_table" :
     {
-        "hosts_group" : "-l eolo=1 -pe eolo.10t 10 "
+        "hosts_group" : " -l eolo=1 -pe eolo.5t 5 "
+    },
+    "gatk_PrintReads" :
+    {
+        "hosts_group" : " -l eolo=1 -pe eolo.10t 10 "
     },
     "gatk_HaplotypeCaller_ERC_GVCF" :
     {
-        "hosts_group" : "-l eolo=1 -pe eolo.5t 5"
+        "hosts_group" : " -l eolo=1 -pe eolo.5t 5 "
     },
     "gatk_GenotypeGVCFs" :
     {
-        "hosts_group" : "-l eolo=1 -pe eolo.20t 20"
+        "hosts_group" : " -l eolo=1 -pe eolo.20t 20 "
     },
     "gatk_VariantRecalibrator" :
     {
-        "hosts_group" : "-l eolo=1 -pe eolo.20t 20"
+        "hosts_group" : " -l eolo=1 -pe eolo.20t 20 "
     },
     "gatk_ApplyRecalibration" :
     {
-        "hosts_group" : "-l eolo=1 -pe eolo.20t 20"
+        "hosts_group" : " -l eolo=1 -pe eolo.20t 20 "
     }
 }

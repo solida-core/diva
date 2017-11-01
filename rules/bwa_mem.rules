@@ -17,7 +17,7 @@ rule bwa_mem:
         "logs/bwa/mem/{unit}.log"
     benchmark:
         "benchmarks/bwa/mem/{unit}.txt"
-    threads: conservative_cpu_count()
+    threads: conservative_cpu_count(reserve_cores=0, max_cores=5)
     shell:
         'bwa mem {params.custom} '
         r'-R "@RG\tID:{wildcards.unit}\tSM:{params.sample}\tPL:{config[platform]}\tLB:lib1\tPU:{params.platform_unit}" '
