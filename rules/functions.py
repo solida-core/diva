@@ -27,22 +27,25 @@ def tmp_path(path=''):
         except OSError as e:
             if e.errno != errno.EEXIST:
                 return default_path
-    return path
+        return path
+    return default_path
 
 
 def conservative_cpu_count(reserve_cores=1, max_cores=5):
     cores = max_cores if cpu_count() > max_cores else cpu_count()
-    return cores - reserve_cores
+    return max(cores - reserve_cores, 1)
 
 
-def java_params(tmp_dir='', stock_mem=1024 ** 3, stock_cpu=1, fraction_for=4):
+def java_params(tmp_dir='', percentage_to_preserve=15, stock_mem=1024 ** 3,
+                stock_cpu=1, fraction_for=4):
     """
     Set Java params
     :param tmp_dir: path to tmpdir
+    :param percentage_to_preserve: percentage of resources to preserve
+    :param stock_mem: min memory to preserve
+    :param stock_cpu: min cpu to preserve
     :param fraction_for: divide resource for this param
-    :param stock_mem: default memory to stock
-    :param stock_cpu: default cpu to reserve
-    :return: string to be used to configure java
+    :return: string to return to configure java environments
     """
 
     def bytes2human(n):
@@ -61,19 +64,25 @@ def java_params(tmp_dir='', stock_mem=1024 ** 3, stock_cpu=1, fraction_for=4):
                 return '%.0f%s' % (value, s)
         return "%sB" % n
 
-    params_template = "-Xms2g -Xmx{} -XX:ParallelGCThreads={} -Djava.io.tmpdir={}"
+    def preserve(resource, percentage, stock):
+        return resource - max(resource * percentage // 100, stock)
 
-    reserve_mem = stock_mem
-    mem_size = total_physical_mem_size() if reserve_mem > total_physical_mem_size() \
-        else total_physical_mem_size() - reserve_mem
+    params_template = "-Xms{} -Xmx{} -XX:ParallelGCThreads={} " \
+                      "-Djava.io.tmpdir={}"
 
-    reserve_cpu = stock_cpu
-    cpu_nums = cpu_count() if reserve_cpu > cpu_count() \
-        else cpu_count() - reserve_cpu
+    mem_min = 1024 ** 3 * 2  # 2GB
+
+    mem_size = preserve(total_physical_mem_size(), percentage_to_preserve,
+                        stock_mem)
+
+    cpu_nums = preserve(cpu_count(), percentage_to_preserve, stock_cpu)
 
     tmpdir = tmp_path(tmp_dir)
-    return params_template.format(bytes2human(mem_size//fraction_for).lower(),
-                                  cpu_nums//fraction_for,
+
+    return params_template.format(bytes2human(mem_min).lower(),
+                                  bytes2human(max(mem_size//fraction_for,
+                                                  mem_min)).lower(),
+                                  max(cpu_nums//fraction_for, 1),
                                   tmpdir)
 
 
