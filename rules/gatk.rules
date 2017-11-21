@@ -15,7 +15,7 @@ rule gatk_RealignerTargetCreator:
     output:
         "mapped_reads/merged_samples/{sample}.realign.intervals"
     params:
-        custom=java_params(tmp_dir=config.get("tmp_dir"), fraction_for=2),
+        custom=java_params(tmp_dir=config.get("tmp_dir"), fraction_for=4),
         intervals = lambda wildcards: resolve_single_filepath(*references_abs_path(), config.get("intervals").get(config.get("samples_intervals").get(wildcards.sample, config["intervals_default"])).get("bedTarget")),
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
         mills=resolve_single_filepath(*references_abs_path(), config.get("known_variants").get("mills")),
@@ -39,7 +39,7 @@ rule gatk_IndelRealigner:
     output:
         temp("mapped_reads/merged_samples/{sample}.dedup.realn.bam")
     params:
-        custom=java_params(tmp_dir=config.get("tmp_dir"), fraction_for=4),
+        custom=java_params(tmp_dir=config.get("tmp_dir"), fraction_for=20),
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
         mills=resolve_single_filepath(*references_abs_path(), config.get("known_variants").get("mills")),
         ph1_indels=resolve_single_filepath(*references_abs_path(), config.get("known_variants").get("ph1_indels")),
@@ -133,13 +133,13 @@ rule gatk_PrintReads:
     output:
         "mapped_reads/merged_samples/{sample}.dedup.realn.recal.bam"
     params:
-        custom=java_params(tmp_dir=config.get("tmp_dir"), fraction_for=2),
+        custom=java_params(tmp_dir=config.get("tmp_dir"), fraction_for=4),
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta"))
     log:
         "logs/gatk/PrintReads/{sample}.recalibrate.log"
     benchmark:
         "benchmarks/gatk/PrintReads/{sample}.txt"
-    threads: conservative_cpu_count(max_cores=10)
+    threads: conservative_cpu_count()
     shell:
         "gatk -T PrintReads -R {params.genome} {params.custom} "
         "-nct {threads} "

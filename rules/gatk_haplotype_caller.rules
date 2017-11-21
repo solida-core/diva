@@ -28,7 +28,7 @@ rule gatk_HaplotypeCaller_ERC_GVCF:
         "logs/gatk/HaplotypeCaller/{sample}.genotype_info.log"
     benchmark:
         "benchmarks/gatk/HaplotypeCaller/{sample}.txt"
-    threads: 1
+    threads: 2
     shell:
         "gatk -T HaplotypeCaller -R {params.genome} {params.custom} "
         "-I {input.bam} --emitRefConfidence GVCF "

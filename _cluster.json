@@ -13,19 +13,19 @@
     },
     "gatk_RealignerTargetCreator" :
     {
-        "hosts_group" : " -l eolo=1 -pe eolo.10t 10 "
+        "hosts_group" : " -l eolo=1 -pe eolo.5t 5 "
     },
     "gatk_IndelRealigner" :
     {
-        "hosts_group" : " -l eolo=1 -pe eolo.5t 5 "
+        "hosts_group" : " -l eolo=1 "
     },
     "gatk_BaseRecalibrator_recal_table" :
     {
-        "hosts_group" : " -l eolo=1 -pe eolo.5t 5 "
+        "hosts_group" : " -l eolo=1 -pe eolo.10t 10 "
     },
     "gatk_BaseRecalibrator_post_recal_table" :
     {
-        "hosts_group" : " -l eolo=1 -pe eolo.5t 5 "
+        "hosts_group" : " -l eolo=1 -pe eolo.10t 10 "
     },
     "gatk_PrintReads" :
     {

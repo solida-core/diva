@@ -65,7 +65,7 @@ rule picard_HsMetrics:
    conda:
        "envs/picard.yaml"
    params:
-        custom=java_params(tmp_dir=config.get("tmp_dir")),
+        custom=java_params(tmp_dir=config.get("tmp_dir"), fraction_for=20),
    benchmark:
        "benchmarks/picard/HsMetrics/{sample}.txt"
    shell:

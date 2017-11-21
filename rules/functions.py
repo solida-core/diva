@@ -36,8 +36,8 @@ def conservative_cpu_count(reserve_cores=1, max_cores=5):
     return max(cores - reserve_cores, 1)
 
 
-def java_params(tmp_dir='', percentage_to_preserve=15, stock_mem=1024 ** 3,
-                stock_cpu=1, fraction_for=4):
+def java_params(tmp_dir='', percentage_to_preserve=30, stock_mem=1024 ** 3,
+                stock_cpu=2, fraction_for=20):
     """
     Set Java params
     :param tmp_dir: path to tmpdir
