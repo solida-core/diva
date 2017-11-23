@@ -1,0 +1,53 @@
+# vim: syntax=python tabstop=4 expandtab
+# coding: utf-8
+
+
+def _gatk_multi_arg(flag, files):
+    flag += " "
+    return " ".join(flag + f for f in files)
+
+rule gatk_CombineGVCFs:
+    input:
+        gvcfs=expand("{path_to_gvcfs}/{sample}.g.vcf",
+                     path_to_gvcfs=config["path_to_gvcfs"], \
+                     sample=config["samples"])
+    output:
+        "variant_calling/cohort/cohort.g.vcf"
+    params:
+        custom=java_params(tmp_dir=config.get("tmp_dir"), fraction_for=4),
+        genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta"))
+    log:
+        "logs/gatk/CombineGVCFs/cohort.log"
+    benchmark:
+        "benchmarks/gatk/CombineGVCFs/cohort.txt"
+    run:
+        gvcfs = _gatk_multi_arg("--variant", input.gvcfs)
+        shell(
+            "gatk -T CombineGVCFs {gvcfs} {params.custom} "
+            "-R {params.genome} "
+            "-o {output} >& {log}")
+
+rule gatk_GenotypeGVCFs:
+    input:
+        "variant_calling/cohort/cohort.g.vcf"
+    output:
+        "variant_calling/all.vcf"
+    params:
+        custom=java_params(tmp_dir=config.get("tmp_dir"), fraction_for=1),
+        genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
+        dbsnp=resolve_single_filepath(*references_abs_path(), config.get("known_variants").get("dbsnp")),
+    log:
+        "variant_calling/log/all.genotype.log"
+    benchmark:
+        "benchmarks/gatk/HaplotypeCaller/all.txt"
+    threads: conservative_cpu_count(max_cores=20)
+    run:
+        gvcfs = _gatk_multi_arg("--variant", input.gvcfs)
+        shell(
+            "gatk -T GenotypeGVCFs {gvcfs} -nt {threads} {params.custom} "
+            "-R {params.genome} "
+            "--dbsnp {params.dbsnp} -o {output} >& {log}")
+
+
+
+
