@@ -38,6 +38,21 @@
             "bedTarget": "intervals/AgilentSureSelectHumanAllExonV5UTR_Target.bed",
             "probes": "intervals/AgilentSureSelectHumanAllExonV5UTR_Probes.HybridSelection",
             "hsTarget": "intervals/AgilentSureSelectHumanAllExonV5UTR_Target.HybridSelection"
+        },
+        "AgilentSureSelectHumanAllExonV5": {
+            "bedTarget": "intervals/AgilentSureSelectHumanAllExonV5_Target.bed",
+            "probes": "intervals/AgilentSureSelectHumanAllExonV5_Probes.HybridSelection",
+            "hsTarget": "intervals/AgilentSureSelectHumanAllExonV5_Target.HybridSelection"
+        },
+        "AgilentSureSelectHumanAllExonV4": {
+          "bedTarget": "intervals/AgilentSureSelectHumanAllExonV4_Target.bed",
+          "probes": "intervals/AgilentSureSelectHumanAllExonV4_Probes.HybridSelection",
+          "hsTarget": "intervals/AgilentSureSelectHumanAllExonV4_Target.HybridSelection"
+        },
+        "NimblegenSeqCapEZExomeV2": {
+          "bedTarget": "intervals/NimblegenSeqCapEZExomeV2_Target.bed",
+          "probes": "intervals/NimblegenSeqCapEZExomeV2_Probes.HybridSelection",
+          "hsTarget": "intervals/NimblegenSeqCapEZExomeV2_Target.HybridSelection"
         }
     },
     "intervals_default": "NexteraRapidCaptureExpandedExome",
@@ -45,6 +60,7 @@
     "params_bwa_mem": "-M",
     "odpd": {"DNA16-0389-R0001": 100},
     "tmp_dir": "path_to_tmp_dir",
+    "path_to_gvcfs": "path_to_gvcfs",
     "samples_intervals": {"DNA16-0389-R0001": "NexteraRapidCaptureExomev1.2"},
     "samples": {
         "DNA16-0389-R0001": ["AHFFMGBBXX.L004.DNA16-0389-R0001", "AHFFMGBBXX.L005.DNA16-0389-R0001"],
