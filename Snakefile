@@ -21,6 +21,8 @@ UNIT_TO_SAMPLE = {
 rule all:
     input: expand("mapped_reads/merged_samples/{sample}.dedup.realn.hs.txt", \
                   sample=config["samples"]),
+           expand("mapped_reads/merged_samples/{sample}.dedup.realn.is.txt", \
+                  sample=config["samples"]),
            expand("mapped_reads/merged_samples/{sample}.recalibration_plots.pdf", \
                   sample=config["samples"]),
            "variant_calling/all.snp_recalibrated.indel_recalibrated.vcf",

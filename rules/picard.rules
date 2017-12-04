@@ -72,3 +72,22 @@ rule picard_HsMetrics:
        "picard {params.custom} CollectHsMetrics "
        "INPUT={input.bam} OUTPUT={output} "
        "BAIT_INTERVALS={input.probes} TARGET_INTERVALS={input.hsTarget}"
+
+
+rule picard_InsertSizeMetrics:
+   input:
+       bam="mapped_reads/merged_samples/{sample}.dedup.realn.recal.bam"
+   output:
+       metrics="mapped_reads/merged_samples/{sample}.dedup.realn.is.txt",
+       histogram="mapped_reads/merged_samples/{sample}.dedup.realn.is.pdf"
+   conda:
+       "envs/picard.yaml"
+   params:
+        custom=java_params(tmp_dir=config.get("tmp_dir"), fraction_for=20),
+   benchmark:
+       "benchmarks/picard/IsMetrics/{sample}.txt"
+   shell:
+       "picard {params.custom} CollectInsertSizeMetrics "
+       "INPUT={input.bam} "
+       "OUTPUT={output.metrics} "
+       "HISTOGRAM_FILE={output.histogram} "

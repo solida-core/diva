@@ -11,6 +11,10 @@
     {
         "hosts_group" : "-l eolo=1 "
     },
+    "picard_InsertSizeMetrics" :
+    {
+        "hosts_group" : "-l eolo=1 "
+    },
     "gatk_RealignerTargetCreator" :
     {
         "hosts_group" : " -l eolo=1 -pe eolo.5t 5 "
