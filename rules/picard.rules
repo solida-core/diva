@@ -42,7 +42,7 @@ rule picard_MarkDuplicates:
 
 rule picard_pre_HsMetrics:
    input:
-       bam="mapped_reads/merged_samples/{sample}.dedup.realn.bam"
+       bam="mapped_reads/merged_samples/{sample}.dedup.realn.recal.bam"
    output:
        probes=temp("references/{sample}_probes_header"),
        hsTarget=temp("references/{sample}_hsTarget_header")
@@ -57,7 +57,7 @@ rule picard_pre_HsMetrics:
 
 rule picard_HsMetrics:
    input:
-       bam="mapped_reads/merged_samples/{sample}.dedup.realn.bam",
+       bam="mapped_reads/merged_samples/{sample}.dedup.realn.recal.bam",
        probes="references/{sample}_probes_header",
        hsTarget="references/{sample}_hsTarget_header"
    output:
