@@ -61,7 +61,7 @@ rule picard_HsMetrics:
        probes="references/{sample}_probes_header",
        hsTarget="references/{sample}_hsTarget_header"
    output:
-       "mapped_reads/merged_samples/{sample}.dedup.realn.hs.txt"
+       "mapped_reads/merged_samples/{sample}.dedup.realn.recal.hs.txt"
    conda:
        "envs/picard.yaml"
    params:
@@ -78,8 +78,8 @@ rule picard_InsertSizeMetrics:
    input:
        bam="mapped_reads/merged_samples/{sample}.dedup.realn.recal.bam"
    output:
-       metrics="mapped_reads/merged_samples/{sample}.dedup.realn.is.txt",
-       histogram="mapped_reads/merged_samples/{sample}.dedup.realn.is.pdf"
+       metrics="mapped_reads/merged_samples/{sample}.dedup.realn.recal.is.txt",
+       histogram="mapped_reads/merged_samples/{sample}.dedup.realn.recal.is.pdf"
    conda:
        "envs/picard.yaml"
    params:
