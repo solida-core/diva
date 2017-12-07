@@ -71,7 +71,8 @@ rule picard_HsMetrics:
    shell:
        "picard {params.custom} CollectHsMetrics "
        "INPUT={input.bam} OUTPUT={output} "
-       "BAIT_INTERVALS={input.probes} TARGET_INTERVALS={input.hsTarget}"
+       "BAIT_INTERVALS={input.probes} TARGET_INTERVALS={input.hsTarget} "
+       "CLIP_OVERLAPPING_READS=false MINIMUM_MAPPING_QUALITY=-1 MINIMUM_BASE_QUALITY=-1 "
 
 
 rule picard_InsertSizeMetrics:
