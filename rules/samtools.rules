@@ -117,7 +117,7 @@ rule samtools_merge_bam:
             "mapped_reads/sorted/{unit}_sorted.cram",
             unit=config["samples"][wildcards.sample])
     output:
-        "mapped_reads/merged_samples/{sample}.bam"
+        temp("mapped_reads/merged_samples/{sample}.bam")
     conda:
         "envs/samtools.yaml"
     benchmark:
