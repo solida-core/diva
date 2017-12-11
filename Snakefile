@@ -22,7 +22,7 @@ rule all:
 include_prefix="rules"
 
 include:
-    include_prefix + "/notify.py"
+    include_prefix + "/notify.rules"
 include:
     include_prefix + "/functions.py"
 include:
