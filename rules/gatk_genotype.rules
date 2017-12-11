@@ -29,7 +29,7 @@ rule gatk_CombineGVCFs:
 
 rule gatk_GenotypeGVCFs:
     input:
-        "variant_calling/cohort/cohort.g.vcf"
+        gvcfs="variant_calling/cohort/cohort.g.vcf"
     output:
         "variant_calling/all.vcf"
     params:
@@ -42,9 +42,8 @@ rule gatk_GenotypeGVCFs:
         "benchmarks/gatk/HaplotypeCaller/all.txt"
     threads: conservative_cpu_count(max_cores=20)
     run:
-        gvcfs = _gatk_multi_arg("--variant", input.gvcfs)
         shell(
-            "gatk -T GenotypeGVCFs {gvcfs} -nt {threads} {params.custom} "
+            "gatk -T GenotypeGVCFs --variant {gvcfs} -nt {threads} {params.custom} "
             "-R {params.genome} "
             "--dbsnp {params.dbsnp} -o {output} >& {log}")
 
