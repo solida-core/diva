@@ -43,7 +43,8 @@ rule gatk_GenotypeGVCFs:
     threads: conservative_cpu_count(max_cores=20)
     run:
         shell(
-            "gatk -T GenotypeGVCFs --variant {gvcfs} -nt {threads} {params.custom} "
+            "gatk -T GenotypeGVCFs --variant {input.gvcfs} -nt {threads} "
+            "{params.custom} "
             "-R {params.genome} "
             "--dbsnp {params.dbsnp} -o {output} >& {log}")
 
