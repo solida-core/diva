@@ -37,7 +37,8 @@ rule gatk_HaplotypeCaller_ERC_GVCF:
 
 rule gatk_GenotypeGVCFs:
     input:
-        gvcfs=expand("variant_calling/{sample}.g.vcf", sample=config["samples"])
+        gvcfs=expand("variant_calling/{sample}.g.vcf", \
+                     sample=config["samples"])
     output:
         "variant_calling/all.vcf"
     params:
@@ -48,31 +49,12 @@ rule gatk_GenotypeGVCFs:
         "variant_calling/log/all.genotype.log"
     benchmark:
         "benchmarks/gatk/HaplotypeCaller/all.txt"
-    threads: conservative_cpu_count(max_cores=20)
+    threads: conservative_cpu_count()
     run:
         gvcfs = _gatk_multi_arg("--variant", input.gvcfs)
         shell(
-            "gatk -T GenotypeGVCFs {gvcfs} -nt {threads} {params.custom} "
+            "gatk -T GenotypeGVCFs -nt {threads} "
+            "{gvcfs} "
+            "{params.custom} "
             "-R {params.genome} "
             "--dbsnp {params.dbsnp} -o {output} >& {log}")
-
-
-rule gatk_CombineGVCFs:
-    input:
-        gvcfs=expand("variant_calling/{sample}.g.vcf", sample=config["samples"])
-    output:
-        "variant_calling/cohort/cohort.gvcf"
-    params:
-        custom=java_params(tmp_dir=config.get("tmp_dir"), fraction_for=1),
-        genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta"))
-    log:
-        "logs/gatk/CombineGVCFs/cohort.log"
-    benchmark:
-        "benchmarks/gatk/CombineGVCFs/cohort.txt"
-    run:
-        gvcfs = _gatk_multi_arg("--variant", input.gvcfs)
-        shell(
-            "gatk -T CombineGVCFs {gvcfs} {params.custom} "
-            "-R {params.genome} "
-            "-o {output} >& {log}")
-

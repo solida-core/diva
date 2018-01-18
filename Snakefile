@@ -10,30 +10,19 @@ UNIT_TO_SAMPLE = {
     for unit in units}
 
 rule all:
-    input: expand("mapped_reads/merged_samples/{sample}.dedup.realn.recal.hs.txt", \
+    input:
+           expand("mapped_reads/merged_samples/{sample}.dedup.realn.recal.hs.txt", \
                   sample=config["samples"]),
            expand("mapped_reads/merged_samples/{sample}.dedup.realn.recal.is.txt", \
                   sample=config["samples"]),
            expand("mapped_reads/merged_samples/{sample}.recalibration_plots.pdf", \
                   sample=config["samples"]),
            "variant_calling/all.snp_recalibrated.indel_recalibrated.vcf",
-           "variant_calling/cohort/cohort.gvcf"
+
+
+include:
+    "Snakefile.single_samples_only"
 
 include_prefix="rules"
-
 include:
-    include_prefix + "/notify.rules"
-include:
-    include_prefix + "/functions.py"
-include:
-    include_prefix + "/bwa_mem.rules"	
-include:
-    include_prefix + "/samtools.rules"
-include:
-    include_prefix + "/picard.rules"
-include:
-    include_prefix + "/gatk.rules" 
-include:
-    include_prefix + "/gatk_haplotype_caller.rules"
-include:
-    include_prefix + "/gatk_variant_recalibrator.rules"	
+    include_prefix + "/gatk_variant_recalibrator.rules"
