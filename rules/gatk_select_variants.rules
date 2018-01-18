@@ -1,0 +1,26 @@
+def _gatk_multi_flag(arguments):
+    return " ".join(flag + " " + arg for flag, arg in arguments)
+
+rule gatk_SelectVariants:
+    input:
+        vcf="variant_calling/all.snp_recalibrated.indel_recalibrated.vcf"
+    output:
+        vcf="variant_calling/SelectVariants/selected.vcf"
+    params:
+        custom=java_params(tmp_dir=config.get("tmp_dir"), fraction_for=4),
+        genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
+        arguments=config.get("rules").get("gatk_SelectVariants").get("arguments"),
+    log:
+        "logs/gatk/SelectVariants/SelectVariants.log"
+    benchmark:
+        "benchmarks/gatk/SelectVariants/SelectVariants.txt"
+    threads: conservative_cpu_count()
+    run:
+        selection_args = _gatk_multi_flag(params.arguments)
+        shell(
+            "gatk -T SelectVariants -nt {threads} {params.custom} "
+            "-R {params.genome} "
+            "-V {input.vcf} "
+            "-o {output} "
+            "{selection_args} "
+            ">& {log}")
