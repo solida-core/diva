@@ -11,7 +11,8 @@ UNIT_TO_SAMPLE = {
 
 rule all:
     input:
-           "variant_calling/all.snp_recalibrated.indel_recalibrated.vcf"
+           "variant_calling/all.snp_recalibrated.indel_recalibrated.vcf",
+           "variant_calling/cohort/cohort.gvcf"
 
 include_prefix="rules"
 
