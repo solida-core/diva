@@ -4,6 +4,24 @@ import os.path
 import psutil
 
 
+def _gatk_multi_arg(flag, args):
+    flag += " "
+    return " ".join(flag + arg for arg in args)
+
+
+def _multi_flag(arguments):
+    if arguments:
+        return " ".join(flag + " " + arg for flag, arg in arguments)
+    return None
+
+
+def _get_samples_set(samples_set, samples_files, flag='-sf'):
+    if samples_set:
+        if samples_set in samples_files:
+            return "".join(flag + " " + samples_files[samples_set])
+    return None
+
+
 def total_physical_mem_size():
     mem = psutil.virtual_memory()
     return mem.total

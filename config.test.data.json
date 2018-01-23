@@ -61,6 +61,7 @@
     "odpd": {"DNA16-0389-R0001": 100},
     "tmp_dir": "path_to_tmp_dir",
     "path_to_gvcfs": "path_to_gvcfs",
+    "path_to_recalibrated_vcf": "path_to_recalibrated_vcf",
     "samples_intervals": {"DNA16-0389-R0001": "NexteraRapidCaptureExomev1.2"},
     "samples": {
         "DNA16-0389-R0001": ["AHFFMGBBXX.L004.DNA16-0389-R0001", "AHFFMGBBXX.L005.DNA16-0389-R0001"],
@@ -78,10 +79,35 @@
     },
     "rules": {
         "gatk_SelectVariants": {
+            "samples_files": {
+                "set1": "path_to_sample_files/set1.txt"
+            },
             "arguments": [
                 ["-se", "DNA16-038*"],
                 ["-sn", "DNA16-0284-R0001"]
                 ]
+        },
+        "kggseq": {
+            "arguments": [
+                ["--db-gene", "refgene,gencode,knowngene,ensembl"],
+                ["--splicing", "13"],
+                ["--neargene", "1000"],
+                ["--db-filte", "1kg201305,ESP6500AA,ESP6500EA,dbsnp141,dbsnp138,exac,gadexome"],
+                ["--rare-allele-freq", "0.01"],
+                ["--db-score", "dbnsfp"],
+                ["--mendel-causing-predict", "best"],
+                ["--genome-annot", ""],
+                ["--omim-annot", ""],
+                ["--cosmic-annot", ""],
+                ["--mouse-pheno", ""],
+                ["--zebrafish-pheno", ""],
+                ["--ddd-annot", ""],
+                ["--superdup-annot", ""],
+                ["--scsnv-annot", ""],
+                ["--dgv-cnv-annot", ""]
+                ],
+            "cmd": "java -Djava.awt.headless=true -jar path_to_software/kggseq-1.0/kggseq.jar",
+            "ped_file": "path_to_ped_file"
         }
     }
 }
