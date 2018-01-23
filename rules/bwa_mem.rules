@@ -9,7 +9,7 @@ rule bwa_mem:
         "envs/bwa_mem.yaml"
     params:
         sample=lambda wildcards: UNIT_TO_SAMPLE[wildcards.unit],
-        custom=config.get("params_bwa_mem", "-M"),
+        custom=config.get("rules").get("bwa_mem").get("arguments"),
         platform_unit=lambda wildcards: '.'.join(wildcards.unit.split('.')[:-1]),
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
         output_fmt="CRAM"

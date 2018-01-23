@@ -57,7 +57,6 @@
     },
     "intervals_default": "NexteraRapidCaptureExpandedExome",
     "platform": "ILLUMINA",
-    "params_bwa_mem": "-M",
     "odpd": {"DNA16-0389-R0001": 100},
     "tmp_dir": "path_to_tmp_dir",
     "path_to_gvcfs": "path_to_gvcfs",
@@ -78,6 +77,11 @@
         	["path_to_datasets/DNA16-0284-R0001_S48_L005_R1_001.fastq.gz", "path_to_datasets/DNA16-0284-R0001_S48_L005_R2_001.fastq.gz"]
     },
     "rules": {
+        "bwa_mem": {
+            "arguments": [
+                ["-M", ""]
+            ]
+        },
         "gatk_SelectVariants": {
             "samples_files": {
                 "set1": "path_to_sample_files/set1.txt"
