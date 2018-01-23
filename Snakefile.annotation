@@ -20,5 +20,4 @@ include:
 include:
     include_prefix + "/functions.py"
 include:
-    include_prefix + "/gatk_select_variants.rules"
-
+    include_prefix + "/annotation.rules"
