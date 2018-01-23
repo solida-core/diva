@@ -56,12 +56,19 @@
         }
     },
     "intervals_default": "NexteraRapidCaptureExpandedExome",
+    "samples_intervals": {
+        "DNA16-0389-R0001": "NexteraRapidCaptureExomev1.2"
+    },
     "platform": "ILLUMINA",
-    "odpd": {"DNA16-0389-R0001": 100},
+    "odpd": {
+        "DNA16-0389-R0001": 100
+    },
     "tmp_dir": "path_to_tmp_dir",
-    "path_to_gvcfs": "path_to_gvcfs",
-    "path_to_recalibrated_vcf": "path_to_recalibrated_vcf",
-    "samples_intervals": {"DNA16-0389-R0001": "NexteraRapidCaptureExomev1.2"},
+    "paths": {
+        "to_tmp": "path_to_tmp_dir",
+        "to_gvcfs": "path_to_gvcfs",
+        "to_recalibrated_vcf": "path_to_recalibrated_vcf"
+    },
     "samples": {
         "DNA16-0389-R0001": ["AHFFMGBBXX.L004.DNA16-0389-R0001", "AHFFMGBBXX.L005.DNA16-0389-R0001"],
         "DNA16-0284-R0001": ["AHFFMGBBXX.L004.DNA16-0284-R0001", "AHFFMGBBXX.L005.DNA16-0284-R0001"]

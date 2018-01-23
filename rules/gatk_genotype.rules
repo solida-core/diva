@@ -4,7 +4,7 @@
 rule gatk_CombineGVCFs:
     input:
         gvcfs=expand("{path_to_gvcfs}/{sample}.g.vcf", \
-                     path_to_gvcfs=config["path_to_gvcfs"], \
+                     path_to_gvcfs=config.get("paths").get("to_gvcfs"), \
                      sample=config["samples"])
     output:
         "variant_calling/cohort/cohort.gvcf"
@@ -26,7 +26,7 @@ rule gatk_CombineGVCFs:
 rule gatk_GenotypeGVCFs:
     input:
         gvcfs=expand("{path_to_gvcfs}/{sample}.g.vcf", \
-                     path_to_gvcfs=config["path_to_gvcfs"], \
+                     path_to_gvcfs=config.get("paths").get("to_gvcfs"), \
                      sample=config["samples"])
     output:
         "variant_calling/all.vcf"
