@@ -41,9 +41,9 @@ snakemake --configfile config.testdata.json --dag | dot -Tpdf > dag_testdata.pdf
 
 ## Workflow
 DiVA workflow comprise three analysis phases:
- * _SingleSample_, from fastq to gvcf
- * _Joint_, from all the gvcf toghether to a recalibrated vcf
- * _Annotation_, to produce a callset ready for downstream genetic analysis.
+ * _SingleSample_, from fastq to gvcf  
+ * _Joint_, from all the gvcf toghether to a recalibrated vcf  
+ * _Annotation_, to produce a callset ready for downstream genetic analysis.  
   
 For all this three phases, DiVA has a specific Snakefile labelled in the 
 same way.  
@@ -51,11 +51,11 @@ _Snakefile_ is the default one and is the sum of _Snakefile.single_samples_only_
 and _Snakefile.joint_
 
 The annotation step expects to have in the config file:
- * a path to the recalibrated vcf
+ * a path to the recalibrated vcf  
  * a way to select samples from the vcf above, using one of the options of 
- GATK [SelectVariants](https://software.broadinstitute.org/gatk/documentation/tooldocs/3.8-0/org_broadinstitute_gatk_tools_walkers_variantutils_SelectVariants.php) (see: -se, -sn, -sf)
- * a path to a ped file
- * a path to a KGGSEq installation directory
+ GATK [SelectVariants](https://software.broadinstitute.org/gatk/documentation/tooldocs/3.8-0/org_broadinstitute_gatk_tools_walkers_variantutils_SelectVariants.php) (see: -se, -sn, -sf)  
+ * a path to a ped file  
+ * a path to a KGGSEq installation directory  
  
 The example below refer to the run_project.sh script, use a sample_file 
 labelled set1 in the config ifle and create a workdir with label set1 
@@ -100,4 +100,4 @@ to be found under the given path, and two units A and B have been sequenced with
 Note the separation between samples and units that allows to have more than
 one sequencing run for each sample, or multiple lanes per sample.
 
-![Workflow](./dag.svg)
+![Workflow](./images/dag.svg)
