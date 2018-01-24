@@ -59,7 +59,6 @@
     "samples_intervals": {
         "DNA16-0389-R0001": "NexteraRapidCaptureExomev1.2"
     },
-    "platform": "ILLUMINA",
     "odpd": {
         "DNA16-0389-R0001": 100
     },
@@ -87,7 +86,8 @@
         "bwa_mem": {
             "arguments": [
                 ["-M", ""]
-            ]
+            ],
+            "platform": "ILLUMINA",
         },
         "gatk_SelectVariants": {
             "samples_files": {
