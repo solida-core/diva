@@ -50,15 +50,18 @@ same way.
 _Snakefile_ is the default one and is the sum of _Snakefile.single_samples_only_ 
 and _Snakefile.joint_
 
-The annotation step expects to have in the config file:
+The annotation step makes use of GATK [SelectVariants](https://software.broadinstitute.org/gatk/documentation/tooldocs/3.8-0/org_broadinstitute_gatk_tools_walkers_variantutils_SelectVariants.php) 
+and [KGGSeq](http://grass.cgs.hku.hk/limx/kggseq/)
+
+The annotation step expects to found in the config file:
  * a path to the recalibrated vcf  
  * a way to select samples from the vcf above, using one of the options of 
- GATK [SelectVariants](https://software.broadinstitute.org/gatk/documentation/tooldocs/3.8-0/org_broadinstitute_gatk_tools_walkers_variantutils_SelectVariants.php) (see: -se, -sn, -sf)  
+ SelectVariants (see: -se, -sn, -sf)  
  * a path to a ped file  
  * a path to a KGGSEq installation directory  
  
 The example below refer to the run_project.sh script, use a sample_file 
-labelled set1 in the config ifle and create a workdir with label set1 
+labelled set1 in the config file and create a workdir with label set1 
 ```bash
 ./run.project.sh -s Snakefile.SelectVariants -c config.json -w set1 -p '--config samples_set=set1'
 ```
