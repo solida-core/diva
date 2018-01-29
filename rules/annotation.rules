@@ -56,3 +56,26 @@ rule kggseq:
             "--vcf-file {input.vcf} "
             "--ped-file {output.ped} "
             "--out annotation/kggseq/selected")
+
+
+rule format_annotation:
+    input:
+       'annotation/kggseq/selected.flt.txt'
+    output:
+       'annotation/kggseq/annot.tab'
+    script:
+        "scripts/format_annotation.py"
+
+
+rule samtools_compress_and_index:
+    "Bgzip-compressed and tabix-indexed file with annotations"
+    input:
+       'annotation/kggseq/annot.tab'
+    output:
+       'annotation/kggseq/annot.tab.gz'
+    conda:
+        "envs/samtools.yaml"
+    params:
+       config.get("rules").get("samtools_compress_and_index").get("params")
+    shell:
+        "bgzip {input}; tabix {params} {output}"

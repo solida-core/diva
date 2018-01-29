@@ -87,7 +87,7 @@
             "arguments": [
                 ["-M", ""]
             ],
-            "platform": "ILLUMINA",
+            "platform": "ILLUMINA"
         },
         "gatk_SelectVariants": {
             "samples_files": {
@@ -119,6 +119,9 @@
                 ],
             "cmd": "java -Djava.awt.headless=true -jar path_to_software/kggseq-1.0/kggseq.jar",
             "ped_file": "path_to_ped_file"
+        },
+        "samtools_compress_and_index": {
+            "params": "-s1 -b2 -e2"
         }
     }
 }
