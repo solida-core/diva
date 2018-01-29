@@ -103,7 +103,7 @@
                 ["--db-gene", "refgene,gencode,knowngene,ensembl"],
                 ["--splicing", "13"],
                 ["--neargene", "1000"],
-                ["--db-filte", "1kg201305,ESP6500AA,ESP6500EA,dbsnp141,dbsnp138,exac,gadexome"],
+                ["--db-filter", "1kg201305,ESP6500AA,ESP6500EA,dbsnp141,dbsnp138,exac,gadexome"],
                 ["--rare-allele-freq", "0.01"],
                 ["--db-score", "dbnsfp"],
                 ["--mendel-causing-predict", "best"],
