@@ -62,7 +62,8 @@ rule format_annotation:
     input:
        'annotation/kggseq/selected.flt.txt'
     output:
-       'annotation/kggseq/annot.tab'
+       header='annotation/kggseq/annot.cname',
+       tab='annotation/kggseq/annot.tab'
     script:
         "scripts/format_annotation.py"
 
