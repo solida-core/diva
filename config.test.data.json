@@ -122,6 +122,10 @@
         },
         "tabix": {
             "params": "-s1 -b2 -e2"
+        },
+        "bcftool_annotate_add": {
+            "header_file": "path_to_header_file",
+            "params": ""
         }
     }
 }
