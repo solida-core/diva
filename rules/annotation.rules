@@ -93,6 +93,7 @@ rule bcftools_annotate_add:
     conda:
         "envs/bcftools.yaml"
     params:
+        cmd='add',
         header=config.get("rules").get("bcftools_annotate_add").get("header_file")
     script:
         "scripts/bcftools_annotate.py"
@@ -106,6 +107,7 @@ rule bcftools_annotate_remove:
     conda:
         "envs/bcftools.yaml"
     params:
-        config.get("rules").get("bcftools_annotate_remove").get("params")
+        cmd='remove',
+        params=config.get("rules").get("bcftools_annotate_remove").get("params")
     script:
-        "scripts/bcftools_annotate_remove.py"
+        "scripts/bcftools_annotate.py"
