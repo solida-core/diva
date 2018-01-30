@@ -19,7 +19,7 @@ def _get_samples_set(samples_set, samples_files, flag='-sf'):
     if samples_set:
         if samples_set in samples_files:
             return "".join(flag + " " + samples_files[samples_set])
-    return None
+    return ''
 
 
 def total_physical_mem_size():
