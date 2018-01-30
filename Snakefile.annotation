@@ -12,7 +12,8 @@ UNIT_TO_SAMPLE = {
 rule all_joint:
     input:
            "annotation/kggseq/selected.flt.vcf",
-           "annotation/kggseq/annot.tab.gz"
+           "annotation/kggseq/annot.tab.gz",
+           "annotation/bcftools/selected.annot.vcf"
 
 include_prefix="rules"
 

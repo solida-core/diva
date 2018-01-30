@@ -82,10 +82,6 @@ rule tabix:
         "bgzip {input}; tabix {params} {output}"
 
 
-def get_file_content(path):
-    with open(path, 'r') as fp:
-        body = fp.read()
-    return body
 
 rule bcftools_annotate_add:
     input:
@@ -97,13 +93,6 @@ rule bcftools_annotate_add:
     conda:
         "envs/bcftools.yaml"
     params:
-        header=config.get("rules").get("bcftools_annotate").get("header_file")
-    run:
-        cname = get_file_content(input.cname)
-        shell(
-            "bcftools annotate "
-            "-a {input.gz} "
-            "-h {params.header}"
-            "-c {cname}"
-            "-o {output} "
-            "{input.vcf} ")
+        header=config.get("rules").get("bcftools_annotate_add").get("header_file")
+    script:
+        "scripts/bcftools_annotate.py"
