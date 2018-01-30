@@ -96,3 +96,16 @@ rule bcftools_annotate_add:
         header=config.get("rules").get("bcftools_annotate_add").get("header_file")
     script:
         "scripts/bcftools_annotate.py"
+
+
+rule bcftools_annotate_remove:
+    input:
+       'annotation/bcftools/selected.annot.vcf'
+    output:
+       'annotation/bcftools/selected.annot.lightened.vcf'
+    conda:
+        "envs/bcftools.yaml"
+    params:
+        config.get("rules").get("bcftools_annotate_remove").get("params")
+    script:
+        "scripts/bcftools_annotate_remove.py"

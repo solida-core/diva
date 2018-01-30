@@ -124,7 +124,9 @@
             "params": "-s1 -b2 -e2"
         },
         "bcftools_annotate_add": {
-            "header_file": "path_to_header_file",
+            "header_file": "path_to_header_file"
+        },
+        "bcftools_annotate_remove": {
             "params": ""
         }
     }
