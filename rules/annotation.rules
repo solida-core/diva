@@ -68,7 +68,7 @@ rule format_annotation:
         "scripts/format_annotation.py"
 
 
-rule samtools_compress_and_index:
+rule tabix:
     "Bgzip-compressed and tabix-indexed file with annotations"
     input:
        'annotation/kggseq/annot.tab'
@@ -77,6 +77,6 @@ rule samtools_compress_and_index:
     conda:
         "envs/tabix.yaml"
     params:
-       config.get("rules").get("samtools_compress_and_index").get("params")
+       config.get("rules").get("tabix").get("params")
     shell:
         "bgzip {input}; tabix {params} {output}"
