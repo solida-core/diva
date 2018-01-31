@@ -1,4 +1,3 @@
-
 rule gatk_SelectVariants:
     input:
         vcf=expand("{path_to_recal_vcf}/all.snp_recalibrated.indel_recalibrated.vcf", \
@@ -56,58 +55,3 @@ rule kggseq:
             "--vcf-file {input.vcf} "
             "--ped-file {output.ped} "
             "--out annotation/kggseq/selected")
-
-
-rule format_annotation:
-    input:
-       'annotation/kggseq/selected.flt.txt'
-    output:
-       cname='annotation/kggseq/annot.cname',
-       tab='annotation/kggseq/annot.tab'
-    script:
-        "scripts/format_annotation.py"
-
-
-rule tabix:
-    "Bgzip-compressed and tabix-indexed file with annotations"
-    input:
-       'annotation/kggseq/annot.tab'
-    output:
-       'annotation/kggseq/annot.tab.gz'
-    conda:
-        "envs/tabix.yaml"
-    params:
-       config.get("rules").get("tabix").get("params")
-    shell:
-        "bgzip {input}; tabix {params} {output}"
-
-
-
-rule bcftools_annotate_add:
-    input:
-       cname='annotation/kggseq/annot.cname',
-       gz='annotation/kggseq/annot.tab.gz',
-       vcf='annotation/kggseq/selected.flt.vcf'
-    output:
-       'annotation/bcftools/selected.annot.vcf'
-    conda:
-        "envs/bcftools.yaml"
-    params:
-        cmd='add',
-        header=config.get("rules").get("bcftools_annotate_add").get("header_file")
-    script:
-        "scripts/bcftools_annotate.py"
-
-
-rule bcftools_annotate_remove:
-    input:
-       'annotation/bcftools/selected.annot.vcf'
-    output:
-       'annotation/bcftools/selected.annot.lightened.vcf'
-    conda:
-        "envs/bcftools.yaml"
-    params:
-        cmd='remove',
-        params=config.get("rules").get("bcftools_annotate_remove").get("params")
-    script:
-        "scripts/bcftools_annotate.py"

@@ -24,3 +24,5 @@ include:
     include_prefix + "/functions.py"
 include:
     include_prefix + "/annotation.rules"
+include:
+    include_prefix + "/output4vcfminer.rules"
