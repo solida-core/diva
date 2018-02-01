@@ -11,6 +11,7 @@ for s in strings_to_replace:
 vcf = ''.join(map(lambda x: ''.join('chr' + x), body))
 chars_to_replace = {ord('='): '|', ord(';'): '|', ord(' '): '|'}
 vcf = vcf.translate(chars_to_replace)
+vcf = vcf.replace("\tN", "\t.")
 
 with open(snakemake.output['cname'], 'w') as fp:
     fp.write(cname)
