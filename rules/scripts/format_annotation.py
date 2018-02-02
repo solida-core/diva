@@ -9,9 +9,13 @@ for s in strings_to_replace:
     cname = cname.replace(s[0], s[1], 1).strip()
 
 vcf = ''.join(map(lambda x: ''.join('chr' + x), body))
-chars_to_replace = {ord('='): '|', ord(';'): '|', ord(' '): '|'}
+vcf = vcf.replace('; ', ';')
+vcf = vcf.replace(', ', ',')
+vcf = vcf.replace('\tN', '\t.')
+
+chars_to_replace = {ord('='): ':', ord(';'): '|', ord(' '): '_'}
 vcf = vcf.translate(chars_to_replace)
-vcf = vcf.replace("\tN", "\t.")
+
 
 with open(snakemake.output['cname'], 'w') as fp:
     fp.write(cname)
