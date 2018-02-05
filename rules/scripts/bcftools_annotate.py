@@ -21,7 +21,8 @@ elif snakemake.params['cmd'] == 'remove':
             annot_dict[row['Field']] = row
 
     for k, v in annot_dict.items():
-        remove_params.replace(k, '_'.join([v['Block'], v['Field']]), 1)
+        remove_params = remove_params.replace(k, '_'.join([v['Block'],
+                                                           v['Field']]), 1)
 
     run(['bcftools', 'annotate',
          remove_params,
