@@ -6,7 +6,7 @@ if snakemake.params['cmd'] == 'add':
 
     run(['bcftools', 'annotate',
          '-a', snakemake.input['gz'],
-         '-h', snakemake.params.header,
+         '-h', snakemake.input['header'],
          '-c', cname,
          '-o', snakemake.output[0],
          snakemake.input['vcf']
