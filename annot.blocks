@@ -1,0 +1,121 @@
+Field	Block	Description	Number	Type
+ReferenceAlternativeAllele	AN	General annotation	1	String
+rsID	AN	General annotation	1	String
+MostImportantFeatureGene	AN	General annotation	1	String
+MostImportantGeneFeature	AN	General annotation	1	String
+RefGeneFeatures	AN	General annotation	1	String
+GENCODEFeatures	AN	General annotation	1	String
+UCSCKnownGeneFeatures	AN	General annotation	1	String
+EnsemblFeatures	AN	General annotation	1	String
+GeneDescription	AN	General annotation	1	String
+Pseudogenes	AN	General annotation	1	String
+AC	AN	General annotation	1	String
+AF	AN	General annotation	1	String
+AN	AN	General annotation	1	String
+DB	AN	General annotation	1	String
+DP	AN	General annotation	1	String
+clinvar_clnsig	CL	Clinvar	.	Integer
+clinvar_trait	CL	Clinvar	1	String
+clinvar_golden_stars	CL	Clinvar	.	Integer
+DiseaseName(s)MIMid	DI	Disease	1	String
+GeneMIMid	DI	Disease	1	Integer
+COSMICCancerInfo	DI	Disease	1	String
+MaxDBAltAF	FQ	Frequency	1	Float
+altFreq@1kg201305	FQ	Frequency	1	Float
+altFreq@ESP6500AA	FQ	Frequency	1	Float
+altFreq@ESP6500EA	FQ	Frequency	1	Float
+altFreq@dbsnp141	FQ	Frequency	1	Float
+altFreq@dbsnp138	FQ	Frequency	1	Float
+altFreq@exacAFR	FQ	Frequency	1	Float
+altFreq@exacAMR	FQ	Frequency	1	Float
+altFreq@exacFIN	FQ	Frequency	1	Float
+altFreq@exacNFE	FQ	Frequency	1	Float
+altFreq@exacEAS	FQ	Frequency	1	Float
+altFreq@exacSAS	FQ	Frequency	1	Float
+altFreq@exacOTH	FQ	Frequency	1	Float
+altFreq@gnomad.exomeAFR	FQ	Frequency	1	Float
+altFreq@gnomad.exomeAMR	FQ	Frequency	1	Float
+altFreq@gnomad.exomeASJ	FQ	Frequency	1	Float
+altFreq@gnomad.exomeEAS	FQ	Frequency	1	Float
+altFreq@gnomad.exomeFIN	FQ	Frequency	1	Float
+altFreq@gnomad.exomeNFE	FQ	Frequency	1	Float
+altFreq@gnomad.exomeSAS	FQ	Frequency	1	Float
+altFreq@gnomad.exomeOTH	FQ	Frequency	1	Float
+AffectedRefHomGtyNum	GT	Genotype	1	Integer
+AffectedHetGtyNum	GT	Genotype	1	Integer
+AffectedAltHomGtyNum	GT	Genotype	1	Integer
+UnaffectedRefHomGtyNum	GT	Genotype	1	Integer
+UnaffectedHetGtyNum	GT	Genotype	1	Integer
+UnaffectedAltHomGtyNum	GT	Genotype	1	Integer
+SIFT_score	PA	Pathogenicity	1	Float
+Polyphen2_HDIV_score	PA	Pathogenicity	1	Float
+Polyphen2_HVAR_score	PA	Pathogenicity	1	Float
+LRT_score	PA	Pathogenicity	1	Float
+MutationTaster_score	PA	Pathogenicity	1	Float
+MutationAssessor_score	PA	Pathogenicity	1	Float
+FATHMM_score	PA	Pathogenicity	1	Float
+PROVEAN_score	PA	Pathogenicity	1	Float
+VEST3_score	PA	Pathogenicity	1	Float
+M-CAP_score	PA	Pathogenicity	1	Float
+MutPred_score	PA	Pathogenicity	1	Float
+CADD_raw	PA	Pathogenicity	1	Float
+DANN_score	PA	Pathogenicity	1	Float
+fathmm-MKL_coding_score	PA	Pathogenicity	1	Float
+Eigen-raw	PA	Pathogenicity	1	Float
+GenoCanyon_score	PA	Pathogenicity	1	Float
+integrated_fitCons_score	PA	Pathogenicity	1	Float
+GERP++_RS	PA	Pathogenicity	1	Float
+SiPhy_29way_logOdds	PA	Pathogenicity	1	Float
+SIFT_pred	PA	Pathogenicity	1	String
+Polyphen2_HDIV_pred	PA	Pathogenicity	1	String
+Polyphen2_HVAR_pred	PA	Pathogenicity	1	String
+LRT_pred	PA	Pathogenicity	1	String
+MutationTaster_pred	PA	Pathogenicity	1	String
+MutationAssessor_pred	PA	Pathogenicity	1	String
+FATHMM_pred	PA	Pathogenicity	1	String
+PROVEAN_pred	PA	Pathogenicity	1	String
+MetaSVM_score	PA	Pathogenicity	1	Float
+MetaSVM_pred	PA	Pathogenicity	1	String
+M-CAP_pred	PA	Pathogenicity	1	String
+MutPred_Top5features	PA	Pathogenicity	1	String
+CADD_phred	PA	Pathogenicity	1	Float
+fathmm-MKL_coding_pred	PA	Pathogenicity	1	String
+Eigen-phred	PA	Pathogenicity	1	String
+DiseaseCausalProb_ExoVarTrainedModel	PA	Pathogenicity	1	Float
+IsRareDiseaseCausal_ExoVarTrainedModel	PA	Pathogenicity	1	String
+BestCombinedTools:OptimalCutoff:TP:TN	PA	Pathogenicity	1	String
+ada_score@dbscSNV	PA	Pathogenicity	1	Float
+MousePhenotypeMGI	PH	Phenotype	1	String
+MousePhenotypeIMPC	PH	Phenotype	1	String
+ZebrafishPhenotype	PH	Phenotype	1	String
+DDDPhenotype	PH	Phenotype	1	String
+UniProtFeatureForRefGene	PR	Protein annotation	1	String
+UniProtFeatureForGEncode	PR	Protein annotation	1	String
+UniProtFeatureForKnownGene	PR	Protein annotation	1	String
+UniProtFeatureForEnsembl	PR	Protein annotation	1	String
+BaseQRankSum	ST	GATK statistics	1	String
+ClippingRankSum	ST	GATK statistics	1	String
+DS	ST	GATK statistics	1	String
+END	ST	GATK statistics	1	String
+ExcessHet	ST	GATK statistics	1	String
+FS	ST	GATK statistics	1	String
+HaplotypeScore	ST	GATK statistics	1	String
+InbreedingCoeff	ST	GATK statistics	1	String
+MLEAC	ST	GATK statistics	1	String
+MLEAF	ST	GATK statistics	1	String
+MQ	ST	GATK statistics	1	String
+MQRankSum	ST	GATK statistics	1	String
+NEGATIVE_TRAIN_SITE	ST	GATK statistics	1	String
+POSITIVE_TRAIN_SITE	ST	GATK statistics	1	String
+QD	ST	GATK statistics	1	String
+RAW_MQ	ST	GATK statistics	1	String
+ReadPosRankSum	ST	GATK statistics	1	String
+SOR	ST	GATK statistics	1	String
+VQSLOD	ST	GATK statistics	1	String
+culprit	ST	GATK statistics	1	String
+DGVIDs	SV	Structural variants	1	String
+CNVSampleSize	SV	Structural variants	1	Integer
+LossCNV	SV	Structural variants	1	Integer
+GainCNV	SV	Structural variants	1	Integer
+SuperDupKValue	SV	Structural variants	.	Float
+COSMICCancerInfo	AN	General annotation	1	String
