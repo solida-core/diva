@@ -1,3 +1,4 @@
+import csv
 from subprocess import run
 
 if snakemake.params['cmd'] == 'add':
@@ -12,8 +13,18 @@ if snakemake.params['cmd'] == 'add':
          snakemake.input['vcf']
          ])
 elif snakemake.params['cmd'] == 'remove':
+    remove_params = snakemake.params['params']
+    annot_dict = dict()
+    with open(snakemake.params.blocks, 'r') as csvfile:
+        reader = csv.DictReader(csvfile, delimiter='\t')
+        for row in reader:
+            annot_dict[row['Field']] = row
+
+    for k, v in annot_dict.items():
+        remove_params.replace(k, '_'.join([v['Block'], v['Field']]), 1)
+
     run(['bcftools', 'annotate',
-         snakemake.params['params'],
+         remove_params,
          '-o', snakemake.output[0],
          snakemake.input[0]
          ])

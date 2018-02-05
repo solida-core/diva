@@ -51,6 +51,7 @@ rule bcftools_annotate_remove:
         "envs/bcftools.yaml"
     params:
         cmd='remove',
+        blocks=config.get("rules").get("format_annotation").get("blocks_file"),
         params=config.get("rules").get("bcftools_annotate_remove").get("params")
     script:
         "scripts/bcftools_annotate.py"

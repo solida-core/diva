@@ -9,11 +9,6 @@ UCSCKnownGeneFeatures	AN	General annotation	1	String
 EnsemblFeatures	AN	General annotation	1	String
 GeneDescription	AN	General annotation	1	String
 Pseudogenes	AN	General annotation	1	String
-AC	AN	General annotation	1	String
-AF	AN	General annotation	1	String
-AN	AN	General annotation	1	String
-DB	AN	General annotation	1	String
-DP	AN	General annotation	1	String
 clinvar_clnsig	CL	Clinvar	.	Integer
 clinvar_trait	CL	Clinvar	1	String
 clinvar_golden_stars	CL	Clinvar	.	Integer
@@ -93,29 +88,8 @@ UniProtFeatureForRefGene	PR	Protein annotation	1	String
 UniProtFeatureForGEncode	PR	Protein annotation	1	String
 UniProtFeatureForKnownGene	PR	Protein annotation	1	String
 UniProtFeatureForEnsembl	PR	Protein annotation	1	String
-BaseQRankSum	ST	GATK statistics	1	String
-ClippingRankSum	ST	GATK statistics	1	String
-DS	ST	GATK statistics	1	String
-END	ST	GATK statistics	1	String
-ExcessHet	ST	GATK statistics	1	String
-FS	ST	GATK statistics	1	String
-HaplotypeScore	ST	GATK statistics	1	String
-InbreedingCoeff	ST	GATK statistics	1	String
-MLEAC	ST	GATK statistics	1	String
-MLEAF	ST	GATK statistics	1	String
-MQ	ST	GATK statistics	1	String
-MQRankSum	ST	GATK statistics	1	String
-NEGATIVE_TRAIN_SITE	ST	GATK statistics	1	String
-POSITIVE_TRAIN_SITE	ST	GATK statistics	1	String
-QD	ST	GATK statistics	1	String
-RAW_MQ	ST	GATK statistics	1	String
-ReadPosRankSum	ST	GATK statistics	1	String
-SOR	ST	GATK statistics	1	String
-VQSLOD	ST	GATK statistics	1	String
-culprit	ST	GATK statistics	1	String
 DGVIDs	SV	Structural variants	1	String
 CNVSampleSize	SV	Structural variants	1	Integer
 LossCNV	SV	Structural variants	1	Integer
 GainCNV	SV	Structural variants	1	Integer
 SuperDupKValue	SV	Structural variants	.	Float
-COSMICCancerInfo	AN	General annotation	1	String
