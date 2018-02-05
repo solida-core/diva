@@ -11,7 +11,7 @@ for s in strings_to_replace:
 vcf = ''.join(map(lambda x: ''.join('chr' + x), body))
 vcf = vcf.replace('; ', ';')
 vcf = vcf.replace(', ', ',')
-vcf = vcf.replace('\tN', '\t.')
+vcf = vcf.replace('\tN\t', '\t.\t')
 
 chars_to_replace = {ord('='): ':', ord(';'): '|', ord(' '): '_'}
 vcf = vcf.translate(chars_to_replace)
