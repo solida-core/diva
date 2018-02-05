@@ -1,22 +1,23 @@
 import csv
+from collections import OrderedDict
 
 with open(snakemake.input[0], 'r') as fp:
-    _cname = fp.readline()
+    _cname = fp.readline().strip()
     _body = fp.readlines()
 
 annot_dict = dict()
 with open(snakemake.params.blocks, 'r') as csvfile:
     reader = csv.DictReader(csvfile, delimiter='\t')
-    reader.__next__()
-    print(reader.fieldnames)
     for row in reader:
         annot_dict[row['Field']] = row
 
-cname = ['CHROM', 'POS']
+cname = OrderedDict()
+cname['CHROM'] = None
+cname['POS'] = None
 for s in _cname.split('\t'):
     if s in annot_dict:
-        cname.append('_'.join([annot_dict[s]['Block'], annot_dict[s]['Field']]))
-cname = ','.join(cname)
+        cname['_'.join([annot_dict[s]['Block'], annot_dict[s]['Field']])] = None
+cname = ','.join(cname.keys())
 
 header = []
 template = '##INFO=<ID={i},Number={n},Type={t},Description="{d}">\n'
