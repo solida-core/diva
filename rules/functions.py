@@ -12,7 +12,7 @@ def _gatk_multi_arg(flag, args):
 def _multi_flag(arguments):
     if arguments:
         return " ".join(flag + " " + arg for flag, arg in arguments)
-    return None
+    return ''
 
 
 def _get_samples_set(samples_set, samples_files, flag='-sf'):
