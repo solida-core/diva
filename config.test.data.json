@@ -94,6 +94,8 @@
                 "set1": "path_to_sample_files/set1.txt"
             },
             "arguments": [
+                ["--excludeFiltered", ""],
+                ["--excludeNonVariants", ""],
                 ["-se", "DNA16-038*"],
                 ["-sn", "DNA16-0284-R0001"]
                 ]
@@ -128,6 +130,9 @@
         },
         "bcftools_annotate_remove": {
             "params": ""
+        },
+        "bcftools_reheader": {
+            "reheader": "path_to_reheader_file"
         }
     }
 }

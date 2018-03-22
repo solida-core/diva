@@ -55,3 +55,19 @@ rule bcftools_annotate_remove:
         params=config.get("rules").get("bcftools_annotate_remove").get("params")
     script:
         "scripts/bcftools_annotate.py"
+
+
+rule bcftools_reheader:
+    input:
+       'annotation/bcftools/selected.annot.lightened.vcf'
+    output:
+       'annotation/bcftools/selected.annot.lightened.reheaded.vcf'
+    conda:
+        "envs/bcftools.yaml"
+    params:
+        reheader=config.get("rules").get("bcftools_reheader").get("reheader")
+    shell:
+        "bcftools reheader "
+        "-s {params.reheader} "
+        "-o {output} "
+        "{input} "

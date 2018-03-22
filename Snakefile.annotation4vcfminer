@@ -14,7 +14,7 @@ rule all_joint:
            "annotation/kggseq/selected.flt.vcf",
            "annotation/kggseq/annot.tab.gz",
            "annotation/bcftools/selected.annot.vcf",
-           "annotation/bcftools/selected.annot.lightened.vcf"
+           "annotation/bcftools/selected.annot.lightened.reheaded.vcf"
 
 include_prefix="rules"
 
