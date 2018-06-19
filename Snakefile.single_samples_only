@@ -20,10 +20,10 @@ rule all_sso:
            expand("variant_calling/{sample}.g.vcf", \
                   sample=config["samples"])
 
+include: "notify.smk"
+
 include_prefix="rules"
 
-include:
-    include_prefix + "/notify.rules"
 include:
     include_prefix + "/functions.py"
 include:

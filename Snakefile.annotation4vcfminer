@@ -16,10 +16,10 @@ rule all_joint:
            "annotation/bcftools/selected.annot.vcf",
            "annotation/bcftools/selected.annot.lightened.reheaded.vcf"
 
+include: "notify.smk"
+
 include_prefix="rules"
 
-include:
-    include_prefix + "/notify.rules"
 include:
     include_prefix + "/functions.py"
 include:

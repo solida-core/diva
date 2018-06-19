@@ -14,10 +14,10 @@ rule all_joint:
            "variant_calling/all.snp_recalibrated.indel_recalibrated.vcf",
            "variant_calling/cohort/cohort.gvcf"
 
+include: "notify.smk"
+
 include_prefix="rules"
 
-include:
-    include_prefix + "/notify.rules"
 include:
     include_prefix + "/functions.py"
 include:
