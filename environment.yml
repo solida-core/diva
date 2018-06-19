@@ -1,0 +1,13 @@
+channels:
+- bioconda
+- conda-forge
+- defaults
+dependencies:
+- snakemake==4.8.1
+- drmaa==0.7.8
+- gatk=3.7
+- r-base=3.4.1
+- r-gsalib=2.1
+- r-ggplot2=2.2.0
+- r-reshape=0.8.6
+- r-gplots=3.0.1
