@@ -15,11 +15,11 @@ def _multi_flag(arguments):
     return ''
 
 
-def _get_samples_set(samples_set, samples_files, flag='-sf'):
-    if samples_set:
-        if samples_set in samples_files:
-            return "".join(flag + " " + samples_files[samples_set])
-    return ''
+def _get_samples_set(samples_files, flag='-sf'):
+    arguments = []
+    for samples_set in samples_files.keys():
+        arguments.append("".join(flag + " " + samples_files[samples_set]))
+    return ' '.join(arguments)
 
 
 def total_physical_mem_size():

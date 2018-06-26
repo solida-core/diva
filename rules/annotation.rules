@@ -8,8 +8,7 @@ rule gatk_SelectVariants:
         custom=java_params(tmp_dir=config.get("paths").get("to_tmp"), fraction_for=4),
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
         arguments=config.get("rules").get("gatk_SelectVariants").get("arguments"),
-        samples_set=config.get("samples_set", None),
-        samples_files=config.get("rules").get("gatk_SelectVariants").get("samples_files"),
+        samples_files=config.get("rules").get("gatk_SelectVariants").get("samples_files")
     log:
         "logs/gatk/SelectVariants/SelectVariants.log"
     benchmark:
@@ -17,7 +16,7 @@ rule gatk_SelectVariants:
     threads: conservative_cpu_count()
     run:
         selection_args = _multi_flag(params.arguments)
-        samples_set_arg = _get_samples_set(params.samples_set, params.samples_files)
+        samples_set_arg = _get_samples_set(params.samples_files)
         shell(
             "gatk -T SelectVariants -nt {threads} {params.custom} "
             "-R {params.genome} "
