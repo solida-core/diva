@@ -39,6 +39,11 @@
             "probes": "intervals/AgilentSureSelectHumanAllExonV5UTR_Probes.HybridSelection",
             "hsTarget": "intervals/AgilentSureSelectHumanAllExonV5UTR_Target.HybridSelection"
         },
+        "AgilentSureSelectHumanAllExonV7": {
+            "bedTarget": "intervals/AgilentSureSelectHumanAllExonV7_Target.bed",
+            "probes": "intervals/AgilentSureSelectHumanAllExonV7_Probes.HybridSelection",
+            "hsTarget": "intervals/AgilentSureSelectHumanAllExonV7_Target.HybridSelection"
+        },
         "AgilentSureSelectHumanAllExonV5": {
             "bedTarget": "intervals/AgilentSureSelectHumanAllExonV5_Target.bed",
             "probes": "intervals/AgilentSureSelectHumanAllExonV5_Probes.HybridSelection",
@@ -53,6 +58,11 @@
           "bedTarget": "intervals/NimblegenSeqCapEZExomeV2_Target.bed",
           "probes": "intervals/NimblegenSeqCapEZExomeV2_Probes.HybridSelection",
           "hsTarget": "intervals/NimblegenSeqCapEZExomeV2_Target.HybridSelection"
+        },
+        "IDT_xGen_ExomeResearchPanel_v1": {
+          "bedTarget": "intervals/IDT_xGen_ExomeResearchPanel_v1_Target.bed",
+          "probes": "intervals/IDT_xGen_ExomeResearchPanel_v1_Probes.HybridSelection",
+          "hsTarget": "intervals/IDT_xGen_ExomeResearchPanel_v1_Target.HybridSelection"
         }
     },
     "intervals_default": "NexteraRapidCaptureExpandedExome",
