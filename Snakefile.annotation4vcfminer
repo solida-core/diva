@@ -9,6 +9,12 @@ UNIT_TO_SAMPLE = {
     unit: sample for sample, units in config["samples"].items()
     for unit in units}
 
+##### local rules #####
+
+localrules: all_joint, vcf_to_tabular
+
+##### target rules #####
+
 rule all_joint:
     input:
            "annotation/kggseq/selected.flt.vcf",
