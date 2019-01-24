@@ -36,6 +36,13 @@ altFreq@gnomad.exomeFIN	FQ	Frequency	1	Float
 altFreq@gnomad.exomeNFE	FQ	Frequency	1	Float
 altFreq@gnomad.exomeSAS	FQ	Frequency	1	Float
 altFreq@gnomad.exomeOTH	FQ	Frequency	1	Float
+altFreq@gnomad.genomeAFR        FQ      Frequency       1       Float
+altFreq@gnomad.genomeAMR        FQ      Frequency       1       Float
+altFreq@gnomad.genomeASJ        FQ      Frequency       1       Float
+altFreq@gnomad.genomeEAS        FQ      Frequency       1       Float
+altFreq@gnomad.genomeFIN        FQ      Frequency       1       Float
+altFreq@gnomad.genomeNFE        FQ      Frequency       1       Float
+altFreq@gnomad.genomeOTH        FQ      Frequency       1       Float
 AffectedRefHomGtyNum	GT	Genotype	1	Integer
 AffectedHetGtyNum	GT	Genotype	1	Integer
 AffectedAltHomGtyNum	GT	Genotype	1	Integer

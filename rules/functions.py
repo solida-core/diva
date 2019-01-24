@@ -17,9 +17,13 @@ def _multi_flag(arguments):
 
 def _get_samples_set(samples_files, flag='-sf'):
     arguments = []
+    set_arg=config.get("samples_set", None)
+    if set_arg and set_arg in samples_files:
+        return "".join(flag + " " + samples_files[set_arg])
     for samples_set in samples_files.keys():
         arguments.append("".join(flag + " " + samples_files[samples_set]))
     return ' '.join(arguments)
+
 
 
 def total_physical_mem_size():
