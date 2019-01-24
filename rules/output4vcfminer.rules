@@ -71,3 +71,19 @@ rule bcftools_reheader:
         "-s {params.reheader} "
         "-o {output} "
         "{input} "
+
+
+rule vcf_to_tabular:
+    input:
+       'annotation/bcftools/selected.annot.lightened.reheaded.vcf'
+    output:
+       'annotation/bcftools/selected.annot.lightened.reheaded.tsv'
+    params:
+       script='../rules/scripts/vcf_to_tabular_futurized.py',
+       params= "--do-not-split-sample --print-format "
+
+    conda:
+        "envs/future.yaml"
+    shell:
+        "python {params.script} {params.params} {input} {output}"
+
