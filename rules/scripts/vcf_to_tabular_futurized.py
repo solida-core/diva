@@ -105,6 +105,7 @@ def Convert_VCF_file_to_TAB_user_Kantale(
         if verbose:
             print("Done finding info and sample fields")
         infoFields = list(infoFields)
+	infoFields.sort()
         sampleFields = list(sampleFields)
         inputFile.close()
         inputFile = open(inputFilename)
