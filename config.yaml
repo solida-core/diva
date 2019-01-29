@@ -79,10 +79,6 @@ intervals_default: "AgilentSureSelectHumanAllExonV7"
 samples_intervals:
     DNA16-0389-R0001: "AgilentSureSelectHumanAllExonV7"
 
-odpd:
-    DNA16-0389-R0001: 100
-
-
 tmp_dir: "path_to_tmp_dir"
 
 paths:
@@ -111,7 +107,7 @@ rules:
 
     gatk_SelectVariants:
         samples_files:
-            set1: "path_to_sample_files/set1.txt"
+            set1: "set1.txt"
         arguments: [
                    ["--excludeFiltered", ""],
                    ["--excludeNonVariants", ""],

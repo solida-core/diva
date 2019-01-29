@@ -1,13 +1,15 @@
-# vim: syntax=python tabstop=4 expandtab
-# coding: utf-8
+import pandas as pd
+from snakemake.utils import validate, min_version
+##### set minimum snakemake version #####
+min_version("5.1.2")
 
-from snakemake.utils import min_version
 
-min_version("4.1.0")
+##### load config and sample sheets #####
 
-UNIT_TO_SAMPLE = {
-    unit: sample for sample, units in config["samples"].items()
-    for unit in units}
+#configfile: "config.yaml"
+
+samples = pd.read_csv(config["samples"], index_col="sample", sep="\t")
+units = pd.read_csv(config["units"], index_col=["unit"], dtype=str, sep="\t")
 
 ##### local rules #####
 
@@ -22,13 +24,21 @@ rule all_joint:
            "annotation/bcftools/selected.annot.vcf",
            "annotation/bcftools/selected.annot.lightened.reheaded.vcf",
            "annotation/bcftools/selected.annot.lightened.reheaded.tsv"
-include: "notify.smk"
+
+
+
 
 include_prefix="rules"
 
 include:
     include_prefix + "/functions.py"
 include:
-    include_prefix + "/annotation.rules"
+    include_prefix + "/annotation.smk"
 include:
-    include_prefix + "/output4vcfminer.rules"
+    include_prefix + "/output4vcfminer.smk"
+include:
+    include_prefix + "/notify.smk"
+
+
+### usage:
+###

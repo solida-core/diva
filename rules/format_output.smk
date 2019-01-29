@@ -18,7 +18,7 @@ rule tabix:
     output:
        'annotation/kggseq/annot.tab.gz'
     conda:
-        "envs/tabix.yaml"
+        "../envs/tabix.yaml"
     params:
        config.get("rules").get("tabix").get("params")
     shell:
@@ -35,7 +35,7 @@ rule bcftools_annotate_add:
     output:
        'annotation/bcftools/selected.annot.vcf'
     conda:
-        "envs/bcftools.yaml"
+        "../envs/bcftools.yaml"
     params:
         cmd='add'
     script:
@@ -48,7 +48,7 @@ rule bcftools_annotate_remove:
     output:
        'annotation/bcftools/selected.annot.lightened.vcf'
     conda:
-        "envs/bcftools.yaml"
+        "../envs/bcftools.yaml"
     params:
         cmd='remove',
         blocks=config.get("rules").get("format_annotation").get("blocks_file"),
@@ -63,7 +63,7 @@ rule bcftools_reheader:
     output:
        'annotation/bcftools/selected.annot.lightened.reheaded.vcf'
     conda:
-        "envs/bcftools.yaml"
+        "../envs/bcftools.yaml"
     params:
         reheader=config.get("rules").get("bcftools_reheader").get("reheader")
     shell:
@@ -83,7 +83,7 @@ rule vcf_to_tabular:
        params= "--do-not-split-sample --print-format "
 
     conda:
-        "envs/future.yaml"
+        "../envs/future.yaml"
     shell:
         "python {params.script} {params.params} {input} {output}"
 
