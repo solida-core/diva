@@ -5,23 +5,18 @@
 def _gatk_multi_arg(flag, files):
     flag += " "
     return " ".join(flag + f for f in files)
-#
-#def _sample_to_units(pattern):
-#    def apply(wildcards):
-#       return expand(
-#            pattern, reference="/ELS/els9/ex_scratch/users/galaxy/galaxyNT/var/data-manager-data/hg19/bwa_mem_index/hg19/hg19.fa",
-#            unit=config["samples"][wildcards.sample])
-#    return apply
+
 
 
 rule gatk_HaplotypeCaller_ERC_GVCF:
     input:    
-        bam="mapped_reads/merged_samples/{sample}.dedup.realn.recal.bam"
+        bam="reads/recalibrated/{sample}.dedup.recal.bam"
     output:
-        gvcf="variant_calling/{sample}.g.vcf",
-        idx="variant_calling/{sample}.g.vcf.idx"
+        gvcf="variant_calling/{sample}.g.vcf.gz"
+    conda:
+       "../envs/gatk.yaml"
     params:
-        custom=java_params(tmp_dir=config.get("tmp_dir"), fraction_for=4),
+        custom=java_params(tmp_dir=config.get("paths").get("to_tmp"), multiply_by=5),
         intervals = lambda wildcards: resolve_single_filepath(*references_abs_path(), config.get("intervals").get(config.get("samples_intervals").get(wildcards.sample, config["intervals_default"])).get("bedTarget")),
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta"))
     log:
@@ -30,31 +25,72 @@ rule gatk_HaplotypeCaller_ERC_GVCF:
         "benchmarks/gatk/HaplotypeCaller/{sample}.txt"
     threads: 2
     shell:
-        "gatk -T HaplotypeCaller -R {params.genome} {params.custom} "
-        "-I {input.bam} --emitRefConfidence GVCF "
-        "-L {params.intervals} -nct {threads} -ip 200 "
-        "-o {output.gvcf} >& {log}"
+        "gatk HaplotypeCaller --java-options {params.custom} "
+        "-R {params.genome} "
+        "-I {input.bam} "
+        "-O {output.gvcf} "
+        "-ERC GVCF "
+        "-L {params.intervals} "
+        "-ip 200 "
+        "-G StandardAnnotation "
+        "--use-new-qual-calculator "
+        ">& {log}"
+##############
 
+rule gatk_GenomicsDBImport:
+    input:
+        gvcfs=expand("variant_calling/{sample.sample}.g.vcf.gz",
+                     sample=samples.reset_index().itertuples())
+    output:
+        touch("db/imports/pippo")
+
+    params:
+        custom=java_params(tmp_dir=config.get("paths").get("to_tmp"),
+                           multiply_by=2),
+        intervals = config.get("intervals").get(config.get("intervals_default")).get("bedTarget"),
+        genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta"))
+    log:
+        "logs/gatk/GenomicsDBImport/genomicsdbi.info.log"
+    benchmark:
+        "benchmarks/gatk/GenomicsDBImport/genomicsdbi.txt"
+    run:
+        gvcfs = _multi_flag("-V", input.gvcfs)
+        shell(
+            "mkdir -p db; "
+            "gatk GenomicsDBImport --java-options {params.custom} "
+            "{gvcfs} "
+            "--genomicsdb-workspace-path db "
+            "-L {params.intervals} "
+            "-ip 200 "
+            ">& {log} ")
+
+
+
+####
 rule gatk_GenotypeGVCFs:
     input:
-        gvcfs=expand("variant_calling/{sample}.g.vcf", \
-                     sample=config["samples"])
+        "db/imports/pippo"
     output:
-        "variant_calling/all.vcf"
+        protected("variant_calling/all.vcf.gz")
+    # wildcard_constraints:
+    #     chr="[0-9XYM]+"
+    conda:
+       "../envs/gatk.yaml"
     params:
-        custom=java_params(tmp_dir=config.get("tmp_dir"), fraction_for=1),
+        custom=java_params(tmp_dir=config.get("paths").get("to_tmp"),
+                           multiply_by=2),
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
-        dbsnp=resolve_single_filepath(*references_abs_path(), config.get("known_variants").get("dbsnp")),
+        dbsnp=resolve_single_filepath(*references_abs_path(), config.get("known_variants").get("dbsnp"))
     log:
-        "variant_calling/log/all.genotype.log"
+        "logs/gatk/GenotypeGVCFs/all.info.log"
     benchmark:
-        "benchmarks/gatk/HaplotypeCaller/all.txt"
-    threads: conservative_cpu_count()
-    run:
-        gvcfs = _gatk_multi_arg("--variant", input.gvcfs)
-        shell(
-            "gatk -T GenotypeGVCFs -nt {threads} "
-            "{gvcfs} "
-            "{params.custom} "
-            "-R {params.genome} "
-            "--dbsnp {params.dbsnp} -o {output} >& {log}")
+        "benchmarks/gatk/GenotypeGVCFs/all.txt"
+    shell:
+        "gatk GenotypeGVCFs --java-options {params.custom} "
+        "-R {params.genome} "
+        "-V gendb://db "
+        "-G StandardAnnotation "
+        "--use-new-qual-calculator "
+        "-O {output} "
+        "--dbsnp {params.dbsnp} "
+        ">& {log} "

@@ -1,0 +1,3 @@
+[submodule "dima"]
+	path = dima
+	url = https://github.com/massiddamt/dima.git
