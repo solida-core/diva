@@ -1,6 +1,3 @@
-# vim: syntax=python tabstop=4 expandtab
-# coding: utf-8
-
 
 # https://docs.python.org/dev/whatsnew/3.5.html#pep-448-additional-unpacking-generalizations
 def _get_recal_params(wildcards):
@@ -32,55 +29,46 @@ rule gatk_VariantRecalibrator:
         plotting=temp("variant_calling/{prefix}.{type,(snp|indel)}.plotting.R")
     params:
         recal=_get_recal_params,
-        gatk=java_params(tmp_dir=config.get("tmp_dir"), fraction_for=1),
+        custom=java_params(tmp_dir=config.get("paths").get("to_tmp"),multiply_by=2),
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta"))
     log:
         "variant_calling/log/{prefix}.{type}_recalibrate_info.log"
     benchmark:
         "benchmarks/gatk/VariantRecalibrator/{prefix}.{type}_recalibrate_info.txt"
-    threads: conservative_cpu_count(max_cores=20)
     shell:
-        "gatk -T VariantRecalibrator -R {params.genome} "
-        "-input {input.vcf} "
-        "{params.gatk} {params.recal} -nt {threads} "
+        "gatk VariantRecalibrator --java-options {params.custom} "
+        "-R {params.genome} "
+        "-V {input.vcf} "
+        "{params.recal} "
         "-tranche 100.0 -tranche 99.9 -tranche 99.0 -tranche 90.0 "
-        "-recalFile {output.recal} "
-        "-tranchesFile {output.tranches} "
-        "-rscriptFile {output.plotting} >& {log}"
+        "--output {output.recal} "
+        "--tranches-file {output.tranches} "
+        "--rscript-file {output.plotting} "
+        ">& {log}"
       
 
-rule gatk_ApplyRecalibration:
+rule gatk_ApplyVQSR:
     input:
-        vcf="variant_calling/{prefix}.vcf",
+        vcf="variant_calling/{prefix}.vcf.gz",
         recal="variant_calling/{prefix}.{type}.recal",
         tranches="variant_calling/{prefix}.{type}.tranches"
     output:
-        "variant_calling/{prefix}.{type,(snp|indel)}_recalibrated.vcf"
+        "variant_calling/{prefix}.{type,(snp|indel)}_recalibrated.vcf.gz"
+    conda:
+       "../envs/gatk.yaml"
     params:
         mode=lambda wildcards: wildcards.type.upper(),
-        custom=java_params(tmp_dir=config.get("tmp_dir"), fraction_for=1),
+        custom=java_params(tmp_dir=config.get("paths").get("to_tmp"),
+                           multiply_by=2),
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta"))
     log:
-        "variant_calling/log/{prefix}.{type}_recalibrate.log"
+        "logs/gatk/ApplyVQSR/{prefix}.{type}_recalibrate.log"
     benchmark:
-        "benchmarks/gatk/VariantRecalibrator/{prefix}.{type}_recalibrate.txt"
-    threads: conservative_cpu_count(max_cores=20)
+        "benchmarks/gatk/ApplyVQSR/{prefix}.{type}_recalibrate.txt"
     shell:
-        "gatk -T ApplyRecalibration -R {params.genome} -nt {threads} "
-        "-input {input.vcf} -mode {params.mode} {params.custom} "
-        "-recalFile {input.recal} --ts_filter_level 99.0 "
-        "-tranchesFile {input.tranches} -o {output} >& {log}"
-
-rule gatk_VariantEval:
-    input:
-        "variant_calling/all.snp_recalibrated.indel_recalibrated.vcf"
-    output:
-        "all.snp_recalibrated.indel_recalibrated.gatkreport"
-    params:
-        custom=java_params(tmp_dir=config.get("tmp_dir")),
-        genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
-        dbsnp=resolve_single_filepath(*references_abs_path(), config.get("known_variants").get("dbsnp")),
-    shell:
-        "gatk {params.custom} -T VariantEval -R {params.genome} -nt {threads} "
-        "-o {output} -eval {input} --dbsnp {params.dbsnp} "
-        "-noEV -EV CompOverlap -EV IndelSummary -EV TiTvVariantEvaluator -EV CountVariants -EV MultiallelicSummary -ST Sample "
+        "gatk  ApplyVQSR --java-options {params.custom} "
+        "-R {params.genome} "
+        "-V {input.vcf} -mode {params.mode} "
+        "--recal-file {input.recal} -ts-filter-level 99.0 "
+        "--tranches-file {input.tranches} -O {output} "
+        ">& {log}"
