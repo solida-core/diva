@@ -36,7 +36,7 @@ include_prefix="rules"
 dima_path="dima/"
 
 include:
-    dima_path + include_prefix + "/functions.py"
+    include_prefix + "/functions.py"
 include:
     dima_path + include_prefix + "/trimming.smk"
 include:
