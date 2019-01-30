@@ -1,14 +1,14 @@
 Field	Block	Description	Number	Type
 ReferenceAlternativeAllele	AN	General annotation	1	String
 rsID	AN	General annotation	1	String
-MostImportantFeatureGene	AN	General annotation	1	String
-MostImportantGeneFeature	AN	General annotation	1	String
+MostImportantFeatureGene	AN1	General annotation	1	String
+MostImportantGeneFeature	AN2	General annotation	1	String
 RefGeneFeatures	AN	General annotation	1	String
 GENCODEFeatures	AN	General annotation	1	String
 UCSCKnownGeneFeatures	AN	General annotation	1	String
 EnsemblFeatures	AN	General annotation	1	String
-GeneDescription	AN	General annotation	1	String
-Pseudogenes	AN	General annotation	1	String
+GeneDescription	AN3	General annotation	1	String
+Pseudogenes	AN4	General annotation	1	String
 clinvar_clnsig	CL	Clinvar	.	Integer
 clinvar_trait	CL	Clinvar	1	String
 clinvar_golden_stars	CL	Clinvar	.	Integer
@@ -36,13 +36,13 @@ altFreq@gnomad.exomeFIN	FQ	Frequency	1	Float
 altFreq@gnomad.exomeNFE	FQ	Frequency	1	Float
 altFreq@gnomad.exomeSAS	FQ	Frequency	1	Float
 altFreq@gnomad.exomeOTH	FQ	Frequency	1	Float
-altFreq@gnomad.genomeAFR        FQ      Frequency       1       Float
-altFreq@gnomad.genomeAMR        FQ      Frequency       1       Float
-altFreq@gnomad.genomeASJ        FQ      Frequency       1       Float
-altFreq@gnomad.genomeEAS        FQ      Frequency       1       Float
-altFreq@gnomad.genomeFIN        FQ      Frequency       1       Float
-altFreq@gnomad.genomeNFE        FQ      Frequency       1       Float
-altFreq@gnomad.genomeOTH        FQ      Frequency       1       Float
+altFreq@gnomad.genomeAFR	FQ	Frequency	1	Float
+altFreq@gnomad.genomeAMR	FQ	Frequency	1	Float
+altFreq@gnomad.genomeASJ	FQ	Frequency	1	Float
+altFreq@gnomad.genomeEAS	FQ	Frequency	1	Float
+altFreq@gnomad.genomeFIN	FQ	Frequency	1	Float
+altFreq@gnomad.genomeNFE	FQ	Frequency	1	Float
+altFreq@gnomad.genomeOTH	FQ	Frequency	1	Float
 AffectedRefHomGtyNum	GT	Genotype	1	Integer
 AffectedHetGtyNum	GT	Genotype	1	Integer
 AffectedAltHomGtyNum	GT	Genotype	1	Integer

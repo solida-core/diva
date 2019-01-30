@@ -46,9 +46,9 @@ returnedFromVCFConvertionFunction = Convert_VCF_file_to_TAB_user_Kantale(
 
 """
 from __future__ import print_function
+
 from builtins import str
 import optparse
-
 
 def Convert_VCF_file_to_TAB_user_Kantale(
         inputFilename = None,
@@ -105,7 +105,11 @@ def Convert_VCF_file_to_TAB_user_Kantale(
         if verbose:
             print("Done finding info and sample fields")
         infoFields = list(infoFields)
-	infoFields.sort()
+        infoFields.sort()
+        # Move fields to the end
+        to_the_end = ['AC', 'MQ', 'QD', 'DP']
+        for value in to_the_end:
+            infoFields.append(infoFields.pop(infoFields.index(value)))
         sampleFields = list(sampleFields)
         inputFile.close()
         inputFile = open(inputFilename)
