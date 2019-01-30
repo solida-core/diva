@@ -11,3 +11,4 @@ dependencies:
 - r-ggplot2=3.0
 - r-reshape=0.8.7
 - r-gplots=3.0.1
+- gxx_linux-64
