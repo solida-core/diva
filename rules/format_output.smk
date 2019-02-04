@@ -87,3 +87,30 @@ rule vcf_to_tabular:
     shell:
         "python {params.script} {params.params} {input} {output}"
 
+rule tabular_to_excel_full:
+    input:
+       'annotation/bcftools/selected.annot.lightened.reheaded.tsv'
+    output:
+       'annotation/bcftools/selected.annot.lightened.reheaded.xlsx'
+    params:
+       script='../rules/scripts/tabular_to_excel.py'
+    conda:
+        "../envs/excel.yaml"
+    shell:
+       "python {params.script} "
+       "-i {input} "
+       "-o {output}"
+
+rule tabular_to_excel_doubleHits:
+    input:
+       'annotation/kggseq/doubleHits.doublehit.gene.trios.flt.gty.txt'
+    output:
+       'annotation/kggseq/doubleHits.doublehit.gene.trios.flt.gty.xlsx'
+    params:
+       script='../rules/scripts/tabular_to_excel.py'
+    conda:
+       "../envs/excel.yaml"
+    shell:
+       "python {params.script} "
+       "-i {input} "
+       "-o {output}"

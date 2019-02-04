@@ -24,6 +24,8 @@ rule all_joint:
            "annotation/bcftools/selected.annot.vcf",
            "annotation/bcftools/selected.annot.lightened.reheaded.vcf",
            "annotation/bcftools/selected.annot.lightened.reheaded.tsv"
+           "annotation/bcftools/selected.annot.lightened.reheaded.xlsx",
+           "annotation/kggseq/doubleHits.doublehit.gene.trios.flt.gty.xlsx"
 
 
 
