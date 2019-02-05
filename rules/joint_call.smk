@@ -8,8 +8,7 @@ rule gatk_GenomicsDBImport:
     conda:
        "../envs/gatk.yaml"
     params:
-        custom=java_params(tmp_dir=config.get("paths").get("to_tmp"),
-                           multiply_by=2),
+        custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=2),
         intervals = resolve_single_filepath(*references_abs_path(),config.get("intervals").get(config.get("intervals_default")).get("bedTarget")),
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
         gvcfs=expand("variant_calling/{sample.sample}.g.vcf.gz",
@@ -25,6 +24,7 @@ rule gatk_GenomicsDBImport:
         "--genomicsdb-workspace-path db "
         "-L {params.intervals} "
         "-ip 200 "
+        "--merge-input-intervals "
         ">& {log} "
 
 
