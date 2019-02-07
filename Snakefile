@@ -25,8 +25,8 @@ rule all:
         expand("variant_calling/{sample.sample}.g.vcf.gz",sample=samples.reset_index().itertuples()),
         "db/imports/pippo",
         "variant_calling/all.vcf.gz",
-        "qc/multiqc.html",
-#        "variant_calling/all.snp_recalibrated.indel_recalibrated.vcf.gz"
+#        "qc/multiqc.html",
+        "variant_calling/all.snp_recalibrated.indel_recalibrated.vcf.gz"
 
 
 

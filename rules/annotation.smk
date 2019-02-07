@@ -5,7 +5,7 @@ rule gatk_SelectVariants:
     output:
         vcf="variant_calling/SelectVariants/selected.vcf"
     params:
-        custom=java_params(tmp_dir=config.get("paths").get("to_tmp"), multiply_by=5),
+        custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=5),
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
         arguments=_multi_flag(config.get("rules").get("gatk_SelectVariants").get("arguments")),
         samples_files=_get_samples_set(config.get("rules").get("gatk_SelectVariants").get("samples_files"))
@@ -37,7 +37,7 @@ rule kggseq:
        txt='annotation/kggseq/selected.flt.txt',
        ped='annotation/kggseq/selected.ped'
     params:
-       custom=java_params(tmp_dir=config.get("paths").get("to_tmp"), multiply_by=5),
+       custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=5),
        cmd=config.get("rules").get("kggseq").get("cmd"),
        arguments=_multi_flag(config.get("rules").get("kggseq").get("arguments")),
        ped_file=config.get("rules").get("kggseq").get("ped_file")
@@ -62,8 +62,8 @@ rule kggseq_doubleHits:
        log='annotation/kggseq/doubleHits.log',
        txt='annotation/kggseq/doubleHits.flt.txt',
        ped='annotation/kggseq/selected.ped'
-   params:
-       custom=java_params(tmp_dir=config.get("paths").get("to_tmp"), multiply_by=5),
+    params:
+       custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=5),
        cmd=config.get("rules").get("kggseq").get("cmd"),
        arguments=_multi_flag(config.get("rules").get("kggseq").get("arguments")),
        ped_file=config.get("rules").get("kggseq").get("ped_file")

@@ -5,20 +5,18 @@ rule gatk_GenomicsDBImport:
                      sample=samples.reset_index().itertuples())
     output:
         touch("db/imports/pippo")
-    conda:
-       "../envs/gatk.yaml"
+#    conda:
+#       "../envs/gatk.yaml"
     params:
         custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=2),
         intervals = resolve_single_filepath(*references_abs_path(),config.get("intervals").get(config.get("intervals_default")).get("bedTarget")),
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
-        gvcfs=expand("variant_calling/{sample.sample}.g.vcf.gz",
-                     sample=samples.reset_index().itertuples())
+        gvcfs=_multi_flag("-V", expand("variant_calling/{sample.sample}.g.vcf.gz", sample=samples.reset_index().itertuples()))
     log:
         "logs/gatk/GenomicsDBImport/genomicsdbi.info.log"
     benchmark:
         "benchmarks/gatk/GenomicsDBImport/genomicsdbi.txt"
     shell:
-        "mkdir -p db; "
         "gatk GenomicsDBImport --java-options {params.custom} "
         "{params.gvcfs} "
         "--genomicsdb-workspace-path db "
@@ -38,8 +36,7 @@ rule gatk_GenotypeGVCFs:
     conda:
        "../envs/gatk.yaml"
     params:
-        custom=java_params(tmp_dir=config.get("paths").get("to_tmp"),
-                           multiply_by=2),
+        custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=2),
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
         dbsnp=resolve_single_filepath(*references_abs_path(), config.get("known_variants").get("dbsnp"))
     log:

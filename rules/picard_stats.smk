@@ -27,7 +27,7 @@ rule picard_HsMetrics:
    conda:
        "../envs/picard.yaml"
    params:
-        custom=java_params(tmp_dir=config.get("paths").get("to_tmp"), multiply_by=5),
+        custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=5),
    benchmark:
        "benchmarks/picard/HsMetrics/{sample}.txt"
    shell:
@@ -46,7 +46,7 @@ rule picard_InsertSizeMetrics:
    conda:
        "../envs/picard.yaml"
    params:
-        custom=java_params(tmp_dir=config.get("paths").get("to_tmp"), multiply_by=5),
+        custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=5),
    benchmark:
        "benchmarks/picard/IsMetrics/{sample}.txt"
    shell:

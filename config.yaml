@@ -107,12 +107,12 @@ rules:
 
     gatk_SelectVariants:
         samples_files:
-            set1: "set1.txt"
+            setA: "project_path/set_A.args"
         arguments: [
-                   ["--excludeFiltered", ""],
-                   ["--excludeNonVariants", ""],
-                   ["-se", "DNA16-038*"],
-                   ["-sn", "DNA16-0284-R0001"]
+                   ["--exclude-filtered", ""],
+                   ["--exclude-non-variants", ""]
+                   #["-se", "DNA16-038*"],
+                   #["-sn", "DNA16-0284-R0001"]
                    ]
     kggseq:
         arguments: [

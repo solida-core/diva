@@ -13,7 +13,7 @@ def _multi_flag(arguments):
         return " ".join(flag + " " + arg for flag, arg in arguments)
     return ''
 
-def _get_samples_set(samples_files, flag='-sf'):
+def _get_samples_set(samples_files, flag='-se'):   # before was -sf, deprecated from gatk4
     arguments = []
     set_arg=config.get("samples_set", None)
     if set_arg and set_arg in samples_files:

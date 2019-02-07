@@ -29,7 +29,7 @@ rule all_joint:
 
 
 
-
+#################################
 include_prefix="rules"
 
 include:
@@ -37,10 +37,4 @@ include:
 include:
     include_prefix + "/annotation.smk"
 include:
-    include_prefix + "/output4vcfminer.smk"
-include:
-    include_prefix + "/notify.smk"
-
-
-### usage:
-###
+    include_prefix + "/format_output.smk"
