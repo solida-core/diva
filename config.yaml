@@ -73,6 +73,10 @@ intervals:
         probes: "intervals/IDT_xGen_ExomeResearchPanel_v1_Probes.HybridSelection"
         hsTarget: "intervals/IDT_xGen_ExomeResearchPanel_v1_Target.HybridSelection"
 
+    Twist_Exome:
+        bedTarget: "intervals/Twist_Exome_Target.bed"
+        probes: "intervals/Twist_Exome_Probes.HybridSelection"
+        hsTarget: "intervals/Twist_Exome_Target.HybridSelection"
 
 
 intervals_default: "AgilentSureSelectHumanAllExonV7"
