@@ -12,3 +12,4 @@ dependencies:
 - r-reshape=0.8.7
 - r-gplots=3.0.1
 - gxx_linux-64
+- gatk4=4.0.11.0

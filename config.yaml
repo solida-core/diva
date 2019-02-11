@@ -78,9 +78,9 @@ intervals:
 intervals_default: "AgilentSureSelectHumanAllExonV7"
 samples_intervals:
     DNA16-0389-R0001: "AgilentSureSelectHumanAllExonV7"
+db_suffix: "idt"
 
 tmp_dir: "path_to_tmp_dir"
-
 paths:
     to_tmp: "path_to_tmp_dir"
     to_gvcfs: "path_to_gvcfs"

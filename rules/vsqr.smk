@@ -24,7 +24,7 @@ def _get_recal_params(wildcards):
 rule gatk_VariantRecalibrator:
     input:
         resolve_multi_filepath(*references_abs_path(), config["known_variants"]).values(),
-        vcf="variant_calling/{prefix}.vcf"
+        vcf="variant_calling/{prefix}.vcf.gz"
     output:
         recal=temp("variant_calling/{prefix}.{type,(snp|indel)}.recal"),
         tranches=temp("variant_calling/{prefix}.{type,(snp|indel)}.tranches"),
