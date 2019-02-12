@@ -19,6 +19,8 @@ units = pd.read_csv(config["units"], index_col=["unit"], dtype=str, sep="\t")
 
 rule all:
     input:
+        "logs/dima/dima_clone.done",
+        "logs/multiqc/gatkdoc_plugin_activation.done",
         expand("reads/recalibrated/{sample.sample}.dedup.recal.bam", sample=samples.reset_index().itertuples()),
         expand("reads/recalibrated/{sample.sample}.dedup.recal.is.pdf",sample=samples.reset_index().itertuples()),
         expand("reads/recalibrated/{sample.sample}.dedup.recal.hs.txt",sample=samples.reset_index().itertuples()),

@@ -1,3 +1,14 @@
+rule active_gatkdoc_plugin:
+    output:
+        touch("logs/multiqc/gatkdoc_plugin_activation.done")
+
+    params:
+        repo=config.get("repository").get("gatkdoc_plugin")
+
+    shell:
+        "git clone {params.repo} && cd gatkdoc_plugin && python setup.py install "
+
+
 rule multiqc:
     input:
         expand("qc/untrimmed_{unit.unit}.html",
@@ -7,18 +18,27 @@ rule multiqc:
         expand("reads/trimmed/{unit.unit}-R1.fq.gz_trimming_report.txt",
                unit=units.reset_index().itertuples()),
        # expand("reads/recalibrated/{sample.sample}.dedup.txt",sample=samples.reset_index().itertuples()),
-        expand("reads/recalibrated/{sample.sample}.recalibration_plots.pdf",sample=samples.reset_index().itertuples()),
         expand("reads/recalibrated/{sample.sample}.dedup.recal.hs.txt",sample=samples.reset_index().itertuples()),
         expand("reads/recalibrated/{sample.sample}.dedup.recal.is.txt",sample=samples.reset_index().itertuples())
 
     output:
         "qc/multiqc.html"
     params:
-        config.get("rules").get("multiqc").get("arguments")
+        params=config.get("rules").get("multiqc").get("arguments")
+        outdir="qc"
+        outname="multiqc.html"
+    conda:
+        "../envs/gatk.yaml"
     log:
         "logs/multiqc/multiqc.log"
-    wrapper:
-        "0.27.0/bio/multiqc"
+    shell:
+        "multiqc "
+        "{input} "
+        "{params.params} "
+        "-o {params.outdir} "
+        "-n {params.outname} "
+        ">& {log}"
+
 
 rule fastqc:
     input:

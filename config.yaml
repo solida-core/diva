@@ -90,12 +90,17 @@ paths:
     to_gvcfs: "path_to_gvcfs"
     to_recalibrated_vcf: "path_to_recalibrated_vcf"
 
+repository:
+    dima: "git@github.com:massiddamt/dima.git"
+    gatkdoc_plugin: "https://github.com/massiddamt/gatkdoc_plugin.git"
+
+
 rules:
     bwa-mem:
         arguments: "-M"
         platform: "illumina"
     multiqc:
-        arguments: ""
+        arguments: "--force "
     trim_galore_pe:
         arguments: "--paired -q 20"
     picard_MarkDuplicates:
