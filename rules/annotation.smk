@@ -1,6 +1,6 @@
 rule gatk_SelectVariants:
     input:
-        vcf=expand("{path_to_recal_vcf}/all.snp_recalibrated.indel_recalibrated.vcf", \
+        vcf=expand("{path_to_recal_vcf}/all.snp_recalibrated.indel_recalibrated.vcf.gz", \
                      path_to_recal_vcf=config.get("paths").get("to_recalibrated_vcf"))
     output:
         vcf="variant_calling/SelectVariants/selected.vcf"

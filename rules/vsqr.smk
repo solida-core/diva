@@ -5,6 +5,7 @@ def _get_recal_params(wildcards):
     if wildcards.type == "snp":
         return (
             "-mode SNP "
+            "--max-gaussians 6 "
             "-an QD -an MQ -an MQRankSum -an ReadPosRankSum -an FS -an SOR "
             "-resource:hapmap,known=false,training=true,truth=true,prior=15.0 {hapmap} "
             "-resource:omni,known=false,training=true,truth=true,prior=12.0 {omni} "
