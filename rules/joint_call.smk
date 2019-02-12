@@ -8,11 +8,11 @@ rule gatk_GenomicsDBImport:
 #    conda:
 #       "../envs/gatk.yaml"
     params:
-        custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=2),
+        custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=5),
         intervals = resolve_single_filepath(*references_abs_path(),config.get("intervals").get(config.get("intervals_default")).get("bedTarget")),
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
         gvcfs=_multi_flag_dbi("-V", expand("variant_calling/{sample.sample}.g.vcf.gz", sample=samples.reset_index().itertuples())),
-        db="db_"+ config.get("db_suffix")
+        db=config.get("db_suffix")
     log:
         "logs/gatk/GenomicsDBImport/genomicsdbi.info.log"
     benchmark:
@@ -35,13 +35,13 @@ rule gatk_GenotypeGVCFs:
         protected("variant_calling/all.vcf.gz")
     # wildcard_constraints:
     #     chr="[0-9XYM]+"
-    conda:
-       "../envs/gatk.yaml"
+#    conda:
+#       "../envs/gatk.yaml"
     params:
         custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=2),
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
         dbsnp=resolve_single_filepath(*references_abs_path(), config.get("known_variants").get("dbsnp")),
-        db="db_"+ config.get("db_suffix")
+        db=config.get("db_suffix")
     log:
         "logs/gatk/GenotypeGVCFs/all.info.log"
     benchmark:
