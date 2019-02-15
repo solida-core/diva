@@ -5,8 +5,8 @@ rule gatk_GenomicsDBImport:
                      sample=samples.reset_index().itertuples())
     output:
         touch("db/imports/pippo")
-#    conda:
-#       "../envs/gatk.yaml"
+    conda:
+       "../envs/gatk.yaml"
     params:
         custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=5),
         intervals = resolve_single_filepath(*references_abs_path(),config.get("intervals").get(config.get("intervals_default")).get("bedTarget")),
@@ -35,8 +35,8 @@ rule gatk_GenotypeGVCFs:
         protected("variant_calling/all.vcf.gz")
     # wildcard_constraints:
     #     chr="[0-9XYM]+"
-#    conda:
-#       "../envs/gatk.yaml"
+    conda:
+       "../envs/gatk.yaml"
     params:
         custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=2),
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
