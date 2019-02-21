@@ -63,7 +63,7 @@ The annotation step expects to found in the config file:
 The example below refer to the run_project.sh script, use a sample_file 
 labelled set1 in the config file and create a workdir with label set1 
 ```bash
-./run.project.sh -s Snakefile.annotation4vcfminer -c config.json -w set1 -p '--config samples_set=set1'
+./run.project.sh -s Snakefile.annotation -c config.yaml -w set1 -p '--config sample_set=set1'
 ```
 
 

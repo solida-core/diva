@@ -1,16 +1,7 @@
-rule active_gatkdoc_plugin:
-    output:
-        touch("logs/multiqc/gatkdoc_plugin_activation.done")
-
-    params:
-        repo=config.get("repository").get("gatkdoc_plugin")
-
-    shell:
-        "git clone {params.repo} && cd gatkdoc_plugin && python setup.py install "
-
 
 rule multiqc:
     input:
+        "logs/multiqc/gatkdoc_plugin_activation.done",
         expand("qc/untrimmed_{unit.unit}.html",
                unit=units.reset_index().itertuples()),
         expand("qc/trimmed_{unit.unit}.html",
@@ -24,11 +15,11 @@ rule multiqc:
     output:
         "qc/multiqc.html"
     params:
-        params=config.get("rules").get("multiqc").get("arguments")
-        outdir="qc"
+        params=config.get("rules").get("multiqc").get("arguments"),
+        outdir="qc",
         outname="multiqc.html"
     conda:
-        "../envs/gatk.yaml"
+        "../envs/multiqc.yaml"
     log:
         "logs/multiqc/multiqc.log"
     shell:

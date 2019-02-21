@@ -18,9 +18,9 @@ def _multi_flag_dbi(flag, arguments):
         return " ".join(flag + " " + arg for arg in arguments)
     return ''
 
-def _get_samples_set(samples_files, flag='-se'):   # before was -sf, deprecated from gatk4
+def _get_samples_set(samples_files, flag='-sn'):   #the file must be .args before was -sf, deprecated from gatk4
     arguments = []
-    set_arg=config.get("samples_set", None)
+    set_arg=config.get("sample_set", None)
     if set_arg and set_arg in samples_files:
         return "".join(flag + " " + samples_files[set_arg])
     for samples_set in samples_files.keys():

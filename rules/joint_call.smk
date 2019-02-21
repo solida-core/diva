@@ -4,7 +4,7 @@ rule gatk_GenomicsDBImport:
         gvcfs=expand("variant_calling/{sample.sample}.g.vcf.gz",
                      sample=samples.reset_index().itertuples())
     output:
-        touch("db/imports/pippo")
+        touch("db/imports/check")
     conda:
        "../envs/gatk.yaml"
     params:
@@ -30,7 +30,7 @@ rule gatk_GenomicsDBImport:
 
 rule gatk_GenotypeGVCFs:
     input:
-        "db/imports/pippo"
+        "db/imports/check"
     output:
         protected("variant_calling/all.vcf.gz")
     # wildcard_constraints:

@@ -7,10 +7,10 @@ analysis: "exome"
 
 references:
     basepath: "path_to_references_data"
-    provider: "_provider_"
-    release: "_release_"
+    provider: "reference_provider"
+    release: "reference_release"
 
-genome_fasta: "_genome_fasta_"
+genome_fasta: "_genome_fasta"
 
 known_variants:
     dbsnp: "known_variants/dbSNP146_chr.vcf"
@@ -78,10 +78,16 @@ intervals:
         probes: "intervals/Twist_Exome_Probes.HybridSelection"
         hsTarget: "intervals/Twist_Exome_Target.HybridSelection"
 
+    ccds:
+        bedTarget: "intervals/ccds_hg19_Target.bed"
+        probes: "intervals/ccds_hg19_Probes.HybridSelection"
+        hsTarget: "intervals/ccds_hg19_Target.HybridSelection"
+
 
 intervals_default: "AgilentSureSelectHumanAllExonV7"
 samples_intervals:
     DNA16-0389-R0001: "AgilentSureSelectHumanAllExonV7"
+intervals_ccds: "ccds"
 db_suffix: "db_"
 
 tmp_dir: "path_to_tmp_dir"

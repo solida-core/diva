@@ -13,22 +13,24 @@ units = pd.read_csv(config["units"], index_col=["unit"], dtype=str, sep="\t")
 
 ##### local rules #####
 
-#localrules: all, pre_rename_fastq_pe, post_rename_fastq_pe
+localrules: all, pre_rename_fastq_pe, post_rename_fastq_pe
 
 ##### target rules #####
+rule repos:
+    input:
+        "logs/dima/dima_clone.done",
+        "logs/multiqc/gatkdoc_plugin_activation.done"
 
 rule all:
     input:
-        "logs/dima/dima_clone.done",
-        "logs/multiqc/gatkdoc_plugin_activation.done",
         expand("reads/recalibrated/{sample.sample}.dedup.recal.bam", sample=samples.reset_index().itertuples()),
-        expand("reads/recalibrated/{sample.sample}.dedup.recal.is.pdf",sample=samples.reset_index().itertuples()),
         expand("reads/recalibrated/{sample.sample}.dedup.recal.hs.txt",sample=samples.reset_index().itertuples()),
+#        expand("reads/recalibrated/{sample.sample}.ccds.dedup.recal.hs.txt",sample=samples.reset_index().itertuples()),
+        "qc/multiqc.html",
         expand("variant_calling/{sample.sample}.g.vcf.gz",sample=samples.reset_index().itertuples()),
-        "db/imports/pippo",
+        "db/imports/check",
         "variant_calling/all.vcf.gz",
-#        "qc/multiqc.html",
-        "variant_calling/all.snp_recalibrated.indel_recalibrated.vcf.gz"
+#        "variant_calling/all.snp_recalibrated.indel_recalibrated.vcf.gz"
 
 
 
@@ -39,6 +41,8 @@ dima_path="dima/"
 
 include:
     include_prefix + "/functions.py"
+include:
+    include_prefix + "/clone_repository.smk"
 include:
     dima_path + include_prefix + "/trimming.smk"
 include:
