@@ -61,7 +61,8 @@ rule kggseq_doubleHits:
        vcf='annotation/kggseq/doubleHits.flt.vcf',
        log='annotation/kggseq/doubleHits.log',
        txt='annotation/kggseq/doubleHits.flt.txt',
-       ped='annotation/kggseq/selected.ped'
+       ped='annotation/kggseq/selected.ped',
+       dHit='annotation/kggseq/doubleHits.doublehit.gene.trios.flt.gty.txt'
     params:
        custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=5),
        cmd=config.get("rules").get("kggseq").get("cmd"),
