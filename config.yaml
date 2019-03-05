@@ -84,11 +84,11 @@ intervals:
         hsTarget: "intervals/ccds_hg19_Target.HybridSelection"
 
 
-intervals_default: "AgilentSureSelectHumanAllExonV7"
+intervals_default: "_enrichment_kit_"
 samples_intervals:
-    DNA16-0389-R0001: "AgilentSureSelectHumanAllExonV7"
+    DNA16-0389-R0001: "_enrichment_kit_"
 intervals_ccds: "ccds"
-db_suffix: "db_"
+db_suffix: "_db_suffix_"
 
 tmp_dir: "path_to_tmp_dir"
 paths:
