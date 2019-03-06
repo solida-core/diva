@@ -133,3 +133,13 @@ def get_units_by_sample(wildcards, samples, label='units', prefix='before',
                                                   [label]][0].split(',')]
 def get_odp(wildcards,samples,optical_dup='odp'):
     return "OPTICAL_DUPLICATE_PIXEL_DISTANCE={}".format(samples.loc[wildcards.sample, [optical_dup]].dropna()[0])
+
+
+
+def get_sample_by_set(wildcards, sets, label='sample'):
+    for sample_set in sets.loc[wildcards.set,[label]]:
+        sample_args=''
+        for x in sample_set.split(','):
+            sample_args= sample_args+' -sn '+x
+        print(sample_args)
+        return str(sample_args)
