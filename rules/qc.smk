@@ -42,7 +42,8 @@ rule fastqc:
         "logs/fastqc/{unit}.log"
     params: ""
     wrapper:
-        "0.27.0/bio/fastqc"
+        config.get("wrappers").get("fastqc")
+#        "0.27.0/bio/fastqc"
 
 rule fastqc_trimmed:
     input:
@@ -55,4 +56,5 @@ rule fastqc_trimmed:
         "logs/fastqc/{unit}.log"
     params: ""
     wrapper:
-        "0.27.0/bio/fastqc"
+        config.get("wrappers").get("fastqc")
+#        "0.27.0/bio/fastqc"

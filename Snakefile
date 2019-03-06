@@ -16,10 +16,9 @@ units = pd.read_csv(config["units"], index_col=["unit"], dtype=str, sep="\t")
 localrules: all, pre_rename_fastq_pe, post_rename_fastq_pe
 
 ##### target rules #####
-rule repos:
-    input:
-        "logs/dima/dima_clone.done",
-        "logs/multiqc/gatkdoc_plugin_activation.done"
+#rule repos:
+#    input:
+#        "logs/dima/dima_clone.done"
 
 rule all:
     input:
@@ -30,7 +29,7 @@ rule all:
         expand("variant_calling/{sample.sample}.g.vcf.gz",sample=samples.reset_index().itertuples()),
         "db/imports/check",
         "variant_calling/all.vcf.gz",
-#        "variant_calling/all.snp_recalibrated.indel_recalibrated.vcf.gz"
+        "variant_calling/all.snp_recalibrated.indel_recalibrated.vcf.gz"
 
 
 
