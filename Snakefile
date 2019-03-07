@@ -18,7 +18,7 @@ include:
 
 
 
-localrules: all, pre_rename_fastq_pe, post_rename_fastq_pe
+localrules: all, pre_rename_fastq_pe, post_rename_fastq_pe, vcf_to_tabular
 
 ##### target rules #####
 #rule repos:
