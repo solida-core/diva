@@ -1,10 +1,10 @@
 rule format_annotation:
     input:
-       'annotation/kggseq/selected.flt.txt'
+       'annotation/{set}/kggseq/selected.flt.txt'
     output:
-       cname='annotation/kggseq/annot.cname',
-       header='annotation/kggseq/annot.header',
-       tab='annotation/kggseq/annot.tab'
+       cname='annotation/{set}/kggseq/annot.cname',
+       header='annotation/{set}/kggseq/annot.header',
+       tab='annotation/{set}/kggseq/annot.tab'
     params:
         blocks=config.get("rules").get("format_annotation").get("blocks_file")
     script:
@@ -14,9 +14,9 @@ rule format_annotation:
 rule tabix:
     "Bgzip-compressed and tabix-indexed file with annotations"
     input:
-       'annotation/kggseq/annot.tab'
+       'annotation/{set}/kggseq/annot.tab'
     output:
-       'annotation/kggseq/annot.tab.gz'
+       'annotation/{set}/kggseq/annot.tab.gz'
     conda:
         "../envs/tabix.yaml"
     params:
@@ -28,12 +28,12 @@ rule tabix:
 
 rule bcftools_annotate_add:
     input:
-       cname='annotation/kggseq/annot.cname',
-       header='annotation/kggseq/annot.header',
-       gz='annotation/kggseq/annot.tab.gz',
-       vcf='annotation/kggseq/selected.flt.vcf'
+       cname='annotation/{set}/kggseq/annot.cname',
+       header='annotation/{set}/kggseq/annot.header',
+       gz='annotation/{set}/kggseq/annot.tab.gz',
+       vcf='annotation/{set}/kggseq/selected.flt.vcf'
     output:
-       'annotation/bcftools/selected.annot.vcf'
+       'annotation/{set}/bcftools/selected.annot.vcf'
     conda:
         "../envs/bcftools.yaml"
     params:
@@ -44,9 +44,9 @@ rule bcftools_annotate_add:
 
 rule bcftools_annotate_remove:
     input:
-       'annotation/bcftools/selected.annot.vcf'
+       'annotation/{set}/bcftools/selected.annot.vcf'
     output:
-       'annotation/bcftools/selected.annot.lightened.vcf'
+       'annotation/{set}/bcftools/selected.annot.lightened.vcf'
     conda:
         "../envs/bcftools.yaml"
     params:
@@ -59,9 +59,9 @@ rule bcftools_annotate_remove:
 
 rule bcftools_reheader:
     input:
-       'annotation/bcftools/selected.annot.lightened.vcf'
+       'annotation/{set}/bcftools/selected.annot.lightened.vcf'
     output:
-       'annotation/bcftools/selected.annot.lightened.reheaded.vcf'
+       'annotation/{set}/bcftools/selected.annot.lightened.reheaded.vcf'
     conda:
         "../envs/bcftools.yaml"
     params:
@@ -75,9 +75,9 @@ rule bcftools_reheader:
 
 rule vcf_to_tabular:
     input:
-       'annotation/bcftools/selected.annot.lightened.reheaded.vcf'
+       'annotation/{set}/bcftools/selected.annot.lightened.reheaded.vcf'
     output:
-       'annotation/bcftools/selected.annot.lightened.reheaded.tsv'
+       'annotation/{set}/bcftools/selected.annot.lightened.reheaded.tsv'
     params:
        script='../rules/scripts/vcf_to_tabular_futurized.py',
        params= "--do-not-split-sample --print-format "
@@ -89,9 +89,9 @@ rule vcf_to_tabular:
 
 rule tabular_to_excel_full:
     input:
-       'annotation/bcftools/selected.annot.lightened.reheaded.tsv'
+       'annotation/{set}/bcftools/selected.annot.lightened.reheaded.tsv'
     output:
-       'annotation/bcftools/selected.annot.lightened.reheaded.xlsx'
+       'annotation/{set}/bcftools/selected.annot.lightened.reheaded.xlsx'
     params:
        script='../rules/scripts/tabular_to_excel.py'
     conda:
@@ -103,9 +103,9 @@ rule tabular_to_excel_full:
 
 rule tabular_to_excel_doubleHits:
     input:
-       'annotation/kggseq/doubleHits.doublehit.gene.trios.flt.gty.txt'
+       'annotation/{set}/kggseq/doubleHits.doublehit.gene.trios.flt.gty.txt'
     output:
-       'annotation/kggseq/doubleHits.doublehit.gene.trios.flt.gty.xlsx'
+       'annotation/{set}/kggseq/doubleHits.doublehit.gene.trios.flt.gty.xlsx'
     params:
        script='../rules/scripts/tabular_to_excel.py'
     conda:

@@ -141,5 +141,5 @@ def get_sample_by_set(wildcards, sets, label='sample'):
         sample_args=''
         for x in sample_set.split(','):
             sample_args= sample_args+' -sn '+x
-        print(sample_args)
+        #print(sample_args)
         return str(sample_args)

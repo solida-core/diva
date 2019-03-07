@@ -53,3 +53,7 @@ Infine l'analisi viene eseguita specificando il set name e la cartella che si vu
 Fondamentale: l'argomento inserito "sample_set" deve essere assolutamente identico al nome del set indicato nel config.yaml. In caso contrario varranno selezionati tutti i set.
 
 
+per Fare plot:
+```bash
+snakemake --configfile config.yaml --dag | dot -Tpng > diva_4.1.png
+```
