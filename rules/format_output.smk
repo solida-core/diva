@@ -79,7 +79,7 @@ rule vcf_to_tabular:
     output:
        'annotation/{set}/bcftools/selected.annot.lightened.reheaded.tsv'
     params:
-       script='scripts/vcf_to_tabular_futurized.py',
+       script='../rules/scripts/vcf_to_tabular_futurized.py',
        params= "--do-not-split-sample --print-format "
 
     conda:
@@ -93,7 +93,7 @@ rule tabular_to_excel_full:
     output:
        'annotation/{set}/bcftools/selected.annot.lightened.reheaded.xlsx'
     params:
-       script='scripts/tabular_to_excel.py'
+       script='../rules/scripts/tabular_to_excel.py'
     conda:
         "../envs/excel.yaml"
     shell:
@@ -107,7 +107,7 @@ rule tabular_to_excel_doubleHits:
     output:
        'annotation/{set}/kggseq/doubleHits.doublehit.gene.trios.flt.gty.xlsx'
     params:
-       script='scripts/tabular_to_excel.py'
+       script='../rules/scripts/tabular_to_excel.py'
     conda:
        "../envs/excel.yaml"
     shell:
