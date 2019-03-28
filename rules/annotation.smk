@@ -31,18 +31,18 @@ rule gatk_SelectVariants:
 
 rule kggseq:
     input:
-       vcf="variant_calling/SelectVariants/{set}.selected.vcf"
+        vcf="variant_calling/SelectVariants/{set}.selected.vcf"
     output:
-       vcf='annotation/{set}/kggseq/selected.flt.vcf',
-       log='annotation/{set}/kggseq/selected.log',
-       txt='annotation/{set}/kggseq/selected.flt.txt',
-       ped='annotation/{set}/kggseq/selected.ped'
+        vcf='annotation/{set}/kggseq/selected.flt.vcf',
+        log='annotation/{set}/kggseq/selected.log',
+        txt='annotation/{set}/kggseq/selected.flt.txt',
+        ped='annotation/{set}/kggseq/selected.ped'
     params:
-       custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=5),
-       cmd=config.get("rules").get("kggseq").get("cmd"),
-       arguments=_multi_flag(config.get("rules").get("kggseq").get("arguments")),
-       ped_file=config.get("rules").get("kggseq").get("ped_file"),
-       out_basename='annotation/{set}/kggseq/selected'
+        custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=5),
+        cmd=config.get("rules").get("kggseq").get("cmd"),
+        arguments=_multi_flag(config.get("rules").get("kggseq").get("arguments")),
+        ped_file=config.get("rules").get("kggseq").get("ped_file"),
+        out_basename='annotation/{set}/kggseq/selected'
     benchmark:
         "benchmarks/kggseq/{set}.kggseq.txt"
     threads: conservative_cpu_count()
@@ -58,21 +58,21 @@ rule kggseq:
 
 rule kggseq_doubleHits:
     input:
-       vcf="variant_calling/SelectVariants/{set}.selected.vcf"
+        vcf="variant_calling/SelectVariants/{set}.selected.vcf"
     output:
-       vcf='annotation/{set}/kggseq/doubleHits.flt.vcf',
-       log='annotation/{set}/kggseq/doubleHits.log',
-       txt='annotation/{set}/kggseq/doubleHits.flt.txt',
-       ped='annotation/{set}/kggseq/selected.ped',
-       dHit='annotation/{set}/kggseq/doubleHits.doublehit.gene.trios.flt.gty.txt'
+        vcf='annotation/{set}/kggseq/doubleHits.flt.vcf',
+        log='annotation/{set}/kggseq/doubleHits.log',
+        txt='annotation/{set}/kggseq/doubleHits.flt.txt',
+        ped='annotation/{set}/kggseq/selected_doubleHits.ped',
+        dHit='annotation/{set}/kggseq/doubleHits.doublehit.gene.trios.flt.gty.txt'
     params:
-       custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=5),
-       cmd=config.get("rules").get("kggseq").get("cmd"),
-       arguments=_multi_flag(config.get("rules").get("kggseq").get("arguments")),
-       ped_file=config.get("rules").get("kggseq").get("ped_file"),
-       out_basename='annotation/{set}/kggseq/doubleHits'
+        custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=5),
+        cmd=config.get("rules").get("kggseq").get("cmd"),
+        arguments=_multi_flag(config.get("rules").get("kggseq").get("arguments")),
+        ped_file=config.get("rules").get("kggseq").get("ped_file"),
+        out_basename='annotation/{set}/kggseq/doubleHits'
     benchmark:
-        "benchmarks/kggseq/{set}.kggseq.txt"
+        "benchmarks/kggseq/{set}.kggseq_doubleHits.txt"
     threads: conservative_cpu_count()
     shell:
         "cp {params.ped_file} {output.ped} && "
