@@ -114,7 +114,8 @@ rules:
         arguments: "REMOVE_DUPLICATES=false ASSUME_SORTED=true CREATE_INDEX=true"
     picard_WGSMetrics:
         arguments: "MINIMUM_MAPPING_QUALITY=-1 MINIMUM_BASE_QUALITY=-1 READ_LENGTH=150 COUNT_UNPAIRED=true"
-
+    picard_gc:
+        params: ""
     gatk_BQSR:
         known_sites:
             - dbsnp

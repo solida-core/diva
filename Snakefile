@@ -31,6 +31,7 @@ rule all:
 #        expand("reads/recalibrated/{sample.sample}.dedup.recal.hs.txt",sample=samples.reset_index().itertuples()),
 #        expand("reads/recalibrated/{sample.sample}.ccds.dedup.recal.hs.txt",sample=samples.reset_index().itertuples()),
         "qc/multiqc.html",
+        "qc/kinship/multiqc_heatmap.html",
 #        expand("variant_calling/{sample.sample}.g.vcf.gz",sample=samples.reset_index().itertuples()),
 #        "db/imports/check",
 #        "variant_calling/all.vcf.gz",

@@ -8,16 +8,18 @@ rule multiqc:
                unit=units.reset_index().itertuples()),
         expand("reads/trimmed/{unit.unit}-R1.fq.gz_trimming_report.txt",
                unit=units.reset_index().itertuples()),
-       # expand("reads/recalibrated/{sample.sample}.dedup.txt",sample=samples.reset_index().itertuples()),
         expand("reads/recalibrated/{sample.sample}.dedup.recal.hs.txt",sample=samples.reset_index().itertuples()),
-        expand("reads/recalibrated/{sample.sample}.dedup.recal.is.txt",sample=samples.reset_index().itertuples())
+        expand("reads/recalibrated/{sample.sample}.dedup.recal.is.txt",sample=samples.reset_index().itertuples()),
+        expand("qc/picard/{sample.sample}_gc_bias_metrics.txt",sample=samples.reset_index().itertuples()),
+        expand("qc/picard/{sample.sample}_summary_metrics.txt",sample=samples.reset_index().itertuples())
 
     output:
         "qc/multiqc.html"
     params:
         params=config.get("rules").get("multiqc").get("arguments"),
         outdir="qc",
-        outname="multiqc.html"
+        outname="multiqc.html",
+        reheader="../reheader.txt"
     conda:
         "../envs/multiqc.yaml"
     log:
@@ -28,6 +30,7 @@ rule multiqc:
         "{params.params} "
         "-o {params.outdir} "
         "-n {params.outname} "
+        "--sample-names {params.reheader} "
         ">& {log}"
 
 
@@ -43,7 +46,7 @@ rule fastqc:
     params: ""
     wrapper:
         config.get("wrappers").get("fastqc")
-#        "0.27.0/bio/fastqc"
+
 
 rule fastqc_trimmed:
     input:
@@ -57,4 +60,29 @@ rule fastqc_trimmed:
     params: ""
     wrapper:
         config.get("wrappers").get("fastqc")
-#        "0.27.0/bio/fastqc"
+
+
+
+rule multiqc_heatmap:
+    input:
+        "qc/kinship/all.relatedness2"
+    output:
+        "qc/kinship/multiqc_heatmap.html"
+    params:
+        params=config.get("rules").get("multiqc").get("arguments"),
+        outdir="qc/kinship",
+        outname="multiqc_heatmap.html",
+        reheader="../reheader.txt"
+    conda:
+        "../envs/multiqc.yaml"
+    log:
+        "logs/multiqc/multiqc_heatmap.log"
+    shell:
+        "multiqc "
+        "{input} "
+        "{params.params} "
+        "-m vcftools "
+        "-o {params.outdir} "
+        "-n {params.outname} "
+        "--sample-names {params.reheader} "
+        ">& {log}"
