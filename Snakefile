@@ -76,3 +76,5 @@ include:
     include_prefix + "/format_output.smk"
 include:
     include_prefix + "/identity_check.smk"
+include:
+    include_prefix + "/coverage.smk"
