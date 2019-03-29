@@ -37,7 +37,7 @@ rule check_relationships:
         "logs/vcftools/relatedness2.log"
     shell:
         "vcftools "
-        "--gvcf {input} "
+        "--gzvcf {input} "
         "--out {params.out_basename} "
         "--relatedness2 "
         ">& {log}"
