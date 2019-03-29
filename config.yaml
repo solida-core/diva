@@ -89,6 +89,7 @@ intervals_default: "_enrichment_kit_"
 samples_intervals:
     DNA16-0389-R0001: "_enrichment_kit_"
 intervals_ccds: "ccds"
+interval_target_list: "BED FILE WITH TARGET POSITIONS FOR COVERAGE CHECK"
 db_suffix: "_db_suffix_"
 
 tmp_dir: "path_to_tmp_dir"
