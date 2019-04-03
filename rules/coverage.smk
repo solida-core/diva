@@ -31,3 +31,20 @@ rule bedtools_select_regions_coverage:
         "-b {params.interval} "
         "-a {input} "
         "> {output} "
+
+
+rule coverage_heatmap:
+    input:
+        expand("qc/bedtools/{sample.sample}.coverage.tsv", sample=samples.reset_index().itertuples())
+    output:
+        "qc/bedtools/bedtools_coverage_summary.tsv",
+        report("qc/bedtools/heatmap_enriched_regions.png", category="COVERAGE"),
+        report("qc/bedtools/heatmap_enriched_regions_low_coverage.png", category="COVERAGE")
+    params:
+        path="qc/bedtools/",
+        sample_files=config.get("sample_info"),
+        reheader="reheader.tsv"
+    conda:
+        "../envs/heatmap.yaml"
+    script:
+        "scripts/heatmap.R"
