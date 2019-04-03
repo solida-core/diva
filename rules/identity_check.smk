@@ -9,7 +9,7 @@ rule picard_mendelian_violations:
         custom=java_params(tmp_dir=config.get("paths").get("to_tmp"), multiply_by=5),
         params="DP=20"
     log:
-        "logs/picard/FindMendelianViolations/{sample}.mendel.log"
+        "logs/picard/FindMendelianViolations/{set}.mendel.log"
     conda:
         "../envs/picard.yaml"
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)

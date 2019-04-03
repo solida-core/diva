@@ -161,6 +161,8 @@ rules:
         params: "-x INFO/ReferenceAlternativeAllele,INFO/rsID,INFO/SIFT_score,INFO/Polyphen2_HDIV_score,INFO/Polyphen2_HVAR_score,INFO/LRT_score,INFO/MutationTaster_score,INFO/MutationAssessor_score,INFO/FATHMM_score,INFO/PROVEAN_score,INFO/M-CAP_score,INFO/MutPred_score,INFO/CADD_raw,INFO/fathmm-MKL_coding_score,INFO/Eigen-raw,INFO/VEST3_score,INFO/GenoCanyon_score,INFO/integrated_fitCons_score,INFO/MetaSVM_score,INFO/clinvar_trait,INFO/clinvar_golden_stars,INFO/DiseaseCausalProb_ExoVarTrainedModel,INFO/IsRareDiseaseCausal_ExoVarTrainedModel,INFO/BestCombinedTools:OptimalCutoff:TP:TN,INFO/GeneMIMid,INFO/DGVIDs,INFO/DS,INFO/END,INFO/InbreedingCoeff,INFO/MLEAC,INFO/MLEAF,INFO/NEGATIVE_TRAIN_SITE,INFO/POSITIVE_TRAIN_SITE,INFO/RAW_MQ,INFO/SOR,INFO/VQSLOD,INFO/culprit,INFO/BaseQRankSum,INFO/ClippingRankSum,INFO/ExcessHet,INFO/FS,INFO/HaplotypeScore,INFO/MQRankSum,INFO/ReadPosRankSum"
     bcftools_reheader:
         reheader: "path_to_reheader_file/reheader.txt"
+    bedtools_coverage:
+        params: ""
 
 
 wrappers:
