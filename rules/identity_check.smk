@@ -20,7 +20,7 @@ rule picard_mendelian_violations:
         "PED={input.ped} "
         "O={output.metrics} "
         "{params.params} "
-        "THREAD_COUNT {threads} "
+        "THREAD_COUNT={threads} "
         ">& {log} "
 
 
