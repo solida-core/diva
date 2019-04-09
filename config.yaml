@@ -108,7 +108,7 @@ rules:
         arguments: "-M"
         platform: "illumina"
     multiqc:
-        arguments: "--force "
+        arguments: "--force --cl_config 'picard_config: { general_stats_target_coverage: [10,20,30] }' "
     trim_galore_pe:
         arguments: "--paired -q 20"
     picard_MarkDuplicates:

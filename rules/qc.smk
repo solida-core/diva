@@ -1,13 +1,21 @@
 
+rule preprare_samples:
+    input:
+        config.get("rules").get("bcftools_reheader").get("reheader")
+    output:
+        "reheader.tsv"
+    shell:
+        "perl -pe 's/ /\t/g' {input} > {output} "
+
+
+
 rule multiqc:
     input:
         "logs/multiqc/gatkdoc_plugin_activation.done",
-        expand("qc/untrimmed_{unit.unit}.html",
-               unit=units.reset_index().itertuples()),
-        expand("qc/trimmed_{unit.unit}.html",
-               unit=units.reset_index().itertuples()),
-        expand("reads/trimmed/{unit.unit}-R1.fq.gz_trimming_report.txt",
-               unit=units.reset_index().itertuples()),
+        expand("qc/untrimmed_{unit.unit}.html", unit=units.reset_index().itertuples()),
+        expand("qc/trimmed_{unit.unit}.html", unit=units.reset_index().itertuples()),
+        expand("reads/trimmed/{unit.unit}-R1.fq.gz_trimming_report.txt", unit=units.reset_index().itertuples()),
+        expand("reads/dedup/{sample.sample}.metrics.txt",sample=samples.reset_index().itertuples()),
         expand("reads/recalibrated/{sample.sample}.dedup.recal.hs.txt",sample=samples.reset_index().itertuples()),
         expand("reads/recalibrated/{sample.sample}.dedup.recal.is.txt",sample=samples.reset_index().itertuples()),
         expand("qc/picard/{sample.sample}_gc_bias_metrics.txt",sample=samples.reset_index().itertuples()),
@@ -19,7 +27,7 @@ rule multiqc:
         params=config.get("rules").get("multiqc").get("arguments"),
         outdir="qc",
         outname="multiqc.html",
-        reheader="../reheader.txt"
+        reheader="reheader.tsv"
     conda:
         "../envs/multiqc.yaml"
     log:
@@ -72,7 +80,7 @@ rule multiqc_heatmap:
         params=config.get("rules").get("multiqc").get("arguments"),
         outdir="qc/kinship",
         outname="multiqc_heatmap.html",
-        reheader="../reheader.txt"
+        reheader="reheader.tsv"
     conda:
         "../envs/multiqc.yaml"
     log:
