@@ -1,6 +1,6 @@
 # DiVA exome
-Snakemake pipeline to identify genomic variants from exome data, using GATK3 
-variant calling following the best practices guide from BroadInstitute.  
+Snakemake pipeline to identify genomic variants from exome sequencing data, using GATK4 
+variant calling according to BroadInstitute best practices.  
 
 ## Requirements
 The pipeline's requirements are specified into the requirements.txt file and 
@@ -103,4 +103,4 @@ to be found under the given path, and two units A and B have been sequenced with
 Note the separation between samples and units that allows to have more than
 one sequencing run for each sample, or multiple lanes per sample.
 
-![Workflow](./images/dag.svg)
+![Workflow](./images/diva.png)
