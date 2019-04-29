@@ -1,5 +1,5 @@
 [![depends](https://img.shields.io/badge/depends%20from-bioconda-brightgreen.svg)](http://bioconda.github.io/)
-![matteo](https://img.shields.io/badge/snakemake-5.3-brightgreen.svg)
+[![matteo](https://img.shields.io/badge/snakemake-5.3-brightgreen.svg)](https://snakemake.readthedocs.io/en/stable/)
 
 # DiVA
 DiVA (**DNA .......Variant?** ) is a Snakemake-based pipeline for NGS Exome Sequencing data anlysis.
@@ -8,18 +8,18 @@ This pipeline follows GATK Best Practices for Germline Variant Discovery.
 
 
 ## Workflow
-DiVA workflow comprise three analysis phases:
+DiVA workflow consists of three main analysis phases:
  * [_Mapping_](https://github.com/solida-core/dima/blob/master/README.md): paired-end reads in fastq format are aligned against a reference genome to produce a deduplicated and recalibrated BAM file
- * [Configuration](#snakefile)
- * _Variant_, from bam through all the gvcf toghether to a recalibrated vcf  
 
- * _Annotation_, to produce a callset ready for downstream genetic analysis.  
+ * [_Variant Calling_](): from bam files is performed a joint call and a recalibration of discovered variants
+ 
+ * [_Annotation_](): perfomed for each set specified in an accessory file 
 
-
+[graph](images/diva.png)
 ## Informazioni necessarie
  * sample e units in formato tsv
  * kit di enrichment utilizzato
- 
+ * [Configuration](#snakefile) 
 ## Post-Deploy Operations
 All'interno della cartella di progetto bisogna verificare che i dati nel config.yaml siano corretti (reference, path vari).
 Fondamentale: 
