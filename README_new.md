@@ -10,7 +10,7 @@ This pipeline follows GATK Best Practices for Germline Variant Discovery.
 ## Workflow
 DiVA workflow comprise three analysis phases:
  * [_Mapping_](https://github.com/solida-core/dima/blob/master/README.md): paired-end reads in fastq format are aligned against a reference genome to produce a deduplicated and recalibrated BAM file
- * [Snakefile](#Snakefile)
+ * [Configuration](#snakefile)
  * _Variant_, from bam through all the gvcf toghether to a recalibrated vcf  
 
  * _Annotation_, to produce a callset ready for downstream genetic analysis.  
@@ -27,7 +27,7 @@ Fondamentale:
  * db_suffix: aggiungere il suffisso del progetto (es. matteo --> db_matteo)
  * tmp_dir: verificare che sia stato inserito correttamente per evitare di saturare la tmp di un nodo
  
-# Snakefile
+## Snakefile
 Nella pipeline sono presenti 2 snakefile: Snakefile e Snakefile.annotation. Il primo è deputato all'analisi dal fq al vcf non annotato. L'altro performa l'annotazione.
 
 ## Prima parte analisi
