@@ -13,7 +13,7 @@ Software dependencies are specified into the `environment.yaml` file and directl
 
 ### Pipeline Overview
 The pipeline workflow is composed by three major analysis sections:
- * [_Mapping_](https://github.com/massiddamt/docs/tree/master/dima/README.md): paired-end reads in fastq format are aligned against a reference genome to produce a deduplicated and recalibrated BAM file. This section is executed by DiMA pipeline.
+ * [_Mapping_](docs/diva_workflow.md#mapping): paired-end reads in fastq format are aligned against a reference genome to produce a deduplicated and recalibrated BAM file. This section is executed by DiMA pipeline.
 
  * [_Variant Calling_](docs/diva_workflow.md#variant-calling): a joint call is performed from all project's bam files
  
@@ -35,7 +35,7 @@ A complete view of the analysis workflow is provided by the pipeline's [graph](i
 3. [Required Files:]()
     * [Reference files](docs/reference_files.md)
     * [User files](docs/user_files.md)
-4. [Quick-Start](docs/installation.md)
+4. [Quick-Start](docs/pipeline_usage.md)
 5. [Usage:]()
     * [Manual Snakemake Usage](docs/diva_snakemake.md)
     * [SOLIDA:]()
@@ -49,6 +49,4 @@ A complete view of the analysis workflow is provided by the pipeline's [graph](i
 
 ### Contact us
 [support@solida-core](mailto:m.massidda@crs4.it) 
-
-
 
