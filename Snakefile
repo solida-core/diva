@@ -5,25 +5,19 @@ min_version("5.1.2")
 
 
 ##### load config and sample sheets #####
-
 #configfile: "config.yaml"
 
+## USER FILES ##
 samples = pd.read_csv(config["samples"], index_col="sample", sep="\t")
 units = pd.read_csv(config["units"], index_col=["unit"], dtype=str, sep="\t")
 sets = pd.read_csv(config["sets"], index_col=["set"], dtype=str, sep="\t")
+## ---------- ##
+
 ##### local rules #####
 include:
     "rules/functions.py"
 
-
-
-
 localrules: all, pre_rename_fastq_pe, post_rename_fastq_pe, vcf_to_tabular
-
-##### target rules #####
-#rule repos:
-#    input:
-#        "logs/dima/dima_clone.done"
 
 rule all:
     input:
@@ -46,7 +40,6 @@ rule all:
 
 include_prefix="rules"
 dima_path="dima/"
-
 
 include:
     include_prefix + "/clone_repository.smk"
