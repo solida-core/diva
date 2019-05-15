@@ -20,7 +20,7 @@ The pipeline workflow is composed by three major analysis sections:
  * [_Annotation_](docs/diva_workflow.md#annotation): discovered variants are annotated and results are converted in a set of different output file formats enabling downstream analysis for all kind of users
  
 A complete view of the analysis workflow is provided by the pipeline's [graph](images/diva.png).
-![Workflow](./images/diva.png)
+
 
 ### Pipeline Handbook
 **DiVA** pipeline documentation can be found in the `docs/` directory:
@@ -35,8 +35,7 @@ A complete view of the analysis workflow is provided by the pipeline's [graph](i
 3. [Required Files:]()
     * [Reference files](docs/reference_files.md)
     * [User files](docs/user_files.md)
-4. [Quick-Start](docs/pipeline_usage.md)
-5. [Usage:]()
+4. [Running the pipeline:]()
     * [Manual Snakemake Usage](docs/diva_snakemake.md)
     * [SOLIDA:]()
         * [CLI - Command Line Interface](https://github.com/solida-core/solida/blob/master/README.md)
@@ -48,5 +47,4 @@ A complete view of the analysis workflow is provided by the pipeline's [graph](i
 
 
 ### Contact us
-[support@solida-core](mailto:m.massidda@crs4.it) 
-
+[support@solida-core](mailto:m.massidda@crs4.it)

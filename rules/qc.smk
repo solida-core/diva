@@ -3,7 +3,8 @@ rule preprare_samples:
     input:
         config.get("rules").get("bcftools_reheader").get("reheader")
     output:
-        "reheader.tsv"
+        "reheader.tsv",
+        touch("qc/reheader.done")
     shell:
         "perl -pe 's/ /\t/g' {input} > {output} "
 
@@ -11,9 +12,9 @@ rule preprare_samples:
 
 rule multiqc:
     input:
-        "logs/multiqc/gatkdoc_plugin_activation.done",
-        expand("qc/untrimmed_{unit.unit}.html", unit=units.reset_index().itertuples()),
-        expand("qc/trimmed_{unit.unit}.html", unit=units.reset_index().itertuples()),
+        "qc/reheader.done",
+        expand("qc/fastqc/untrimmed_{unit.unit}.html", unit=units.reset_index().itertuples()),
+        expand("qc/fastqc/trimmed_{unit.unit}.html", unit=units.reset_index().itertuples()),
         expand("reads/trimmed/{unit.unit}-R1.fq.gz_trimming_report.txt", unit=units.reset_index().itertuples()),
         expand("reads/dedup/{sample.sample}.metrics.txt",sample=samples.reset_index().itertuples()),
         expand("reads/recalibrated/{sample.sample}.dedup.recal.hs.txt",sample=samples.reset_index().itertuples()),
@@ -44,13 +45,13 @@ rule multiqc:
 
 rule fastqc:
     input:
-       "reads/{unit}-R1.fq.gz",
-       "reads/{unit}-R2.fq.gz"
+       "reads/untrimmed/{unit}-R1.fq.gz",
+       "reads/untrimmed/{unit}-R2.fq.gz"
     output:
-        html="qc/untrimmed_{unit}.html",
-        zip="qc/untrimmed_{unit}_fastqc.zip"
+        html="qc/fastqc/untrimmed_{unit}.html",
+        zip="qc/fastqc/untrimmed_{unit}_fastqc.zip"
     log:
-        "logs/fastqc/{unit}.log"
+        "logs/fastqc/untrimmed/{unit}.log"
     params: ""
     wrapper:
         config.get("wrappers").get("fastqc")
@@ -61,10 +62,10 @@ rule fastqc_trimmed:
        "reads/trimmed/{unit}-R1-trimmed.fq.gz",
        "reads/trimmed/{unit}-R2-trimmed.fq.gz"
     output:
-        html="qc/trimmed_{unit}.html",
-        zip="qc/trimmed_{unit}_fastqc.zip"
+        html="qc/fastqc/trimmed_{unit}.html",
+        zip="qc/fastqc/trimmed_{unit}_fastqc.zip"
     log:
-        "logs/fastqc/{unit}.log"
+        "logs/fastqc/trimmed/{unit}.log"
     params: ""
     wrapper:
         config.get("wrappers").get("fastqc")
@@ -73,7 +74,8 @@ rule fastqc_trimmed:
 
 rule multiqc_heatmap:
     input:
-        "qc/kinship/all.relatedness2"
+        "qc/kinship/all.relatedness2",
+        "qc/reheader.done"
     output:
         "qc/kinship/multiqc_heatmap.html"
     params:
