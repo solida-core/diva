@@ -30,7 +30,7 @@ rule check_relationships:
     output:
         "qc/kinship/all.relatedness2"
     params:
-        out_basename="all"
+        out_basename="qc/kinship/all"
     conda:
         "../envs/vcftools.yaml"
     log:
