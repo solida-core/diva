@@ -7,7 +7,9 @@ The pipeline workflow is composed by three major analysis sections:
  * [_Variant Calling_](#variant-calling): a joint call is performed from all project's bam files
  
  * [_Annotation_](#annotation): discovered variants are annotated and results are converted in a set of different output file formats enabling downstream analysis for all kind of users
- 
+
+Parallely, statistics collected during these steps are used to generate reports for [Quality Control](#quality-control).
+
 A complete view of the analysis workflow is provided by the pipeline's [graph](images/diva.png).
 
 _________________________________
@@ -15,31 +17,27 @@ _________________________________
 ### Mapping
 * Trimming
 * Alingment
-* Sort
-* Merge
 * MarkDuplicates
-* Recalibration
-
+* Base Recalibration
 
 
 ### Variant Calling
-* gVCF
-* joint call
-* variant recalibration
+* Call Variants Per-Pample in gVCF mode
+* Joint-Call Cohort (Genotype gVCFs)
+* Variant Recalibration
 
 
 ### Annotation
-* kggseq
-* bcftools annotation
-* output format
+* Variant Filtering and Annotation (gene annotation, MAF, pathogeniticy, filter by genetic inheritance...)
+* Multiple output format conversion: vcf, tsv, xlsx
 
 
-### QC
-* MULTIQC:
+### Quality Control
+* MULTIQC report including:
     * FASTQC
     * Picard HsMetrics
     * Picard InsertSize
     * Picard GC bias metrics
-    * VCFtools relatedness
-* Bedtools Coverage    
-* Picard Mendelian Violations
+    * VCFtools relatedness --> **NEW FEATURE!** Check for sample relationships to investigate possible contamination 
+* Coverage Heatmap for Target Regions    
+* Check for Mendelian Violations

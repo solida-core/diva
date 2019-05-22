@@ -19,18 +19,21 @@ The pipeline workflow is composed by three major analysis sections:
  
  * [_Annotation_](docs/diva_workflow.md#annotation): discovered variants are annotated and results are converted in a set of different output file formats enabling downstream analysis for all kind of users
  
+Parallely, statistics collected during these steps are used to generate reports for [Quality Control](#quality-control).
+
 A complete view of the analysis workflow is provided by the pipeline's [graph](images/diva.png).
+
 
 
 ### Pipeline Handbook
 **DiVA** pipeline documentation can be found in the `docs/` directory:
 
 
-1. [Pipeline Structure:](docs/pipeline_structure.md)
-    * [Snakefile](docs/pipeline_structure.md#snakefile)
-    * [Configfile](docs/pipeline_structure.md#configfile)
-    * [Rules](docs/pipeline_structure.md#rules)
-    * [Envs](docs/pipeline_structure.md#envs)
+1. [Pipeline Structure:](https://github.com/solida-core/docs/blob/master/pipeline_structure.md)
+    * [Snakefile](https://github.com/solida-core/docs/blob/master/pipeline_structure.md#snakefile)
+    * [Configfile](https://github.com/solida-core/docs/blob/master/pipeline_structure.md#configfile)
+    * [Rules](https://github.com/solida-core/docs/blob/master/pipeline_structure.md#rules)
+    * [Envs](https://github.com/solida-core/docs/blob/master/pipeline_structure.md#envs)
 2. [Pipeline Workflow](docs/diva_workflow.md)
 3. [Required Files:]()
     * [Reference files](docs/reference_files.md)
@@ -47,4 +50,4 @@ A complete view of the analysis workflow is provided by the pipeline's [graph](i
 
 
 ### Contact us
-[support@solida-core](mailto:m.massidda@crs4.it)
+[support@solida-core](mailto:m.massidda@crs4.it) 
