@@ -28,7 +28,7 @@ source activate my_environment_name
 #### Run Snakemake
 
 Now that the virtual environment is created and activated, it is possible to execute the pipeline.
-Starting from final output indicated in the `rule_all` section of the [Snakefile](pipeline_structure.md#snakefile), Snakemake will check for rules and input required for producing those files.
+Starting from final output indicated in the `rule_all` section of the [Snakefile](https://github.com/solida-core/docs/blob/master/pipeline_structure.md#snakefile), Snakemake will check for rules and input required for producing those files.
 In this way, it is possible to perform a test-check called `dryrun`:
 ```bash
 snakemake --snakefile Snakefile --configfile my_config.yaml --dryrun
