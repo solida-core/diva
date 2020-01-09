@@ -1,6 +1,6 @@
-samples: samples.tsv
-units: units.tsv
-sets: sets.tsv
+samples: ../samples.tsv
+units: ../units.tsv
+sets: ../sets.tsv
 
 analysis: "exome"
 
