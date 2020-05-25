@@ -14,11 +14,13 @@ rule delivery_completed:
 
 rule delivery_bam:
     input:
-        bam=lambda wildcards: get_sample_by_client(wildcards, reheader, label="LIMS", structure='reads/recalibrated/{sample}.dedup.recal.bam'),
-        bai=lambda wildcards: get_sample_by_client(wildcards, reheader, label="LIMS", structure='reads/recalibrated/{sample}.dedup.recal.bai')
+        bam=lambda wildcards: get_sample_by_client(wildcards, reheader, label=config.get("internal_sid"), structure='reads/recalibrated/{sample}.dedup.recal.bam'),
+        bai=lambda wildcards: get_sample_by_client(wildcards, reheader, label=config.get("internal_sid"), structure='reads/recalibrated/{sample}.dedup.recal.bai')
     output:
         bam="delivery/bams/{Client}.bam",
         bai="delivery/bams/{Client}.bam.bai"
+    message:
+        "Copying and renaming the following BAM files in the DELIVERY directory: {input}"
     shell:
         "cp {input.bam} {output.bam} && "
         "cp {input.bai} {output.bai} "
@@ -34,6 +36,8 @@ rule delivery_annotation:
         vcf="delivery/annotation/{set}/{set}.selected.annot.lightened.vcf",
 	tsv="delivery/annotation/{set}/{set}.selected.annot.lightened.tsv",
 	xlsx=report("delivery/annotation/{set}/{set}.selected.annot.lightened.xlsx", caption="../report/bcftools.rst", category="ANNOTATION")
+    message:
+        "Copying and renaming the following ANNOTATION files in the DELIVERY directory: {input}"
     shell:
         "cp {input.vcf} {output.vcf} && "
         "cp {input.tsv} {output.tsv} && "

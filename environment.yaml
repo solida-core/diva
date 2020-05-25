@@ -4,7 +4,7 @@ channels:
 - defaults
 - anaconda
 dependencies:
-- snakemake==5.3.0
+- snakemake==5.10.0
 - drmaa==0.7.8
 - r-base=3.5.1
 - r-gsalib=2.1

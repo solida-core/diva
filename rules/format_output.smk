@@ -65,7 +65,7 @@ rule bcftools_reheader:
     conda:
         "../envs/bcftools.yaml"
     params:
-        reheader=config.get("rules").get("bcftools_reheader").get("reheader")
+        reheader=config.get("reheader")
     shell:
         "bcftools reheader "
         "-s {params.reheader} "

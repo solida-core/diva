@@ -1,7 +1,7 @@
 import pandas as pd
 from snakemake.utils import validate, min_version
 ##### set minimum snakemake version #####
-min_version("5.1.2")
+min_version("5.10.0")
 
 
 ##### load config and sample sheets #####
@@ -11,6 +11,9 @@ min_version("5.1.2")
 samples = pd.read_csv(config["samples"], index_col="sample", sep="\t")
 units = pd.read_csv(config["units"], index_col=["unit"], dtype=str, sep="\t")
 sets = pd.read_csv(config["sets"], index_col=["set"], dtype=str, sep="\t")
+reheader = pd.read_csv(config["reheader"],index_col="Client", dtype=str, sep="\t")
+reheader = reheader[reheader["LIMS"].isin(samples.index.values)]
+
 ## ---------- ##
 
 ##### local rules #####
@@ -42,8 +45,6 @@ include_prefix="rules"
 dima_path="dima/"
 
 include:
-    include_prefix + "/clone_repository.smk"
-include:
     dima_path + include_prefix + "/trimming.smk"
 include:
     dima_path + include_prefix + "/alignment.smk"
@@ -53,8 +54,7 @@ include:
     dima_path + include_prefix + "/picard.smk"
 include:
     dima_path + include_prefix + "/bsqr.smk"
-if config.get("analysis")=="exome":
-   include:
+include:
        include_prefix + "/picard_stats.smk"
 include:
     include_prefix + "/call_variants.smk"

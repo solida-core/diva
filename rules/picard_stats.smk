@@ -111,7 +111,7 @@ rule picard_gc_bias:
         summary="qc/picard/{sample}_summary_metrics.txt",
         out="qc/picard/{sample}_gc_bias_metrics.txt"
     params:
-        custom=java_params(tmp_dir=config.get("paths").get("to_tmp"), multiply_by=5),
+        custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=5),
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
         param=config.get("rules").get("picard_gc").get("params"),
         tmp_dir=config.get("tmp_dir")

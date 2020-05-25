@@ -36,8 +36,8 @@ rule gatk_VariantRecalibrator:
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta"))
     log:
         "variant_calling/log/{prefix}.{type}_recalibrate_info.log"
-#    conda:
-#       "../envs/gatk.yaml"
+    conda:
+        "../envs/gatk.yaml"
     benchmark:
         "benchmarks/gatk/VariantRecalibrator/{prefix}.{type}_recalibrate_info.txt"
     shell:
@@ -59,8 +59,8 @@ rule gatk_ApplyVQSR:
         tranches="variant_calling/{prefix}.{type}.tranches"
     output:
         "variant_calling/{prefix}.{type,(snp|indel)}_recalibrated.vcf.gz"
-#    conda:
-#       "../envs/gatk.yaml"
+    conda:
+        "../envs/gatk.yaml"
     params:
         mode=lambda wildcards: wildcards.type.upper(),
         custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=2),

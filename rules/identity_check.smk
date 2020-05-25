@@ -6,7 +6,7 @@ rule picard_mendelian_violations:
     output:
         metrics="annotation/{set}/kggseq/{set}.mendelian_violations.txt"
     params:
-        custom=java_params(tmp_dir=config.get("paths").get("to_tmp"), multiply_by=5),
+        custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=5),
         params="DP=20"
     log:
         "logs/picard/FindMendelianViolations/{set}.mendel.log"

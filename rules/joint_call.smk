@@ -33,8 +33,6 @@ rule gatk_GenotypeGVCFs:
         "db/imports/check"
     output:
         protected("variant_calling/all.vcf.gz")
-    # wildcard_constraints:
-    #     chr="[0-9XYM]+"
     conda:
        "../envs/gatk.yaml"
     params:
