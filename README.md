@@ -19,7 +19,7 @@ The pipeline workflow is composed by three major analysis sections:
  
  * [_Annotation_](docs/diva_workflow.md#annotation): discovered variants are annotated and results are converted in a set of different output file formats enabling downstream analysis for all kind of users
  
-Parallely, statistics collected during these steps are used to generate reports for [Quality Control](#quality-control).
+Parallely, statistics collected during these steps are used to generate reports for [Quality Control](docs/diva_workflow.md#quality-control).
 
 A complete view of the analysis workflow is provided by the pipeline's [graph](images/diva.png).
 
@@ -35,7 +35,7 @@ A complete view of the analysis workflow is provided by the pipeline's [graph](i
     * [Rules](https://github.com/solida-core/docs/blob/master/pages/handbook/pipeline_struct.md#rules)
     * [Envs](https://github.com/solida-core/docs/blob/master/pages/handbook/pipeline_struct.md#envs)
 2. [Pipeline Workflow](docs/diva_workflow.md)
-3. [Required Files:]()
+3. Required Files:
     * [Reference files](docs/reference_files.md)
     * [User files](docs/user_files.md)
 4. Running the pipeline:
