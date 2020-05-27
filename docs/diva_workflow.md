@@ -10,34 +10,34 @@ The pipeline workflow is composed by three major analysis sections:
 
 Parallely, statistics collected during these steps are used to generate reports for [Quality Control](#quality-control).
 
-A complete view of the analysis workflow is provided by the pipeline's [graph](images/diva.png).
+A complete view of the analysis workflow is provided by the pipeline's [graph](../images/diva.png).
 
 _________________________________
 
 ### Mapping
-* Trimming
-* Alingment
-* MarkDuplicates
+* Trimming by quality
+* Alignment
+* Mark Duplicates
 * Base Recalibration
 
 
 ### Variant Calling
-* Call Variants Per-Pample in gVCF mode
+* Call Variants Per-Sample in gVCF mode
 * Joint-Call Cohort (Genotype gVCFs)
-* Variant Recalibration
+* Variant Quality Score Recalibration
 
 
 ### Annotation
-* Variant Filtering and Annotation (gene annotation, MAF, pathogeniticy, filter by genetic inheritance...)
+* Variant Filtering and Annotation (genes, transcripts, domains, phenotypes, OMIM, ClinVar, MAF, pathogeniticy, conservation, filter by genetic inheritance...)
 * Multiple output format conversion: vcf, tsv, xlsx
 
 
 ### Quality Control
 * MULTIQC report including:
-    * FASTQC
+    * FASTQC pre- and post-trimming
     * Picard HsMetrics
     * Picard InsertSize
     * Picard GC bias metrics
-    * VCFtools relatedness --> **NEW FEATURE!** Check for sample relationships to investigate possible contamination 
+    * VCFtools relatedness --> **NEW FEATURE!** Check for sample relationships to investigate sample swap and contamination
 * Coverage Heatmap for Target Regions    
 * Check for Mendelian Violations
