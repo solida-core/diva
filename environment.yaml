@@ -2,14 +2,6 @@ channels:
 - bioconda
 - conda-forge
 - defaults
-- anaconda
 dependencies:
 - snakemake==5.10.0
 - drmaa==0.7.8
-- r-base=3.5.1
-- r-gsalib=2.1
-- r-ggplot2=3.0
-- r-reshape=0.8.7
-- r-gplots=3.0.1
-- gxx_linux-64
-- gatk4=4.1.0.0

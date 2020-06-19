@@ -29,14 +29,14 @@ rule all:
 #        expand("reads/recalibrated/{sample.sample}.ccds.dedup.recal.hs.txt",sample=samples.reset_index().itertuples()),
         "qc/multiqc.html",
         "qc/kinship/multiqc_heatmap.html",
-        "qc/bedtools/heatmap_enriched_regions.png",
+#        "qc/bedtools/heatmap_enriched_regions.png",
 #        expand("variant_calling/{sample.sample}.g.vcf.gz",sample=samples.reset_index().itertuples()),
 #        "db/imports/check",
 #        "variant_calling/all.vcf.gz",
 #        "variant_calling/all.snp_recalibrated.indel_recalibrated.vcf.gz",
         expand("annotation/{set.set}/bcftools/selected.annot.lightened.reheaded.xlsx", set=sets.reset_index().itertuples()),
-        expand("annotation/{set.set}/kggseq/doubleHits.doublehit.gene.trios.flt.gty.xlsx", set=sets.reset_index().itertuples())
-
+        expand("annotation/{set.set}/kggseq/doubleHits.doublehit.gene.trios.flt.gty.xlsx", set=sets.reset_index().itertuples()),
+         "delivery.completed"
 
 
 
