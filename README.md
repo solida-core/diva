@@ -19,7 +19,7 @@ The pipeline workflow is composed by three major analysis sections:
  
  * [_Annotation_](docs/diva_workflow.md#annotation): discovered variants are annotated and results are converted in a set of different output file formats enabling downstream analysis for all kind of users
  
-Parallely, statistics collected during these steps are used to generate reports for [Quality Control](#quality-control).
+Parallely, statistics collected during these steps are used to generate reports for [Quality Control](docs/diva_workflow.md#quality-control).
 
 A complete view of the analysis workflow is provided by the pipeline's [graph](images/diva.png).
 
@@ -29,20 +29,20 @@ A complete view of the analysis workflow is provided by the pipeline's [graph](i
 **DiVA** pipeline documentation can be found in the `docs/` directory:
 
 
-1. [Pipeline Structure:](https://github.com/solida-core/docs/blob/master/pipeline_structure.md)
-    * [Snakefile](https://github.com/solida-core/docs/blob/master/pipeline_structure.md#snakefile)
-    * [Configfile](https://github.com/solida-core/docs/blob/master/pipeline_structure.md#configfile)
-    * [Rules](https://github.com/solida-core/docs/blob/master/pipeline_structure.md#rules)
-    * [Envs](https://github.com/solida-core/docs/blob/master/pipeline_structure.md#envs)
+1. [Pipeline Structure:](https://github.com/solida-core/docs/blob/master/pages/handbook/pipeline_struct.md)
+    * [Snakefile](https://github.com/solida-core/docs/blob/master/pages/handbook/pipeline_struct.md#snakefile)
+    * [Configfile](https://github.com/solida-core/docs/blob/master/pages/handbook/pipeline_struct.md#configfile)
+    * [Rules](https://github.com/solida-core/docs/blob/master/pages/handbook/pipeline_struct.md#rules)
+    * [Envs](https://github.com/solida-core/docs/blob/master/pages/handbook/pipeline_struct.md#envs)
 2. [Pipeline Workflow](docs/diva_workflow.md)
-3. [Required Files:]()
+3. Required Files:
     * [Reference files](docs/reference_files.md)
     * [User files](docs/user_files.md)
-4. [Running the pipeline:]()
+4. Running the pipeline:
     * [Manual Snakemake Usage](docs/diva_snakemake.md)
-    * [SOLIDA:]()
-        * [CLI - Command Line Interface](https://github.com/solida-core/solida/blob/master/README.md)
-        * [GUI - Graphical User Interface]()
+    * SOLIDA:
+        * [CLI - Command Line Interface](https://github.com/solida-core/docs/blob/master/pages/solida/solida_cli.md)
+        * [GUI - Graphical User Interface](https://github.com/solida-core/docs/blob/master/pages/solida/solida_gui.md)
 
 
 
