@@ -72,3 +72,5 @@ include:
     include_prefix + "/identity_check.smk"
 include:
     include_prefix + "/coverage.smk"
+include:
+    include_prefix + "/delivery.smk"

@@ -1,21 +1,22 @@
 
 rule multiqc:
     input:
-        expand("qc/fastqc/untrimmed_{unit.unit}_fastqc.zip", unit=units.reset_index().itertuples()),
-        expand("qc/fastqc/trimmed_{unit.unit}_fastqc.zip", unit=units.reset_index().itertuples()),
-        expand("reads/trimmed/{unit.unit}-R1.fq.gz_trimming_report.txt", unit=units.reset_index().itertuples()),
+#        expand("qc/fastqc/{unit.unit}-R1_fastqc.zip", unit=units.reset_index().itertuples()),
+#        expand("qc/fastqc/trimmed_{unit.unit}_fastqc.zip", unit=units.reset_index().itertuples()),
+#        expand("reads/trimmed/{unit.unit}-R1.fq.gz_trimming_report.txt", unit=units.reset_index().itertuples()),
         expand("reads/dedup/{sample.sample}.metrics.txt",sample=samples.reset_index().itertuples()),
         expand("reads/recalibrated/{sample.sample}.dedup.recal.hs.txt",sample=samples.reset_index().itertuples()),
         expand("reads/recalibrated/{sample.sample}.dedup.recal.is.txt",sample=samples.reset_index().itertuples()),
         expand("qc/picard/{sample.sample}_gc_bias_metrics.txt",sample=samples.reset_index().itertuples()),
         expand("qc/picard/{sample.sample}_summary_metrics.txt",sample=samples.reset_index().itertuples())
-
     output:
         "qc/multiqc.html"
     params:
         params=config.get("rules").get("multiqc").get("arguments"),
         outdir="qc",
         outname="multiqc.html",
+        fastqc="qc/fastqc/",
+        trimming="reads/trimmed/",
         reheader=config.get("reheader")
     conda:
         "../envs/multiqc.yaml"
@@ -24,6 +25,8 @@ rule multiqc:
     shell:
         "multiqc "
         "{input} "
+        "{params.fastqc} "
+        "{params.trimming} "
         "{params.params} "
         "-o {params.outdir} "
         "-n {params.outname} "
@@ -31,34 +34,36 @@ rule multiqc:
         ">& {log}"
 
 
-rule fastqc:
-    input:
-       "reads/untrimmed/{unit}-R1.fq.gz",
-       "reads/untrimmed/{unit}-R2.fq.gz"
-    output:
-        html="qc/fastqc/untrimmed_{unit}.html",
-        zip="qc/fastqc/untrimmed_{unit}_fastqc.zip"
-    log:
-        "logs/fastqc/untrimmed/{unit}.log"
-    params: ""
-    wrapper:
-        config.get("wrappers").get("fastqc")
+
+# def fastqc_detect(wildcards,units):
+#     if units.loc[wildcards.unit,["fq2"]].isna().all():
+#         print("SE")
+#         #print("reads/untrimmed/se/"+wildcards.unit+"-R1.fq.gz")
+#         return "reads/untrimmed/se/"+wildcards.unit+"-R1.fq.gz"
+#     else:
+#         print("PE")
+#         return "reads/untrimmed/"+wildcards.unit+"-R1.fq.gz"
 
 
-rule fastqc_trimmed:
-    input:
-       "reads/trimmed/{unit}-R1-trimmed.fq.gz",
-       "reads/trimmed/{unit}-R2-trimmed.fq.gz"
-    output:
-        html="qc/fastqc/trimmed_{unit}.html",
-        zip="qc/fastqc/trimmed_{unit}_fastqc.zip"
-    log:
-        "logs/fastqc/trimmed/{unit}.log"
-    params: ""
-    wrapper:
-        config.get("wrappers").get("fastqc")
 
-
+# rule fastqc:
+#     input:
+#         lambda wildcards: fastqc_detect(wildcards, units)
+#     output:
+#         html="qc/fastqc/{unit}-R1.html",
+#         zip="qc/fastqc/{unit}-R1_fastqc.zip"
+#     log:
+#         "logs/fastqc/untrimmed/{unit}.log"
+#     params:
+#         outdir="qc/fastqc"
+#     conda:
+#         "../envs/fastqc.yaml"
+#     shell:
+#         "fastqc "
+#         "{input} "
+#         "--outdir {params.outdir} "
+#         "--quiet "
+#         ">& {log}"
 
 rule multiqc_heatmap:
     input:
