@@ -99,7 +99,7 @@ rules:
     multiqc:
         arguments: "--force --cl_config 'picard_config: { general_stats_target_coverage: [10,20,30] }' --interactive --cl_config 'max_table_rows: 700'"
     trim_galore_pe:
-        arguments: "--paired -q 20 --fastqc --fastqc_args '--outdir qc/fastqc --quiet'"
+        arguments: "--paired -q 20 --cores 4 --fastqc --fastqc_args '--outdir qc/fastqc --quiet'"
     trim_galore_se:
         arguments: "-q 20 --fastqc --fastqc_args '--outdir qc/fastqc --quiet'"
     picard_MarkDuplicates:
