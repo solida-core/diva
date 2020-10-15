@@ -55,7 +55,7 @@ include:
 include:
     dima_path + include_prefix + "/bsqr.smk"
 include:
-       include_prefix + "/picard_stats.smk"
+    include_prefix + "/picard_stats.smk"
 include:
     include_prefix + "/call_variants.smk"
 include:
