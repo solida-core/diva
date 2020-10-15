@@ -4,4 +4,4 @@ channels:
 - anaconda
 - defaults
 dependencies:
-- multiqc=1.8
+- multiqc=1.9

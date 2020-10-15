@@ -49,7 +49,7 @@ rule gatk_GenotypeGVCFs:
         "-R {params.genome} "
         "-V gendb://{params.db} "
         "-G StandardAnnotation "
-        "--use-new-qual-calculator "
+        # "--use-new-qual-calculator "
         "-O {output} "
         "--dbsnp {params.dbsnp} "
         ">& {log} "

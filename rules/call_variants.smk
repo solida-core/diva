@@ -1,7 +1,7 @@
 
 rule gatk_HaplotypeCaller_ERC_GVCF:
     input:    
-        bam="reads/recalibrated/{sample}.dedup.recal.bam"
+        cram="reads/recalibrated/{sample}.dedup.recal.cram"
     output:
         gvcf="variant_calling/{sample}.g.vcf.gz"
     conda:
@@ -18,11 +18,11 @@ rule gatk_HaplotypeCaller_ERC_GVCF:
     shell:
         "gatk HaplotypeCaller --java-options {params.custom} "
         "-R {params.genome} "
-        "-I {input.bam} "
+        "-I {input.cram} "
         "-O {output.gvcf} "
         "-ERC GVCF "
         "-L {params.intervals} "
         "-ip 200 "
         "-G StandardAnnotation "
-        "--use-new-qual-calculator "
+        # "--use-new-qual-calculator "
         ">& {log}"
