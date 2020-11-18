@@ -24,7 +24,7 @@ localrules: all, pre_rename_fastq_pe, post_rename_fastq_pe, vcf_to_tabular
 
 rule all:
     input:
-#        expand("reads/recalibrated/{sample.sample}.dedup.recal.bam", sample=samples.reset_index().itertuples()),
+#        expand("reads/recalibrated/{sample.sample}.dedup.recal.cram", sample=samples.reset_index().itertuples()),
 #        expand("reads/recalibrated/{sample.sample}.dedup.recal.hs.txt",sample=samples.reset_index().itertuples()),
 #        expand("reads/recalibrated/{sample.sample}.ccds.dedup.recal.hs.txt",sample=samples.reset_index().itertuples()),
         "qc/multiqc.html",

@@ -27,6 +27,13 @@ def _get_samples_set(samples_files, flag='-sn'):   #the file must be .args befor
         arguments.append("".join(flag + " " + samples_files[samples_set]))
     return ' '.join(arguments)
 
+def expand_filepath(filepath):
+    filepath = os.path.expandvars(os.path.expanduser(filepath))
+    if not os.path.isabs(filepath):
+        raise FileNotFoundError(
+            errno.ENOENT, os.strerror(errno.ENOENT)+" (path must be absolute)", filepath)
+    return filepath
+
 def total_physical_mem_size():
     mem = psutil.virtual_memory()
     return mem.total
@@ -84,7 +91,11 @@ def java_params(tmp_dir='', percentage_to_preserve=20, stock_mem=1024 ** 3,
         return "%sB" % n
 
     def preserve(resource, percentage, stock):
-        return resource - max(resource * percentage // 100, stock)
+        preserved = resource - max(resource * percentage // 100, stock)
+        return preserved if preserved != 0 else stock
+
+    # def preserve(resource, percentage, stock):
+    #     return resource - max(resource * percentage // 100, stock)
 
     params_template = "'-Xms{} -Xmx{} -XX:ParallelGCThreads={} " \
                       "-Djava.io.tmpdir={}'"
@@ -93,9 +104,7 @@ def java_params(tmp_dir='', percentage_to_preserve=20, stock_mem=1024 ** 3,
 
     mem_size = preserve(total_physical_mem_size(), percentage_to_preserve,
                         stock_mem)
-
     cpu_nums = preserve(cpu_count(), percentage_to_preserve, stock_cpu)
-
     tmpdir = tmp_path(tmp_dir)
 
     return params_template.format(bytes2human(mem_min).lower(),
@@ -103,6 +112,7 @@ def java_params(tmp_dir='', percentage_to_preserve=20, stock_mem=1024 ** 3,
                                                   mem_min)).lower(),
                                   min(cpu_nums, multiply_by),
                                   tmpdir)
+
 
 def references_abs_path(ref='references'):
     references = config.get(ref)
