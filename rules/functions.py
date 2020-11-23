@@ -114,13 +114,23 @@ def java_params(tmp_dir='', percentage_to_preserve=20, stock_mem=1024 ** 3,
                                   tmpdir)
 
 
+# def references_abs_path(ref='references'):
+#     references = config.get(ref)
+#     basepath = references['basepath']
+#     provider = references['provider']
+#     release = references['release']
+
+    # return [os.path.join(basepath, provider, release)]
+
 def references_abs_path(ref='references'):
     references = config.get(ref)
-    basepath = references['basepath']
+    basepath = expand_filepath(references['basepath'])
     provider = references['provider']
     release = references['release']
 
     return [os.path.join(basepath, provider, release)]
+
+
 
 def resolve_single_filepath(basepath, filename):
     return [os.path.join(basepath, filename)]

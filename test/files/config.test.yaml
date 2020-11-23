@@ -9,7 +9,7 @@ reheader: ../files/reheader.test.tsv
 internal_sid: "LIMS"
 
 references:
-    basepath: "../../dima/test/data/references"
+    basepath: "$TEST_ROOT/data/references"
     provider: "ucsc"
     release: "hg19"
 
@@ -17,7 +17,11 @@ genome_fasta: "ucsc.hg19.fasta"
 
 known_variants:
     dbsnp: "known_variants/dbSNP146_chr22.vcf"
-
+    hapmap: "known_variants/hapmap_3.3.hg19.sites.chr22.vcf"
+    g1k: "known_variants/1000G_phase1.snps.high_confidence.hg19.sites.chr22.vcf"
+    omni: "known_variants/1000G_omni2.5.hg19.sites.chr22.vcf"
+    mills: "known_variants/Mills_and_1000G_gold_standard.indels.hg19.sites.chr22.vcf"
+    ph1_indels: "known_variants/1000G_phase1.indels.hg19.sites.chr22.vcf"
 tmp_dir: "path_to_tmp_dir"
 
 
@@ -63,6 +67,8 @@ rules:
     gatk_BQSR:
         known_sites:
             - dbsnp
+            - mills
+            - ph1_indel
 
     picard_WGSMetrics:
         arguments: "MINIMUM_MAPPING_QUALITY=-1 MINIMUM_BASE_QUALITY=-1 READ_LENGTH=150 COUNT_UNPAIRED=true"

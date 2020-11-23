@@ -1,7 +1,8 @@
 
 rule gatk_HaplotypeCaller_ERC_GVCF:
     input:    
-        cram="reads/recalibrated/{sample}.dedup.recal.cram"
+        cram="reads/recalibrated/{sample}.dedup.recal.cram",
+        crai="reads/recalibrated/{sample}.dedup.recal.cram.crai"
     output:
         gvcf="variant_calling/{sample}.g.vcf.gz"
     conda:
