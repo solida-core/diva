@@ -1,86 +1,35 @@
-samples: ../samples.tsv
-units: ../units.tsv
-sets: ../sets.tsv
-reheader: ../reheader.tsv
-internal_sid: "LIMS"
 
-references:
-    basepath: "path_to_references_data"
-    provider: "reference_provider"
-    release: "reference_release"
+run:
+  all: True
+  call: False
+  annotate: False
 
-genome_fasta: "_genome_fasta"
-
-known_variants:
-    dbsnp: "known_variants/dbSNP146_chr.vcf"
-    hapmap: "known_variants/hapmap_3.3.hg19.sites.vcf"
-    g1k: "known_variants/1000G_phase1.snps.high_confidence.hg19.sites.vcf"
-    omni: "known_variants/1000G_omni2.5.hg19.sites.vcf"
-    mills: "known_variants/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf"
-    ph1_indels: "known_variants/1000G_phase1.indels.hg19.sites.vcf"
+# path or URL to sample sheet (TSV format, columns: sample, condition, ...)
+samples: config/samples.tsv
+units: config/units.tsv
+sets: config/sets.tsv
 
 
+resources:
+    reference: "/path/to/reference/reference_genome.fasta"
+    known_variants:
+        dbsnp: "/path/to/reference/dbSNP146_chr.vcf"
+        hapmap: "/path/to/reference/hapmap_3.3.hg19.sites.vcf"
+        g1k: "/path/to/reference/1000G_phase1.snps.high_confidence.hg19.sites.vcf"
+        omni: "/path/to/reference/1000G_omni2.5.hg19.sites.vcf"
+        mills: "/path/to/reference/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf"
+        ph1_indels: "/path/to/reference/1000G_phase1.indels.hg19.sites.vcf"
+    bed: "hg19.RefSeq.bed" # hg38.RefSeq.bed
 
-intervals:
-    NexteraRapidCaptureExpandedExome:
-        bedTarget: "intervals/NexteraRapidCaptureExpandedExome_Target.bed"
-        probes: "intervals/NexteraRapidCaptureExpandedExome_Probes.HybridSelection"
-        hsTarget: "intervals/NexteraRapidCaptureExpandedExome_Target.HybridSelection"
 
-    NimblegenSeqCapExomeUTR:
-        bedTarget: "intervals/NimblegenSeqCapExomeUTR_Targets.bed"
-        probes: "intervals/NimblegenSeqCapExomeUTR_Probes.HybridSelection"
-        hsTarget: "intervals/NimblegenSeqCapExomeUTR_Targets.HybridSelection"
 
-    NexteraRapidCaptureExomev1.2:
-        bedTarget: "intervals/NexteraRapidCaptureExomev1.2_Target.bed"
-        probes: "intervals/NexteraRapidCaptureExomev1.2_Probes.HybridSelection"
-        hsTarget: "intervals/NexteraRapidCaptureExomev1.2_Target.HybridSelection"
 
-    AgilentSureSelectHumanAllExonV6UTR:
-        bedTarget: "intervals/AgilentSureSelectHumanAllExonV6UTR_Target.bed"
-        probes: "intervals/AgilentSureSelectHumanAllExonV6UTR_Probes.HybridSelection"
-        hsTarget: "intervals/AgilentSureSelectHumanAllExonV6UTR_Target.HybridSelection"
-
-    AgilentSureSelectHumanAllExonV5UTR:
-        bedTarget: "intervals/AgilentSureSelectHumanAllExonV5UTR_Target.bed"
-        probes: "intervals/AgilentSureSelectHumanAllExonV5UTR_Probes.HybridSelection"
-        hsTarget: "intervals/AgilentSureSelectHumanAllExonV5UTR_Target.HybridSelection"
 
     AgilentSureSelectHumanAllExonV7:
         bedTarget: "intervals/AgilentSureSelectHumanAllExonV7_Target.bed"
         probes: "intervals/AgilentSureSelectHumanAllExonV7_Probes.HybridSelection"
         hsTarget: "intervals/AgilentSureSelectHumanAllExonV7_Target.HybridSelection"
 
-    AgilentSureSelectHumanAllExonV5:
-        bedTarget: "intervals/AgilentSureSelectHumanAllExonV5_Target.bed"
-        probes: "intervals/AgilentSureSelectHumanAllExonV5_Probes.HybridSelection"
-        hsTarget: "intervals/AgilentSureSelectHumanAllExonV5_Target.HybridSelection"
-
-    AgilentSureSelectHumanAllExonV4:
-        bedTarget: "intervals/AgilentSureSelectHumanAllExonV4_Target.bed"
-        probes: "intervals/AgilentSureSelectHumanAllExonV4_Probes.HybridSelection"
-        hsTarget: "intervals/AgilentSureSelectHumanAllExonV4_Target.HybridSelection"
-
-    NimblegenSeqCapEZExomeV2:
-        bedTarget: "intervals/NimblegenSeqCapEZExomeV2_Target.bed"
-        probes: "intervals/NimblegenSeqCapEZExomeV2_Probes.HybridSelection"
-        hsTarget: "intervals/NimblegenSeqCapEZExomeV2_Target.HybridSelection"
-
-    IDT_xGen_ExomeResearchPanel_v1:
-        bedTarget: "intervals/IDT_xGen_ExomeResearchPanel_v1_Target.bed"
-        probes: "intervals/IDT_xGen_ExomeResearchPanel_v1_Probes.HybridSelection"
-        hsTarget: "intervals/IDT_xGen_ExomeResearchPanel_v1_Target.HybridSelection"
-
-    Twist_Exome:
-        bedTarget: "intervals/Twist_Exome_Target.bed"
-        probes: "intervals/Twist_Exome_Probes.HybridSelection"
-        hsTarget: "intervals/Twist_Exome_Target.HybridSelection"
-
-    ccds:
-        bedTarget: "intervals/ccds_hg19_Target.bed"
-        probes: "intervals/ccds_hg19_Probes.HybridSelection"
-        hsTarget: "intervals/ccds_hg19_Target.HybridSelection"
 
 
 intervals_default: "_enrichment_kit_"
