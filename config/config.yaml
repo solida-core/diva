@@ -1,13 +1,39 @@
+paths:
+    workdir: "/path/to/workdir"
+    results_dir: "/path/to/results_dir"
+    tmp_dir: "/path/to/tmp_dir"
 
 run:
   all: True
   call: False
   annotate: False
 
+params:
+  bwa-mem:
+    arguments: "-M"
+    platform: "illumina"
+  multiqc:
+    arguments: ""
+  trim_galore_pe:
+    arguments: "--paired -q 20 "
+  trim_galore_se:
+    arguments: "-q 20 "
+  picard_MarkDuplicates:
+    arguments: "REMOVE_DUPLICATES=false ASSUME_SORTED=true CREATE_INDEX=true"
+  picard_WGSMetrics:
+    arguments: "MINIMUM_MAPPING_QUALITY=-1 MINIMUM_BASE_QUALITY=-1 READ_LENGTH=150 COUNT_UNPAIRED=true"
+  gatk_BQSR:
+    known_sites:
+      - dbsnp
+      - mills
+      - ph1_indel
+
+
+
 # path or URL to sample sheet (TSV format, columns: sample, condition, ...)
 samples: config/samples.tsv
 units: config/units.tsv
-sets: config/sets.tsv
+#sets: config/sets.tsv
 
 
 resources:
@@ -20,85 +46,8 @@ resources:
         mills: "/path/to/reference/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf"
         ph1_indels: "/path/to/reference/1000G_phase1.indels.hg19.sites.vcf"
     bed: "hg19.RefSeq.bed" # hg38.RefSeq.bed
+    probes: "hg19.probes"
 
 
 
 
-
-    AgilentSureSelectHumanAllExonV7:
-        bedTarget: "intervals/AgilentSureSelectHumanAllExonV7_Target.bed"
-        probes: "intervals/AgilentSureSelectHumanAllExonV7_Probes.HybridSelection"
-        hsTarget: "intervals/AgilentSureSelectHumanAllExonV7_Target.HybridSelection"
-
-
-
-intervals_default: "_enrichment_kit_"
-samples_intervals:
-    DNA16-0389-R0001: "_enrichment_kit_"
-intervals_ccds: "ccds"
-interval_target_list: "BED FILE WITH TARGET POSITIONS FOR COVERAGE CHECK"
-db_suffix: "_db_suffix_"
-
-tmp_dir: "path_to_tmp_dir"
-
-rules:
-    bwa-mem:
-        arguments: "-M"
-        platform: "illumina"
-    multiqc:
-        arguments: "--force --cl_config 'picard_config: { general_stats_target_coverage: [10,20,30] }' --interactive --cl_config 'max_table_rows: 700'"
-    trim_galore_pe:
-        arguments: "--paired -q 20 --cores 4 --fastqc --fastqc_args '--outdir qc/fastqc --quiet'"
-    trim_galore_se:
-        arguments: "-q 20 --fastqc --fastqc_args '--outdir qc/fastqc --quiet'"
-    picard_MarkDuplicates:
-        arguments: "REMOVE_DUPLICATES=false ASSUME_SORTED=true CREATE_INDEX=true"
-    picard_WGSMetrics:
-        arguments: "MINIMUM_MAPPING_QUALITY=-1 MINIMUM_BASE_QUALITY=-1 READ_LENGTH=150 COUNT_UNPAIRED=true"
-    picard_gc:
-        params: ""
-
-    gatk_BQSR:
-        known_sites:
-            - dbsnp
-            - mills
-            - ph1_indel
-
-    gatk_SelectVariants:
-        samples_files:
-            setA: "project_path/set_A.args"
-        arguments: [
-                   ["--exclude-filtered", ""],
-                   ["--exclude-non-variants", ""]
-                   #["-se", "DNA16-038*"],
-                   #["-sn", "DNA16-0284-R0001"]
-                   ]
-    kggseq:
-        arguments: [
-                   ["--db-gene", "refgene,gencode,knowngene,ensembl"],
-                   ["--splicing", "13"],
-                   ["--neargene", "1000"],
-                   ["--db-filter", "1kg201305,ESP6500AA,ESP6500EA,dbsnp141,dbsnp138,exac,gadexome,gadgenome"],
-                   ["--rare-allele-freq", "0.05"],
-                   ["--db-score", "dbnsfp"],
-                   ["--mendel-causing-predict", "best"],
-                   ["--genome-annot", ""],
-                   ["--omim-annot", ""],
-                   ["--cosmic-annot", ""],
-                   ["--mouse-pheno", ""],
-                   ["--zebrafish-pheno", ""],
-                   ["--ddd-annot", ""],
-                   ["--superdup-annot", ""],
-                   ["--scsnv-annot", ""],
-                   ["--dgv-cnv-annot", ""]
-                   ]
-        cmd: "java -Djava.awt.headless=true -jar path_to_software/kggseq-1.0/kggseq.jar"
-        ped_file: "path_to_ped_file"
-    tabix:
-        params: "-s1 -b2 -e2"
-    format_annotation:
-        blocks_file: "../resources/annot.blocks"
-    bcftools_annotate_remove:
-        params: "-x INFO/ReferenceAlternativeAllele,INFO/rsID,INFO/SIFT_score,INFO/Polyphen2_HDIV_score,INFO/Polyphen2_HVAR_score,INFO/LRT_score,INFO/MutationTaster_score,INFO/MutationAssessor_score,INFO/FATHMM_score,INFO/PROVEAN_score,INFO/M-CAP_score,INFO/MutPred_score,INFO/CADD_raw,INFO/fathmm-MKL_coding_score,INFO/Eigen-raw,INFO/VEST3_score,INFO/GenoCanyon_score,INFO/integrated_fitCons_score,INFO/MetaSVM_score,INFO/clinvar_trait,INFO/clinvar_golden_stars,INFO/DiseaseCausalProb_ExoVarTrainedModel,INFO/IsRareDiseaseCausal_ExoVarTrainedModel,INFO/BestCombinedTools:OptimalCutoff:TP:TN,INFO/GeneMIMid,INFO/DGVIDs,INFO/DS,INFO/END,INFO/InbreedingCoeff,INFO/MLEAC,INFO/MLEAF,INFO/NEGATIVE_TRAIN_SITE,INFO/POSITIVE_TRAIN_SITE,INFO/RAW_MQ,INFO/SOR,INFO/VQSLOD,INFO/culprit,INFO/BaseQRankSum,INFO/ClippingRankSum,INFO/ExcessHet,INFO/FS,INFO/HaplotypeScore,INFO/MQRankSum,INFO/ReadPosRankSum"
-    bedtools_coverage:
-        params: ""

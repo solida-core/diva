@@ -1,25 +1,25 @@
 
 rule gatk_HaplotypeCaller_ERC_GVCF:
     input:    
-        cram="reads/recalibrated/{sample}.dedup.recal.cram",
-        crai="reads/recalibrated/{sample}.dedup.recal.cram.crai"
+        bam=resolve_results_filepath(config.get("paths").get("results_dir"),"reads/recalibrated/{sample}.dedup.recal.bam"),
+        bai=resolve_results_filepath(config.get("paths").get("results_dir"),"reads/recalibrated/{sample}.dedup.recal.bam.bai")
     output:
-        gvcf="variant_calling/{sample}.g.vcf.gz"
+        gvcf=resolve_results_filepath(config.get("paths").get("results_dir"),"variant_calling/{sample}.g.vcf.gz")
     conda:
        "../envs/gatk.yaml"
     params:
         custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=5),
-        intervals = lambda wildcards: resolve_single_filepath(*references_abs_path(), config.get("intervals").get(config.get("samples_intervals").get(wildcards.sample, config["intervals_default"])).get("bedTarget")),
-        genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta"))
+        intervals = config.get("resources").get("bed"),
+        genome=config.get("resources").get("reference")
     log:
-        "logs/gatk/HaplotypeCaller/{sample}.genotype_info.log"
+        resolve_results_filepath(config.get("paths").get("results_dir"),"logs/gatk/HaplotypeCaller/{sample}.genotype_info.log")
     benchmark:
         "benchmarks/gatk/HaplotypeCaller/{sample}.txt"
     threads: 2
     shell:
         "gatk HaplotypeCaller --java-options {params.custom} "
         "-R {params.genome} "
-        "-I {input.cram} "
+        "-I {input.bam} "
         "-O {output.gvcf} "
         "-ERC GVCF "
         "-L {params.intervals} "
