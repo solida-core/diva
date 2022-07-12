@@ -26,7 +26,7 @@ use rule * from dima as dima_*
 
 rule all:
     input:
-        rules.dima_all.input,
+        # rules.dima_all.input,
         expand(resolve_results_filepath(config.get("paths").get("results_dir"),
             "variant_calling/{sample.sample}.g.vcf.gz"
         ),
