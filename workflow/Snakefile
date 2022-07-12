@@ -10,7 +10,8 @@ configfile: "config/config.yaml"
 #### load rules
 include: "rules/common.smk"
 include: "rules/call_variants.smk"
-
+include: "rules/joint_call.smk"
+include: "rules/vsqr.smk"
 
 module dima:
     snakefile:
@@ -31,7 +32,9 @@ rule all:
             "variant_calling/{sample.sample}.g.vcf.gz"
         ),
             sample=samples.reset_index().itertuples(),
-        )
+        ),
+        resolve_results_filepath(config.get("paths").get("results_dir"), "variant_calling/all.vcf.gz"),
+        resolve_results_filepath(config.get("paths").get("results_dir"),"variant_calling/all.snp_recalibrated.indel_recalibrated.vcf.gz")
     default_target: True
 
 

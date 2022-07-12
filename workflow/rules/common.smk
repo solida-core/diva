@@ -145,3 +145,14 @@ def java_params(
         min(cpu_nums, multiply_by),
         tmpdir,
     )
+
+def multi_flag_dbi(flag, arguments):
+    if arguments:
+        return " ".join(flag + " " + arg for arg in arguments)
+    return ''
+
+
+def resolve_multi_filepath(dictionary):
+    for k, v in dictionary.items():
+        dictionary[k] = v
+    return dictionary

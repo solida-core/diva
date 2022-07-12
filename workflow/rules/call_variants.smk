@@ -6,7 +6,7 @@ rule gatk_HaplotypeCaller_ERC_GVCF:
     output:
         gvcf=resolve_results_filepath(config.get("paths").get("results_dir"),"variant_calling/{sample}.g.vcf.gz")
     conda:
-       "../envs/gatk.yaml"
+        resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     params:
         custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=5),
         intervals = config.get("resources").get("bed"),
@@ -14,7 +14,7 @@ rule gatk_HaplotypeCaller_ERC_GVCF:
     log:
         resolve_results_filepath(config.get("paths").get("results_dir"),"logs/gatk/HaplotypeCaller/{sample}.genotype_info.log")
     benchmark:
-        "benchmarks/gatk/HaplotypeCaller/{sample}.txt"
+        resolve_results_filepath(config.get("paths").get("results_dir"),"benchmarks/gatk/HaplotypeCaller/{sample}.txt")
     threads: 2
     shell:
         "gatk HaplotypeCaller --java-options {params.custom} "
@@ -25,5 +25,8 @@ rule gatk_HaplotypeCaller_ERC_GVCF:
         "-L {params.intervals} "
         "-ip 200 "
         "-G StandardAnnotation "
+        "--max-reads-per-alignment-start 0 "
+        "--min-base-quality-score 20 "
+        "--add-output-vcf-command-line false "
         # "--use-new-qual-calculator "
         ">& {log}"

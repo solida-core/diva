@@ -47,6 +47,7 @@ resources:
         ph1_indels: "/path/to/reference/1000G_phase1.indels.hg19.sites.vcf"
     bed: "hg19.RefSeq.bed" # hg38.RefSeq.bed
     probes: "hg19.probes"
+    db_suffix: "my_db"
 
 
 
