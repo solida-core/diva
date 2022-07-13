@@ -15,7 +15,7 @@ include: "rules/vsqr.smk"
 
 module dima:
     snakefile:
-        github("solida-core/dima", path="workflow/Snakefile", tag="143abd3")
+        github("solida-core/dima", path="workflow/Snakefile", tag="v2.0.2")
     config: config
     skip_validation: True
 
