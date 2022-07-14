@@ -1,7 +1,7 @@
 
 # https://docs.python.org/dev/whatsnew/3.5.html#pep-448-additional-unpacking-generalizations
 def _get_recal_params(wildcards):
-    known_variants = resolve_multi_filepath(*references_abs_path(), config["known_variants"])
+    known_variants = resolve_multi_filepath(config["resources"]["known_variants"])
     if wildcards.type == "snp":
         return (
             "-mode SNP "
@@ -24,22 +24,22 @@ def _get_recal_params(wildcards):
 
 rule gatk_VariantRecalibrator:
     input:
-        resolve_multi_filepath(*references_abs_path(), config["known_variants"]).values(),
-        vcf="variant_calling/{prefix}.vcf.gz"
+        resolve_multi_filepath(config["resources"]["known_variants"]).values(),
+        vcf=resolve_results_filepath(config.get("paths").get("results_dir"),"variant_calling/{prefix}.vcf.gz")
     output:
-        recal=temp("variant_calling/{prefix}.{type,(snp|indel)}.recal"),
-        tranches=temp("variant_calling/{prefix}.{type,(snp|indel)}.tranches"),
-        plotting=temp("variant_calling/{prefix}.{type,(snp|indel)}.plotting.R")
+        recal=temp(resolve_results_filepath(config.get("paths").get("results_dir"),"variant_calling/{prefix}.{type,(snp|indel)}.recal")),
+        tranches=temp(resolve_results_filepath(config.get("paths").get("results_dir"),"variant_calling/{prefix}.{type,(snp|indel)}.tranches")),
+        plotting=temp(resolve_results_filepath(config.get("paths").get("results_dir"),"variant_calling/{prefix}.{type,(snp|indel)}.plotting.R"))
     params:
         recal=_get_recal_params,
-        custom=java_params(tmp_dir=config.get("tmp_dir"),multiply_by=2),
-        genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta"))
+        custom=java_params(tmp_dir=config.get("tmp_dir"),multiply_by=5),
+        genome=config.get("resources").get("reference"),
     log:
-        "variant_calling/log/{prefix}.{type}_recalibrate_info.log"
+        resolve_results_filepath(config.get("paths").get("results_dir"),"variant_calling/log/{prefix}.{type}_recalibrate_info.log")
     conda:
         "../envs/gatk.yaml"
     benchmark:
-        "benchmarks/gatk/VariantRecalibrator/{prefix}.{type}_recalibrate_info.txt"
+        resolve_results_filepath(config.get("paths").get("results_dir"),"benchmarks/gatk/VariantRecalibrator/{prefix}.{type}_recalibrate_info.txt")
     shell:
         "gatk VariantRecalibrator --java-options {params.custom} "
         "-R {params.genome} "
@@ -54,21 +54,21 @@ rule gatk_VariantRecalibrator:
 
 rule gatk_ApplyVQSR:
     input:
-        vcf="variant_calling/{prefix}.vcf.gz",
-        recal="variant_calling/{prefix}.{type}.recal",
-        tranches="variant_calling/{prefix}.{type}.tranches"
+        vcf=resolve_results_filepath(config.get("paths").get("results_dir"),"variant_calling/{prefix}.vcf.gz"),
+        recal=resolve_results_filepath(config.get("paths").get("results_dir"),"variant_calling/{prefix}.{type}.recal"),
+        tranches=resolve_results_filepath(config.get("paths").get("results_dir"),"variant_calling/{prefix}.{type}.tranches")
     output:
-        "variant_calling/{prefix}.{type,(snp|indel)}_recalibrated.vcf.gz"
+        resolve_results_filepath(config.get("paths").get("results_dir"),"variant_calling/{prefix}.{type,(snp|indel)}_recalibrated.vcf.gz")
     conda:
         "../envs/gatk.yaml"
     params:
         mode=lambda wildcards: wildcards.type.upper(),
-        custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=2),
-        genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta"))
+        custom=java_params(tmp_dir=config.get("tmp_dir"),multiply_by=5),
+        genome=config.get("resources").get("reference"),
     log:
-        "logs/gatk/ApplyVQSR/{prefix}.{type}_recalibrate.log"
+        resolve_results_filepath(config.get("paths").get("results_dir"),"logs/gatk/ApplyVQSR/{prefix}.{type}_recalibrate.log")
     benchmark:
-        "benchmarks/gatk/ApplyVQSR/{prefix}.{type}_recalibrate.txt"
+        resolve_results_filepath(config.get("paths").get("results_dir"),"benchmarks/gatk/ApplyVQSR/{prefix}.{type}_recalibrate.txt")
     shell:
         "gatk  ApplyVQSR --java-options {params.custom} "
         "-R {params.genome} "
