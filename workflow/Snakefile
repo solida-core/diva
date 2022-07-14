@@ -16,7 +16,7 @@ include: "rules/identity_check.smk"
 
 module dima:
     snakefile:
-        github("solida-core/dima", path="workflow/Snakefile", tag="v2.0.2")
+        github("solida-core/dima", path="workflow/Snakefile", tag="3773fa2")
     config: config
     skip_validation: True
 

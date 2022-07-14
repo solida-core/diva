@@ -6,7 +6,7 @@ rule gatk_HaplotypeCaller_ERC_GVCF:
     output:
         gvcf=resolve_results_filepath(config.get("paths").get("results_dir"),"variant_calling/{sample}.g.vcf.gz")
     conda:
-        resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
+        "../envs/gatk.yaml"
     params:
         custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=5),
         intervals = config.get("resources").get("bed"),
