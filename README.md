@@ -1,54 +1,49 @@
-[![depends](https://img.shields.io/badge/depends%20from-bioconda-brightgreen.svg)](http://bioconda.github.io/)
-[![snakemake](https://img.shields.io/badge/snakemake-5.3-brightgreen.svg)](https://snakemake.readthedocs.io/en/stable/)
-[![Build Status](https://travis-ci.com/solida-core/diva.svg?branch=master)](https://travis-ci.com/solida-core/diva)
+# Snakemake workflow: DiVA
+[![Snakemake](https://img.shields.io/badge/snakemake-≥6.15.0-brightgreen.svg)](https://snakemake.bitbucket.io)
+[![Build Status](https://travis-ci.org/snakemake-workflows/musta.svg?branch=master)](https://travis-ci.org/snakemake-workflows/musta)
 
-# DiVA
-**DiVA** (DNA Variant Analysis) is a pipeline for Next-Generation Sequencing **Exome** data anlysis.
+This workflow performs mapping and variant calling following GATK Best Practices for Germline Variant Discovery.
+DiVA is part of the Snakemake-based pipelines collection [solida-core](https://github.com/solida-core) developed and manteined at [CRS4](https://www.crs4.it). 
+<p align="center">
+<img align="center" src="https://www.crs4.it/wp-content/uploads/2020/11/CRS4-1.jpg" width="200" height="80" alt="www.crs4.it"/>
+</p>
 
-All **[solida-core](https://github.com/solida-core)** workflows follow GATK Best Practices for Germline Variant Discovery, with the incorporation of further improvements and refinements after their testing with real data in various [CRS4 Next Generation Sequencing Core Facility](http://next.crs4.it) research sequencing projects.
+## Authors
 
-Pipelines are based on [Snakemake](https://snakemake.readthedocs.io/en/stable/), a workflow management system that provides all the features needed to create reproducible and scalable data analyses.
+* Matteo Massidda (@massiddaMT)
+* Rossano Atzeni (@ratzeni)
 
-Software dependencies are specified into the `environment.yaml` file and directly managed by Snakemake using [Conda](https://docs.conda.io/en/latest/miniconda.html), ensuring the reproducibility of the workflow on a great number of different computing environments such as workstations, clusters and cloud environments.
+## Usage
 
+The usage of this workflow is described in the [Snakemake Workflow Catalog](https://snakemake.github.io/snakemake-workflow-catalog?usage=solida-core/diva).
 
-### Pipeline Overview
-The pipeline workflow is composed by three major analysis sections:
- * [_Mapping_](docs/diva_workflow.md#mapping): paired-end reads in fastq format are aligned against a reference genome to produce a deduplicated and recalibrated BAM file. This section is executed by DiMA pipeline.
+If you use this workflow in a paper, don't forget to give credits to the authors by citing the URL of this (original) repository and its DOI (see above).
 
- * [_Variant Calling_](docs/diva_workflow.md#variant-calling): a joint call is performed from all project's bam files
- 
- * [_Annotation_](docs/diva_workflow.md#annotation): discovered variants are annotated and results are converted in a set of different output file formats enabling downstream analysis for all kind of users
- 
-Parallely, statistics collected during these steps are used to generate reports for [Quality Control](docs/diva_workflow.md#quality-control).
+## INSTRUCTIONS
+Create a virtual environment with the command:
+```commandline
+mamba create -c bioconda -c conda-forge --name snakemake snakemake=6.15 snakedeploy
+```
+and activate it:
+```commandline
+conda activate snakemake
+```
+We get some public data to test the pipeline. You can directly clone in this folder from github, just type:
+```commandline
+git clone https://github.com/solida-core/test-data-DNA.git
+```
+You can then perform the pipeline deploy defining a directory `my_dest_dir` for analysis output and a pipeline tag for a specific version:
+```bash
+snakedeploy deploy-workflow https://github.com/solida-core/diva 
+                    my_desd_dir 
+                    --tag XXXX
+```
+To run the pipeline, go inside the deployed pipeline folder and use the command:
+```bash
+snakemake --use-conda -p --cores all
+```
+You can generate analysis report with the command:
+```bash
+snakemake --report report.zip --cores all
+```
 
-A complete view of the analysis workflow is provided by the pipeline's [graph](images/diva.png).
-
-
-
-### Pipeline Handbook
-**DiVA** pipeline documentation can be found in the `docs/` directory:
-
-
-1. [Pipeline Structure:](https://github.com/solida-core/docs/blob/master/pages/handbook/pipeline_struct.md)
-    * [Snakefile](https://github.com/solida-core/docs/blob/master/pages/handbook/pipeline_struct.md#snakefile)
-    * [Configfile](https://github.com/solida-core/docs/blob/master/pages/handbook/pipeline_struct.md#configfile)
-    * [Rules](https://github.com/solida-core/docs/blob/master/pages/handbook/pipeline_struct.md#rules)
-    * [Envs](https://github.com/solida-core/docs/blob/master/pages/handbook/pipeline_struct.md#envs)
-2. [Pipeline Workflow](docs/diva_workflow.md)
-3. Required Files:
-    * [Reference files](docs/reference_files.md)
-    * [User files](docs/user_files.md)
-4. Running the pipeline:
-    * [Manual Snakemake Usage](docs/diva_snakemake.md)
-    * SOLIDA:
-        * [CLI - Command Line Interface](https://github.com/solida-core/docs/blob/master/pages/solida/solida_cli.md)
-        * [GUI - Graphical User Interface](https://github.com/solida-core/docs/blob/master/pages/solida/solida_gui.md)
-
-
-
-
-
-
-### Contact us
-[support@solida-core](mailto:m.massidda@crs4.it) 
